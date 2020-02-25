@@ -34,7 +34,7 @@ public class ChatListFragment extends Fragment {
                 ViewModelProviders.of(this).get(ChatListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
         final TextView textView = root.findViewById(R.id.text_chat_list);
-        chatListViewModel.getText().observe(this, new Observer<String>() {
+        chatListViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

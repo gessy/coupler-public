@@ -4,4 +4,7 @@
     <integer name="menu_order_map">90</integer>
     <integer name="menu_order_chat">90</integer>
     <integer name="menu_order_search">80</integer>
+
+    <integer name="default_camera_zoom">5</integer>
+    <integer name="default_camera_zoom_min">3</integer>
 </resources>
