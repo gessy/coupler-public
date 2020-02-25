@@ -34,7 +34,7 @@ public class GroupFragment extends Fragment {
                 ViewModelProviders.of(this).get(GroupViewModel.class);
         View root = inflater.inflate(R.layout.fragment_group, container, false);
         final TextView textView = root.findViewById(R.id.text_group);
-        groupViewModel.getText().observe(this, new Observer<String>() {
+        groupViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

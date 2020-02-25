@@ -34,7 +34,7 @@ public class InfoFragment extends Fragment {
                 ViewModelProviders.of(this).get(InfoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_info, container, false);
         final TextView textView = root.findViewById(R.id.text_info);
-        infoViewModel.getText().observe(this, new Observer<String>() {
+        infoViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
