@@ -3,12 +3,12 @@ package com.offgrid.coupler.util;
 import androidx.fragment.app.Fragment;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.ui.gallery.GalleryFragment;
-import com.offgrid.coupler.ui.home.HomeFragment;
-import com.offgrid.coupler.ui.send.SendFragment;
-import com.offgrid.coupler.ui.share.ShareFragment;
-import com.offgrid.coupler.ui.slideshow.SlideshowFragment;
-import com.offgrid.coupler.ui.tools.ToolsFragment;
+import com.offgrid.coupler.ui.chat.ChatListFragment;
+import com.offgrid.coupler.ui.chat.contact.ContactFragment;
+import com.offgrid.coupler.ui.chat.group.GroupFragment;
+import com.offgrid.coupler.ui.info.InfoFragment;
+import com.offgrid.coupler.ui.map.MapFragment;
+import com.offgrid.coupler.ui.setting.SettingsFragment;
 
 public class FragmentHelper {
 
@@ -16,23 +16,23 @@ public class FragmentHelper {
         Fragment fragment = null;
 
         switch (itemId) {
-            case R.id.nav_home:
-                fragment = new HomeFragment();
+            case R.id.nav_group:
+                fragment = new GroupFragment();
                 break;
-            case R.id.nav_gallery:
-                fragment = new GalleryFragment();
+            case R.id.nav_contact:
+                fragment = new ContactFragment();
                 break;
-            case R.id.nav_send:
-                fragment = new SendFragment();
+            case R.id.nav_chat_list:
+                fragment = new ChatListFragment();
                 break;
-            case R.id.nav_share:
-                fragment = new ShareFragment();
+            case R.id.nav_map:
+                fragment = new MapFragment();
                 break;
-            case R.id.nav_slideshow:
-                fragment = new SlideshowFragment();
+            case R.id.nav_settings:
+                fragment = new SettingsFragment();
                 break;
-            case R.id.nav_tools:
-                fragment = new ToolsFragment();
+            case R.id.nav_info:
+                fragment = new InfoFragment();
                 break;
         }
 
