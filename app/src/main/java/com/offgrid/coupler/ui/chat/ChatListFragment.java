@@ -34,7 +34,7 @@ public class ChatListFragment extends Fragment {
         Context context = getActivity();
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
-        WordListAdapter adapter = new WordListAdapter(context);
+        ChatListAdapter adapter = new ChatListAdapter(context);
         adapter.setWords(Arrays.asList(
                 new Chat("First Chat", "Last message on First Chat", 0),
                 new Chat("Second Chat", "Last message on Second Chat", 0),

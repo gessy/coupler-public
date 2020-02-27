@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,41 +12,23 @@ import com.offgrid.coupler.data.domain.Chat;
 
 import java.util.List;
 
-public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
-
-    class WordViewHolder extends RecyclerView.ViewHolder {
-        private final TextView title;
-        private final TextView message;
-
-        private WordViewHolder(View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.chat_list_title);
-            message = itemView.findViewById(R.id.chat_list_message);
-        }
-
-        public void update(Chat chat) {
-            this.title.setText(chat.getTitle());
-            this.message.setText(chat.getMessage());
-
-        }
-
-    }
+public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<Chat> chats;
 
-    WordListAdapter(Context context) {
+    ChatListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.chat_list_item, parent, false);
-        return new WordViewHolder(itemView);
+        return new ChatListItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(WordViewHolder holder, int position) {
+    public void onBindViewHolder(ChatListItemViewHolder holder, int position) {
         if (chats != null) {
             Chat current = chats.get(position);
             holder.update(current);
@@ -57,7 +38,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         }
     }
 
-    void setWords(List<Chat> chats){
+    void setWords(List<Chat> chats) {
         this.chats = chats;
         notifyDataSetChanged();
     }
