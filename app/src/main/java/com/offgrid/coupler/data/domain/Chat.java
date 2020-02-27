@@ -31,6 +31,10 @@ public class Chat {
     private Integer date;
 
 
+    public static Chat getEmpty() {
+        return new Chat("No data","No data",0);
+    }
+
     public Chat() {
     }
 

@@ -16,12 +16,21 @@ import java.util.List;
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
     class WordViewHolder extends RecyclerView.ViewHolder {
-        private final TextView wordItemView;
+        private final TextView title;
+        private final TextView message;
 
         private WordViewHolder(View itemView) {
             super(itemView);
-            wordItemView = itemView.findViewById(R.id.textView);
+            title = itemView.findViewById(R.id.chat_list_title);
+            message = itemView.findViewById(R.id.chat_list_message);
         }
+
+        public void update(Chat chat) {
+            this.title.setText(chat.getTitle());
+            this.message.setText(chat.getMessage());
+
+        }
+
     }
 
     private final LayoutInflater mInflater;
@@ -33,7 +42,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.recyclerview_chat_list_item, parent, false);
+        View itemView = mInflater.inflate(R.layout.chat_list_item, parent, false);
         return new WordViewHolder(itemView);
     }
 
@@ -41,10 +50,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     public void onBindViewHolder(WordViewHolder holder, int position) {
         if (chats != null) {
             Chat current = chats.get(position);
-            holder.wordItemView.setText(current.getTitle());
+            holder.update(current);
         } else {
             // Covers the case of data not being ready yet.
-            holder.wordItemView.setText("No Word");
+            holder.update(Chat.getEmpty());
         }
     }
 

@@ -35,7 +35,11 @@ public class ChatListFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
         WordListAdapter adapter = new WordListAdapter(context);
-        adapter.setWords(Arrays.asList(new Chat("First Chat"), new Chat("Second Chat"), new Chat("Third Chat")));
+        adapter.setWords(Arrays.asList(
+                new Chat("First Chat", "Last message on First Chat", 0),
+                new Chat("Second Chat", "Last message on Second Chat", 0),
+                new Chat("Third Chat", "Last message on Third Chat", 0)
+        ));
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);
         recyclerView.setAdapter(adapter);
