@@ -17,6 +17,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.util.EntityHelper;
 import com.offgrid.coupler.util.FragmentHelper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,18 +43,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         displaySelectedScreen(R.id.nav_chat_list);
 
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(MainActivity.this, "Action to invoke new Activity", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, MockActivity.class);
+                intent.putExtras(
+                        new Info.BundleBuilder()
+                                .withTitle("New Message")
+                                .withText("This is new message activity")
+                                .build()
+                );
                 startActivityForResult(intent, 1);
             }
         });
-
-
+        
     }
 
 
@@ -102,7 +107,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        displaySelectedScreen(item.getItemId());
+        Intent intent = new Intent(MainActivity.this, MockActivity.class);
+        intent.putExtras(EntityHelper.createBundle(item.getItemId()));
+        startActivityForResult(intent, 1);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 }

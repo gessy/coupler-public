@@ -1,6 +1,5 @@
 package com.offgrid.coupler;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,31 +11,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.offgrid.coupler.model.Info;
+
 
 public class MockActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Info info = Info.getInstance(getIntent().getExtras());
+
         setContentView(R.layout.activity_mock);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Mock");
+        getSupportActionBar().setTitle(info.getTitle());
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent replyIntent = new Intent();
-                setResult(RESULT_CANCELED, replyIntent);
+                setResult(RESULT_CANCELED, new Intent());
                 finish();
             }
         });
 
         final TextView textView = findViewById(R.id.text);
-        textView.setText("Mock text");
+        textView.setText(info.getText());
     }
 
 
@@ -52,8 +55,7 @@ public class MockActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_done) {
-            Intent replyIntent = new Intent();
-            setResult(RESULT_OK, replyIntent);
+            setResult(RESULT_OK, new Intent());
             finish();
             return true;
         }
