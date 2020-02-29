@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(intent, 1);
             }
         });
-        
+
     }
 
 
