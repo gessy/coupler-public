@@ -24,4 +24,6 @@ public class ChatListItemViewHolder extends RecyclerView.ViewHolder {
         this.message.setText(chat.getMessage());
     }
 
+
+
 }

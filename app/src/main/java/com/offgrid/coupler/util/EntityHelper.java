@@ -17,7 +17,7 @@ public class EntityHelper {
                         .build();
             case R.id.nav_contact:
                 return  new Info.BundleBuilder()
-                        .withTitle("Ad Contact")
+                        .withTitle("Add Contact")
                         .withText("This is new contact activity")
                         .build();
             case R.id.nav_settings:
