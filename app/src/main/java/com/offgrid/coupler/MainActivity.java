@@ -1,8 +1,10 @@
 package com.offgrid.coupler;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.util.FragmentHelper;
 
@@ -37,6 +40,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
         displaySelectedScreen(R.id.nav_chat_list);
+
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(MainActivity.this, "Action to invoke new Activity", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, MockActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
 
     }
 
