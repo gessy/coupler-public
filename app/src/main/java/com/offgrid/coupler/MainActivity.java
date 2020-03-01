@@ -18,10 +18,16 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.ui.FragmentProvider;
+import com.offgrid.coupler.ui.chat.ChatListFragment;
+import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
-import com.offgrid.coupler.util.FragmentHelper;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FragmentProvider fragmentProvider;
+    private static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
 
     @Override
@@ -41,7 +47,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
+        fragmentProvider = new FragmentProvider();
+        fragmentProvider.addFragment(R.id.nav_chat_list, new ChatListFragment());
+        fragmentProvider.addFragment(R.id.nav_map, new MapFragment());
+
         displaySelectedScreen(R.id.nav_chat_list);
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+
     }
 
     @Override
@@ -85,22 +97,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
         } else {
-            displaySelectedScreen(item.getItemId());
+            displaySelectedScreen(id);
         }
 
         return true;
     }
 
     private void displaySelectedScreen(int itemId) {
-        Fragment fragment = FragmentHelper.createFragment(itemId);
+        Fragment fragment = fragmentProvider.findViewById(itemId);
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
     }
 
 
