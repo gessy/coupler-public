@@ -12,17 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.ui.FragmentController;
+import com.offgrid.coupler.ui.chat.ChatListFragment;
+import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
-import com.offgrid.coupler.util.FragmentHelper;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FragmentController fragmentController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
-        displaySelectedScreen(R.id.nav_chat_list);
+        fragmentController = createFragmentController();
+        fragmentController.displayScreen(R.id.nav_chat_list);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +64,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    private FragmentController createFragmentController() {
+        FragmentController controller = new FragmentController();
+        controller.setFragmentManager(getSupportFragmentManager());
+        controller.setLayoutResource(R.id.content_frame);
+        controller.registerFragment(R.id.nav_chat_list, new ChatListFragment());
+        controller.registerFragment(R.id.nav_map, new MapFragment());
+        return controller;
+    }
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -70,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,22 +99,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
         } else {
-            displaySelectedScreen(item.getItemId());
+            fragmentController.displayScreen(id);
         }
 
         return true;
-    }
-
-    private void displaySelectedScreen(int itemId) {
-        Fragment fragment = FragmentHelper.createFragment(itemId);
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
     }
 
 
