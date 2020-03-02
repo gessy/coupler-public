@@ -46,6 +46,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
                         new Info.BundleBuilder()
                                 .withTitle(current.getTitle())
                                 .withText(current.getMessage())
+                                .withAction(Info.Action.chat_room)
                                 .build()
                 );
                 context.startActivity(intent);

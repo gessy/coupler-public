@@ -5,21 +5,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.util.RandomTokenGenerator;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class ChatListFragment extends Fragment {
+
+    private ChatListViewModel chatListViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,12 +39,15 @@ public class ChatListFragment extends Fragment {
         Context context = getActivity();
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
-        ChatListAdapter adapter = new ChatListAdapter(context);
-        adapter.setWords(Arrays.asList(
-                new Chat("First Chat", "Last message on First Chat", 0),
-                new Chat("Second Chat", "Last message on Second Chat", 0),
-                new Chat("Third Chat", "Last message on Third Chat", 0)
-        ));
+        final ChatListAdapter adapter = new ChatListAdapter(context);
+
+        chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
+        chatListViewModel.getAllChats().observe(this, new Observer<List<Chat>>() {
+            @Override
+            public void onChanged(@Nullable final List<Chat> chats) {
+                adapter.setWords(chats);
+            }
+        });
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);
         recyclerView.setAdapter(adapter);
@@ -53,5 +62,18 @@ public class ChatListFragment extends Fragment {
         inflater.inflate(R.menu.menu_chat_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add_chat) {
+            int id = RandomTokenGenerator.getInt();
+            String title = "Chat ID " + id;
+            String message = "Last message on Chat ID " + id;
+            chatListViewModel.insert(new Chat(title, message, 0));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }
