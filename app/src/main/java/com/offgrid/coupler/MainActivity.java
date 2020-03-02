@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new Info.BundleBuilder()
                                 .withTitle("New Message")
                                 .withText("This is new message activity")
+                                .withAction(Info.Action.new_message)
                                 .build()
                 );
                 startActivityForResult(intent, 1);
@@ -95,14 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-        } else {
+        if (id == R.id.nav_chat_list || id == R.id.nav_map)  {
             fragmentController.displayScreen(id);
+            return true;
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 

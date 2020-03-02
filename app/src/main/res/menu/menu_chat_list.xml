@@ -7,4 +7,13 @@
         android:icon="@drawable/ic_map_white_24dp"
         app:showAsAction="ifRoom"
         android:title="@string/menu_map" />
+
+    <item
+        android:id="@+id/action_add_chat"
+        android:orderInCategory="85"
+        android:icon="@drawable/ic_add_white_24dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_chat_item" />
+
+
 </menu>
