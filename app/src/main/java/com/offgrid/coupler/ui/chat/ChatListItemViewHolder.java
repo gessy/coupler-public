@@ -6,7 +6,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 
 public class ChatListItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,7 +21,7 @@ public class ChatListItemViewHolder extends RecyclerView.ViewHolder {
 
     public void update(Chat chat) {
         this.title.setText(chat.getTitle());
-        this.message.setText(chat.getMessage());
+        this.message.setText(chat.getLastMessage());
     }
 
 

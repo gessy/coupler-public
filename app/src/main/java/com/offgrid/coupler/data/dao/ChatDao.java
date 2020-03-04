@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 
 import java.util.List;
 

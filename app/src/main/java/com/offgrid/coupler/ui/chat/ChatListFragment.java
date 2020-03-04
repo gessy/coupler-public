@@ -1,6 +1,5 @@
 package com.offgrid.coupler.ui.chat;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.util.RandomTokenGenerator;
 
 import java.util.List;
@@ -36,13 +35,12 @@ public class ChatListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        Context context = getActivity();
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
-        final ChatListAdapter adapter = new ChatListAdapter(context);
+        final ChatListAdapter adapter = new ChatListAdapter(getActivity());
 
         chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
-        chatListViewModel.getAllChats().observe(this, new Observer<List<Chat>>() {
+        chatListViewModel.getAllChats().observe(getActivity(), new Observer<List<Chat>>() {
             @Override
             public void onChanged(@Nullable final List<Chat> chats) {
                 adapter.setWords(chats);
@@ -51,7 +49,7 @@ public class ChatListFragment extends Fragment {
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return root;
     }
@@ -70,7 +68,7 @@ public class ChatListFragment extends Fragment {
             int id = RandomTokenGenerator.getInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
-            chatListViewModel.insert(new Chat(title, message, 0));
+            chatListViewModel.insert(new Chat(title, message));
         }
         return super.onOptionsItemSelected(item);
     }

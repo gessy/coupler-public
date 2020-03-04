@@ -9,12 +9,12 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.offgrid.coupler.data.dao.ChatDao;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Chat.class}, version = 1, exportSchema = false)
+@Database(entities = {Chat.class}, version = 2, exportSchema = false)
 public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();

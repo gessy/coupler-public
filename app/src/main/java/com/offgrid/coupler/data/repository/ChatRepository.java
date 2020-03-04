@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.ChatDao;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 
 import java.util.List;
 

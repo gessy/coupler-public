@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.model.Info;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
 
     @Override
     public void onBindViewHolder(ChatListItemViewHolder holder, int position) {
-        final Chat current = chats != null ?  chats.get(position) : Chat.getEmpty();
+        final Chat current = chats != null ? chats.get(position) : Chat.getEmpty();
         holder.update(current);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -44,8 +44,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
                 Intent intent = new Intent(context, MockActivity.class);
                 intent.putExtras(
                         new Info.BundleBuilder()
-                                .withTitle(current.getTitle())
-                                .withText(current.getMessage())
+                                .withTitle(current.getTitle() + " (" + current.getType() + ")")
+                                .withText(current.getLastMessage())
                                 .withAction(Info.Action.chat_room)
                                 .build()
                 );
