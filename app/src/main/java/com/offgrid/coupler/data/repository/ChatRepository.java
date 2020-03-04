@@ -13,22 +13,22 @@ import java.util.List;
 
 public class ChatRepository {
 
-    private ChatDao chatDao;
+    private ChatDao dao;
 
     public ChatRepository(Application application) {
         CouplerRoomDatabase db = CouplerRoomDatabase.getDatabase(application);
-        chatDao = db.chatDao();
+        dao = db.chatDao();
     }
 
     public LiveData<List<Chat>> getChats() {
-        return chatDao.findAll();
+        return dao.findAll();
     }
 
     public void insert(final Chat chat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                chatDao.insert(chat);
+                dao.insert(chat);
             }
         });
     }
