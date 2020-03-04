@@ -46,12 +46,14 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-//                    ChatDao dao = INSTANCE.chatDao();
-//                    dao.deleteAll();
+//                    ChatDao chatDao = INSTANCE.chatDao();
+//                    chatDao.deleteAll();
+
+//                    MessageDao messageDao = INSTANCE.messageDao();
+//                    messageDao.deleteAll();
                 }
             });
         }

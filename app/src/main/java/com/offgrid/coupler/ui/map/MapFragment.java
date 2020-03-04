@@ -22,7 +22,6 @@ public class MapFragment extends Fragment {
 
     private MapView mapView;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

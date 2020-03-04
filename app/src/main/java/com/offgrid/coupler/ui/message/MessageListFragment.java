@@ -11,16 +11,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.model.dto.ChatDto;
+import com.offgrid.coupler.util.RandomTokenGenerator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class MessageListFragment extends Fragment {
 
@@ -46,22 +47,51 @@ public class MessageListFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_message_list, container, false);
 
         final MessageListAdapter adapter = new MessageListAdapter(getActivity());
-        Message message = new Message(1L, "Message in the chat: " + chatDto.getTitle());
-        adapter.setMessages(new ArrayList<>(Arrays.asList(message)));
-
-//        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
-//        messageListViewModel.getAllChats().observe(getActivity(), new Observer<List<Chat>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<Chat> chats) {
-//                adapter.setWords(chats);
-//            }
-//        });
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_message_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
+        messageListViewModel.getChatMessages(chatDto.getId())
+                .observe(getActivity(), new Observer<List<Message>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<Message> messages) {
+                        adapter.setMessages(messages);
+                    }
+                });
+
         return root;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_message_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int randId = RandomTokenGenerator.getInt();
+        if (item.getItemId() == R.id.action_add_my_message) {
+            messageListViewModel.insert(new Message(
+                    chatDto.getId(),
+                    "Message ID " + randId,
+                    System.currentTimeMillis(),
+                    "Me"));
+            return true;
+        } else if (item.getItemId() == R.id.action_add_talker_message) {
+            messageListViewModel.insert(new Message(
+                    chatDto.getId(),
+                    "Message ID " + randId,
+                    System.currentTimeMillis(),
+                    "Talker"));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

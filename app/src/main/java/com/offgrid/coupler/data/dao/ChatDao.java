@@ -13,15 +13,12 @@ import java.util.List;
 @Dao
 public interface ChatDao {
 
-    @Query("SELECT * from T_Chat")
+    @Query("select * from T_Chat")
     LiveData<List<Chat>> findAll();
-
-    @Query("SELECT * from T_Chat where type = :type")
-    LiveData<List<Chat>> findAllByType(String type);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Chat chat);
 
-    @Query("DELETE FROM T_Chat")
+    @Query("delete from T_Chat")
     void deleteAll();
 }

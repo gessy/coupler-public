@@ -21,7 +21,8 @@ class MessageListItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     void update(Message message) {
-        this.message.setText(message.getMessage());
+        String text = context.getString(R.string.message_list_item, message.getUserFullName(), message.getMessage());
+        this.message.setText(text);
     }
 
 }

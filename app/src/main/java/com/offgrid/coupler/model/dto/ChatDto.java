@@ -64,5 +64,4 @@ public class ChatDto {
             return bundle;
         }
     }
-
 }

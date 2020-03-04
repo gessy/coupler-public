@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.ui.message.MessageActivity;
 

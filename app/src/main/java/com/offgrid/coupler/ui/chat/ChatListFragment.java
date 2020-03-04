@@ -79,6 +79,4 @@ public class ChatListFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }
