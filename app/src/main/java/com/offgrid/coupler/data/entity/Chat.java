@@ -13,7 +13,7 @@ public class Chat {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private Integer id;
+    private Long id;
 
     @NonNull
     @ColumnInfo(name = "title")
@@ -51,11 +51,11 @@ public class Chat {
 
 
     @NonNull
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(@NonNull Integer id) {
+    public void setId(@NonNull Long id) {
         this.id = id;
     }
 

@@ -14,7 +14,7 @@ import com.offgrid.coupler.data.entity.Chat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Chat.class}, version = 2, exportSchema = false)
+@Database(entities = {Chat.class}, version = 3, exportSchema = false)
 public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();
