@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.util.RandomTokenGenerator;
 
 import java.util.List;
@@ -64,12 +65,18 @@ public class ChatListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_chat) {
+        if (item.getItemId() == R.id.action_add_personal_chat) {
             int id = RandomTokenGenerator.getInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
-            chatListViewModel.insert(new Chat(title, message));
+            chatListViewModel.insert(new Chat(title, message, ChatType.PERSONAL.toString()));
+        } else if (item.getItemId() == R.id.action_add_group_chat) {
+            int id = RandomTokenGenerator.getInt();
+            String title = "Chat ID " + id;
+            String message = "Last message on Chat ID " + id;
+            chatListViewModel.insert(new Chat(title, message, ChatType.GROUP.toString()));
         }
+
         return super.onOptionsItemSelected(item);
     }
 

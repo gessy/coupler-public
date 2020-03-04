@@ -14,16 +14,14 @@ import java.util.List;
 public class ChatRepository {
 
     private ChatDao chatDao;
-    private LiveData<List<Chat>> chats;
 
     public ChatRepository(Application application) {
         CouplerRoomDatabase db = CouplerRoomDatabase.getDatabase(application);
         chatDao = db.chatDao();
-        chats = chatDao.findAll();
     }
 
-    public LiveData<List<Chat>> getAllChats() {
-        return chats;
+    public LiveData<List<Chat>> getChats() {
+        return chatDao.findAll();
     }
 
     public void insert(final Chat chat) {

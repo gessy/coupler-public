@@ -16,6 +16,9 @@ public interface ChatDao {
     @Query("SELECT * from T_Chat")
     LiveData<List<Chat>> findAll();
 
+    @Query("SELECT * from T_Chat where type = :type")
+    LiveData<List<Chat>> findAllByType(String type);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Chat chat);
 

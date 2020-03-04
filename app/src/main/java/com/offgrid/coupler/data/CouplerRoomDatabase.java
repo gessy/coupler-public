@@ -47,8 +47,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    ChatDao dao = INSTANCE.chatDao();
-                    dao.deleteAll();
+//                    ChatDao dao = INSTANCE.chatDao();
+//                    dao.deleteAll();
                 }
             });
         }

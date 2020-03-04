@@ -12,5 +12,10 @@
     <string name="menu_info">Info</string>
     <string name="menu_chat_list">Chat List</string>
     <string name="menu_map">Map</string>
-    <string name="menu_chat_item">Add chat</string>
+    <string name="menu_personal_chat_item">Add personal chat</string>
+    <string name="menu_group_chat_item">Add group chat</string>
+
+
+    <string name="chat_list_title">%1$s %2$s</string>
+
 </resources>
