@@ -44,7 +44,7 @@ public class ChatListFragment extends Fragment {
         chatListViewModel.getAllChats().observe(getActivity(), new Observer<List<Chat>>() {
             @Override
             public void onChanged(@Nullable final List<Chat> chats) {
-                adapter.setWords(chats);
+                adapter.setChats(chats);
             }
         });
 

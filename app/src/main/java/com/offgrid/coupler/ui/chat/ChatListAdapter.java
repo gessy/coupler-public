@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.model.dto.ChatDto;
+import com.offgrid.coupler.ui.message.MessageActivity;
 
 import java.util.List;
 
@@ -37,16 +39,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
     public void onBindViewHolder(ChatListItemViewHolder holder, int position) {
         final Chat current = chats != null ? chats.get(position) : Chat.getEmpty();
         holder.update(current);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MockActivity.class);
+                Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtras(
-                        new Info.BundleBuilder()
-                                .withTitle(current.getTitle() + " (" + current.getType() + ")")
-                                .withText(current.getLastMessage())
-                                .withAction(Info.Action.chat_room)
+                        new ChatDto
+                                .BundleBuilder()
+                                .withId(current.getId())
+                                .withTitle(current.getTitle())
+                                .withType(ChatType.valueOf(current.getType()))
                                 .build()
                 );
                 context.startActivity(intent);
@@ -54,15 +56,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
         });
     }
 
-    void setWords(List<Chat> chats) {
+    void setChats(List<Chat> chats) {
         this.chats = chats;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (chats != null)
-            return chats.size();
-        else return 0;
+        return chats != null ? chats.size() : 0;
     }
 }

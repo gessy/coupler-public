@@ -33,6 +33,11 @@ public class Message {
     public Message() {
     }
 
+
+    public static Message getEmpty() {
+        return new Message(0L, "Empty Message");
+    }
+
     @Ignore
     public Message(@NonNull Long chatId, @NonNull String message) {
         this.chatId = chatId;
