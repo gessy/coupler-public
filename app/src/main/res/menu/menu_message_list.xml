@@ -10,6 +10,9 @@
         <item
             android:id="@+id/action_add_talker_message"
             android:title="@string/menu_talker_message_item" />
+        <item
+            android:id="@+id/action_clear_message_history"
+            android:title="@string/menu_clear_message_history" />
     </group>
 
 </menu>

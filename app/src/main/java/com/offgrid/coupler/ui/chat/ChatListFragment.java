@@ -23,9 +23,10 @@ import com.offgrid.coupler.util.RandomTokenGenerator;
 
 import java.util.List;
 
-public class ChatListFragment extends Fragment {
+public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
 
     private ChatListViewModel chatListViewModel;
+    private ChatListAdapter chatListAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,18 +39,14 @@ public class ChatListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
-        final ChatListAdapter adapter = new ChatListAdapter(getActivity());
+        chatListAdapter = new ChatListAdapter(getActivity());
 
         chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
-        chatListViewModel.getAllChats().observe(getActivity(), new Observer<List<Chat>>() {
-            @Override
-            public void onChanged(@Nullable final List<Chat> chats) {
-                adapter.setChats(chats);
-            }
-        });
+        chatListViewModel.loadChats();
+        chatListViewModel.observe(getActivity(), ChatListFragment.this);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(chatListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return root;
@@ -69,14 +66,20 @@ public class ChatListFragment extends Fragment {
             int id = RandomTokenGenerator.getInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
-            chatListViewModel.insert(new Chat(title, message, ChatType.PERSONAL.toString()));
+            chatListViewModel.insertChat(new Chat(title, message, ChatType.PERSONAL.toString()));
         } else if (item.getItemId() == R.id.action_add_group_chat) {
             int id = RandomTokenGenerator.getInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
-            chatListViewModel.insert(new Chat(title, message, ChatType.GROUP.toString()));
+            chatListViewModel.insertChat(new Chat(title, message, ChatType.GROUP.toString()));
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onChanged(@Nullable final List<Chat> chats) {
+        chatListAdapter.setChats(chats);
     }
 }
