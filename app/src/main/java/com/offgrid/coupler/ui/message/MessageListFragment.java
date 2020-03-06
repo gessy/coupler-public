@@ -1,5 +1,6 @@
 package com.offgrid.coupler.ui.message;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,7 +78,7 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
             case R.id.action_add_my_message:
                 messageListViewModel.insertMessage(new Message(
                         chatDto.getId(),
-                        "Message ID " + randId,
+                        "Message ID " + randId + " This is no so long message. ",
                         System.currentTimeMillis(),
                         "Me",
                         true));
@@ -85,7 +86,7 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
             case R.id.action_add_talker_message:
                 messageListViewModel.insertMessage(new Message(
                         chatDto.getId(),
-                        "Message ID " + randId,
+                        "Message ID " + randId + " How are you doing? This is a long message that should probably wrap.",
                         System.currentTimeMillis(),
                         "Talker",
                         false));

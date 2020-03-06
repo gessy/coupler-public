@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.model.ChatType;
+import com.offgrid.coupler.ui.message.holder.IncomeGroupMessageViewHolder;
+import com.offgrid.coupler.ui.message.holder.IncomePersonalMessageViewHolder;
+import com.offgrid.coupler.ui.message.holder.MessageViewHolder;
+import com.offgrid.coupler.ui.message.holder.OutcomeMessageViewHolder;
 
 import java.util.List;
 
@@ -18,7 +22,7 @@ import static com.offgrid.coupler.ui.message.model.MessageConst.OUTCOME_GROUP_ME
 import static com.offgrid.coupler.ui.message.model.MessageConst.INCOME_PERSONAL_MESSAGE;
 import static com.offgrid.coupler.ui.message.model.MessageConst.OUTCOME_PERSONAL_MESSAGE;
 
-public class MessageListAdapter extends RecyclerView.Adapter<MessageListItemViewHolder> {
+public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
     private List<Message> messages;
     private ChatType chatType;
@@ -31,15 +35,31 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListItemView
     }
 
     @Override
-    public MessageListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MessageListItemViewHolder(
-                LayoutInflater
-                        .from(parent.getContext())
-                        .inflate(layoutResId(viewType), parent, false));
+    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case OUTCOME_GROUP_MESSAGE:
+            case OUTCOME_PERSONAL_MESSAGE:
+                return new OutcomeMessageViewHolder(
+                        LayoutInflater
+                                .from(parent.getContext())
+                                .inflate(R.layout.message_outcome_item, parent, false));
+            case INCOME_GROUP_MESSAGE:
+                return new IncomeGroupMessageViewHolder(
+                        LayoutInflater
+                                .from(parent.getContext())
+                                .inflate(R.layout.message_group_income_item, parent, false));
+            case INCOME_PERSONAL_MESSAGE:
+                return new IncomePersonalMessageViewHolder(
+                        LayoutInflater
+                                .from(parent.getContext())
+                                .inflate(R.layout.message_personal_income_item, parent, false));
+        }
+
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(MessageListItemViewHolder holder, int position) {
+    public void onBindViewHolder(MessageViewHolder holder, int position) {
         final Message current = messages != null ? messages.get(position) : Message.getEmpty();
         holder.update(current);
     }
@@ -61,21 +81,4 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListItemView
         }
         return GROUP.equals(chatType) ? INCOME_GROUP_MESSAGE : INCOME_PERSONAL_MESSAGE;
     }
-
-
-    private int layoutResId(int viewType) {
-        switch (viewType) {
-            case OUTCOME_GROUP_MESSAGE:
-            case OUTCOME_PERSONAL_MESSAGE:
-                return R.layout.message_outcome_item;
-            case INCOME_GROUP_MESSAGE:
-                return R.layout.message_group_income_item;
-            case INCOME_PERSONAL_MESSAGE:
-                return R.layout.message_personal_income_item;
-            default:
-                return 0;
-        }
-
-    }
-
 }
