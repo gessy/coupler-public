@@ -17,7 +17,7 @@ class MessageListItemViewHolder extends RecyclerView.ViewHolder {
     MessageListItemViewHolder(View itemView) {
         super(itemView);
         context = itemView.getContext();
-        message = itemView.findViewById(R.id.message_item);
+        message = itemView.findViewById(R.id.message_body);
     }
 
     void update(Message message) {

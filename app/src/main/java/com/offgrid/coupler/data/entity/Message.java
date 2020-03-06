@@ -30,9 +30,13 @@ public class Message {
     @ColumnInfo(name = "user_full_name")
     private String userFullName;
 
+    @NonNull
+    @ColumnInfo(name = "is_mine")
+    private boolean isMine;
+
+
     public Message() {
     }
-
 
     public static Message getEmpty() {
         return new Message(0L, "Empty Message");
@@ -47,13 +51,17 @@ public class Message {
     }
 
     @Ignore
-    public Message(@NonNull Long chatId, @NonNull String message, @NonNull Long date, @NonNull String userFullName) {
+    public Message(@NonNull Long chatId,
+                   @NonNull String message,
+                   @NonNull Long date,
+                   @NonNull String userFullName,
+                   boolean isMine) {
         this.chatId = chatId;
         this.message = message;
         this.date = date;
         this.userFullName = userFullName;
+        this.isMine = isMine;
     }
-
 
     @NonNull
     public Long getId() {
@@ -98,5 +106,13 @@ public class Message {
 
     public void setUserFullName(@NonNull String userFullName) {
         this.userFullName = userFullName;
+    }
+
+    public boolean isMine() {
+        return isMine;
+    }
+
+    public void setMine(boolean mine) {
+        isMine = mine;
     }
 }

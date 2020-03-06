@@ -79,14 +79,16 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
                         chatDto.getId(),
                         "Message ID " + randId,
                         System.currentTimeMillis(),
-                        "Me"));
+                        "Me",
+                        true));
                 return true;
             case R.id.action_add_talker_message:
                 messageListViewModel.insertMessage(new Message(
                         chatDto.getId(),
                         "Message ID " + randId,
                         System.currentTimeMillis(),
-                        "Talker"));
+                        "Talker",
+                        false));
                 return true;
             case R.id.action_clear_message_history:
                 messageListViewModel.deleteChatMessages(chatDto.getId());
