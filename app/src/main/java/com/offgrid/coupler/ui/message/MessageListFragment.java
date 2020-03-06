@@ -48,7 +48,7 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_message_list, container, false);
 
-        messageListAdapter = new MessageListAdapter(getActivity());
+        messageListAdapter = new MessageListAdapter(getActivity(), chatDto.getType());
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_message_list);
         recyclerView.setAdapter(messageListAdapter);
