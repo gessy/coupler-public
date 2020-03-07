@@ -29,10 +29,7 @@ import com.offgrid.coupler.model.dto.ChatDto;
 import java.util.List;
 
 
-public class MessageListFragment extends Fragment
-        implements Observer<List<Message>>,
-        View.OnClickListener,
-        View.OnLayoutChangeListener {
+public class MessageListFragment extends Fragment implements Observer<List<Message>>, View.OnClickListener{
 
     private MessageListViewModel messageListViewModel;
     private MessageListAdapter messageListAdapter;
@@ -68,13 +65,18 @@ public class MessageListFragment extends Fragment
         messageListViewModel.loadChatMessages(chatDto.getId());
         messageListViewModel.observe(getActivity(), MessageListFragment.this);
 
-        editText = root.findViewById(R.id.edit_text);
+        editText = getActivity().findViewById(R.id.edit_text);
 
-        ImageButton imageButton = root.findViewById(R.id.send_message);
+        ImageButton imageButton = getActivity().findViewById(R.id.send_message);
         imageButton.setOnClickListener(MessageListFragment.this);
 
         nestedScrollView = root.findViewById(R.id.nested_scroll_view);
-        container.addOnLayoutChangeListener(MessageListFragment.this);
+        nestedScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                nestedScrollView.fullScroll(nestedScrollView.FOCUS_DOWN);
+            }
+        });
 
         return root;
     }
@@ -125,10 +127,4 @@ public class MessageListFragment extends Fragment
         }
     }
 
-
-    @Override
-    public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-        nestedScrollView.fullScroll(View.FOCUS_DOWN);
-//        editText.requestFocus();
-    }
 }
