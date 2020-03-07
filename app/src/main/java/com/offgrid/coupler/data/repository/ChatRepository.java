@@ -7,30 +7,28 @@ import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.ChatDao;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 
 import java.util.List;
 
 public class ChatRepository {
 
-    private ChatDao chatDao;
-    private LiveData<List<Chat>> chats;
+    private ChatDao dao;
 
     public ChatRepository(Application application) {
         CouplerRoomDatabase db = CouplerRoomDatabase.getDatabase(application);
-        chatDao = db.chatDao();
-        chats = chatDao.findAll();
+        dao = db.chatDao();
     }
 
-    public LiveData<List<Chat>> getAllChats() {
-        return chats;
+    public LiveData<List<Chat>> getChats() {
+        return dao.findAll();
     }
 
     public void insert(final Chat chat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                chatDao.insert(chat);
+                dao.insert(chat);
             }
         });
     }

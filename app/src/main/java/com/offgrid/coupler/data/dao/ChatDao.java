@@ -6,19 +6,19 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
 
 import java.util.List;
 
 @Dao
 public interface ChatDao {
 
-    @Query("SELECT * from T_Chat")
+    @Query("select * from T_Chat")
     LiveData<List<Chat>> findAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Chat chat);
 
-    @Query("DELETE FROM T_Chat")
+    @Query("delete from T_Chat")
     void deleteAll();
 }

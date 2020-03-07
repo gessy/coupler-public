@@ -9,15 +9,18 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.offgrid.coupler.data.dao.ChatDao;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.dao.MessageDao;
+import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.entity.Message;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Chat.class}, version = 1, exportSchema = false)
+@Database(entities = {Chat.class, Message.class}, version = 1, exportSchema = false)
 public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();
+    public abstract MessageDao messageDao();
 
     private static volatile CouplerRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -43,12 +46,14 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    ChatDao dao = INSTANCE.chatDao();
-                    dao.deleteAll();
+//                    ChatDao chatDao = INSTANCE.chatDao();
+//                    chatDao.deleteAll();
+
+//                    MessageDao messageDao = INSTANCE.messageDao();
+//                    messageDao.deleteAll();
                 }
             });
         }

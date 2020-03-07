@@ -9,8 +9,7 @@ public class Info {
         add_group("add_group"),
         new_message("new_message"),
         settings("settings"),
-        info("info"),
-        chat_room("chat_room");
+        info("info");
 
         String stringRep;
 

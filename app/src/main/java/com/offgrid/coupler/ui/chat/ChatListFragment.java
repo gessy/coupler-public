@@ -1,6 +1,5 @@
 package com.offgrid.coupler.ui.chat;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,14 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.domain.Chat;
+import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.util.RandomTokenGenerator;
 
 import java.util.List;
 
-public class ChatListFragment extends Fragment {
+public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
 
     private ChatListViewModel chatListViewModel;
+    private ChatListAdapter chatListAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,22 +37,17 @@ public class ChatListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        Context context = getActivity();
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
-        final ChatListAdapter adapter = new ChatListAdapter(context);
+        chatListAdapter = new ChatListAdapter(getActivity());
 
         chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
-        chatListViewModel.getAllChats().observe(this, new Observer<List<Chat>>() {
-            @Override
-            public void onChanged(@Nullable final List<Chat> chats) {
-                adapter.setWords(chats);
-            }
-        });
+        chatListViewModel.loadChats();
+        chatListViewModel.observe(getActivity(), ChatListFragment.this);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(chatListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return root;
     }
@@ -66,14 +62,24 @@ public class ChatListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_chat) {
-            int id = RandomTokenGenerator.getInt();
+        if (item.getItemId() == R.id.action_add_personal_chat) {
+            int id = RandomTokenGenerator.getRandInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
-            chatListViewModel.insert(new Chat(title, message, 0));
+            chatListViewModel.insertChat(new Chat(title, message, ChatType.PERSONAL.toString()));
+        } else if (item.getItemId() == R.id.action_add_group_chat) {
+            int id = RandomTokenGenerator.getRandInt();
+            String title = "Chat ID " + id;
+            String message = "Last message on Chat ID " + id;
+            chatListViewModel.insertChat(new Chat(title, message, ChatType.GROUP.toString()));
         }
+
         return super.onOptionsItemSelected(item);
     }
 
 
+    @Override
+    public void onChanged(@Nullable final List<Chat> chats) {
+        chatListAdapter.setChats(chats);
+    }
 }
