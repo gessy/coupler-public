@@ -71,12 +71,6 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
         imageButton.setOnClickListener(MessageListFragment.this);
 
         nestedScrollView = root.findViewById(R.id.nested_scroll_view);
-        nestedScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                nestedScrollView.fullScroll(nestedScrollView.FOCUS_DOWN);
-            }
-        });
 
         return root;
     }
