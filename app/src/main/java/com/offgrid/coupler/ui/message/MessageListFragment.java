@@ -1,6 +1,5 @@
 package com.offgrid.coupler.ui.message;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +7,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,16 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.model.dto.ChatDto;
-import com.offgrid.coupler.util.RandomTokenGenerator;
 
 import java.util.List;
 
-public class MessageListFragment extends Fragment implements Observer<List<Message>> {
+
+public class MessageListFragment extends Fragment implements Observer<List<Message>>, View.OnClickListener {
 
     private MessageListViewModel messageListViewModel;
     private MessageListAdapter messageListAdapter;
     private ChatDto chatDto;
-
+    private EditText editText;
 
     MessageListFragment(ChatDto chatDto) {
         super();
@@ -59,6 +60,11 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
         messageListViewModel.loadChatMessages(chatDto.getId());
         messageListViewModel.observe(getActivity(), MessageListFragment.this);
 
+        editText = root.findViewById(R.id.edit_text);
+
+        ImageButton imageButton = root.findViewById(R.id.send_message);
+        imageButton.setOnClickListener(MessageListFragment.this);
+
         return root;
     }
 
@@ -72,24 +78,9 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int randId = RandomTokenGenerator.getInt();
-
         switch (item.getItemId()) {
-            case R.id.action_add_my_message:
-                messageListViewModel.insertMessage(new Message(
-                        chatDto.getId(),
-                        "Message ID " + randId + " This is no so long message. ",
-                        System.currentTimeMillis(),
-                        "Me",
-                        true));
-                return true;
             case R.id.action_add_talker_message:
-                messageListViewModel.insertMessage(new Message(
-                        chatDto.getId(),
-                        "Message ID " + randId + " How are you doing? This is a long message that should probably wrap.",
-                        System.currentTimeMillis(),
-                        "Talker",
-                        false));
+                messageListViewModel.insertMessage(Message.talkerMessage(chatDto.getId()));
                 return true;
             case R.id.action_clear_message_history:
                 messageListViewModel.deleteChatMessages(chatDto.getId());
@@ -104,4 +95,23 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
     public void onChanged(@Nullable final List<Message> messages) {
         messageListAdapter.setMessages(messages);
     }
+
+
+    private void sendMessage() {
+        String message = editText.getText().toString();
+        if (message.length() > 0) {
+            messageListViewModel.insertMessage(Message.myMessage(chatDto.getId(), message));
+            editText.getText().clear();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.send_message) {
+            sendMessage();
+        }
+    }
+
+
+
 }

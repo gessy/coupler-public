@@ -63,12 +63,12 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add_personal_chat) {
-            int id = RandomTokenGenerator.getInt();
+            int id = RandomTokenGenerator.getRandInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
             chatListViewModel.insertChat(new Chat(title, message, ChatType.PERSONAL.toString()));
         } else if (item.getItemId() == R.id.action_add_group_chat) {
-            int id = RandomTokenGenerator.getInt();
+            int id = RandomTokenGenerator.getRandInt();
             String title = "Chat ID " + id;
             String message = "Last message on Chat ID " + id;
             chatListViewModel.insertChat(new Chat(title, message, ChatType.GROUP.toString()));

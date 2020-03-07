@@ -6,6 +6,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import static com.offgrid.coupler.util.RandomTokenGenerator.getRandInt;
+import static java.lang.System.currentTimeMillis;
+
 
 @Entity(tableName = "T_Message")
 public class Message {
@@ -61,6 +64,16 @@ public class Message {
         this.date = date;
         this.userFullName = userFullName;
         this.isMine = isMine;
+    }
+
+    public static Message myMessage(@NonNull Long chatId, @NonNull String message) {
+        return new Message(chatId, message, currentTimeMillis(), "Me", true);
+    }
+
+
+    public static Message talkerMessage(@NonNull Long chatId) {
+        String message = "Message ID " + getRandInt() + " How are you doing? This is a long message that should probably wrap.";
+        return new Message(chatId, message, currentTimeMillis(), "Talker", false);
     }
 
     @NonNull

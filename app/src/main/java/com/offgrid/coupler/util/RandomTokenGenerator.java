@@ -9,7 +9,7 @@ public class RandomTokenGenerator {
         return UUID.randomUUID().toString();
     }
 
-    public static int getInt() {
+    public static int getRandInt() {
         return new Random().nextInt((100 - 10) + 1) + 10;
     }
 }
