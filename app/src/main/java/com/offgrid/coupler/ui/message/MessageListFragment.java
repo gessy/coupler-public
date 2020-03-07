@@ -1,5 +1,6 @@
 package com.offgrid.coupler.ui.message;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,11 +8,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,10 +29,14 @@ import com.offgrid.coupler.model.dto.ChatDto;
 import java.util.List;
 
 
-public class MessageListFragment extends Fragment implements Observer<List<Message>>, View.OnClickListener {
+public class MessageListFragment extends Fragment
+        implements Observer<List<Message>>,
+        View.OnClickListener,
+        View.OnLayoutChangeListener {
 
     private MessageListViewModel messageListViewModel;
     private MessageListAdapter messageListAdapter;
+    private NestedScrollView nestedScrollView;
     private ChatDto chatDto;
     private EditText editText;
 
@@ -64,6 +72,9 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
 
         ImageButton imageButton = root.findViewById(R.id.send_message);
         imageButton.setOnClickListener(MessageListFragment.this);
+
+        nestedScrollView = root.findViewById(R.id.nested_scroll_view);
+        container.addOnLayoutChangeListener(MessageListFragment.this);
 
         return root;
     }
@@ -102,6 +113,8 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
         if (message.length() > 0) {
             messageListViewModel.insertMessage(Message.myMessage(chatDto.getId(), message));
             editText.getText().clear();
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 
@@ -113,5 +126,9 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
     }
 
 
-
+    @Override
+    public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+        nestedScrollView.fullScroll(View.FOCUS_DOWN);
+//        editText.requestFocus();
+    }
 }
