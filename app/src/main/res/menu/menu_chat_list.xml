@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_map"
+        android:orderInCategory="@integer/menu_order_map"
+        android:icon="@drawable/ic_map_white_24dp"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_map" />
+
+    <group
+        app:showAsAction="never"
+        android:icon="@drawable/ic_add_white_24dp"
+        android:orderInCategory="85">
+        <item
+            android:id="@+id/action_add_personal_chat"
+            android:title="@string/menu_personal_chat_item" />
+        <item
+            android:id="@+id/action_add_group_chat"
+            android:title="@string/menu_group_chat_item" />
+    </group>
+
+
+
+</menu>
