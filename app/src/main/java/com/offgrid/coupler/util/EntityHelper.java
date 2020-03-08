@@ -16,12 +16,6 @@ public class EntityHelper {
                         .withText("This is new group activity")
                         .withAction(Info.Action.add_group)
                         .build();
-            case R.id.nav_contact:
-                return  new Info.BundleBuilder()
-                        .withTitle("Add Contact")
-                        .withText("This is new contact activity")
-                        .withAction(Info.Action.add_contact)
-                        .build();
             case R.id.nav_settings:
                 return  new Info.BundleBuilder()
                         .withTitle("Settings")

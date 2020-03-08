@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.ui.FragmentController;
 import com.offgrid.coupler.ui.chat.ChatListFragment;
+import com.offgrid.coupler.ui.contact.NewContactActivity;
 import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_chat_list || id == R.id.nav_map)  {
+        if (id == R.id.nav_chat_list || id == R.id.nav_map) {
             fragmentController.displayScreen(id);
             return true;
         }
@@ -107,9 +108,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Intent intent = new Intent(MainActivity.this, MockActivity.class);
-        intent.putExtras(EntityHelper.createBundle(item.getItemId()));
-        startActivityForResult(intent, 1);
+
+        if (R.id.nav_contact == item.getItemId()) {
+            Intent intent = new Intent(MainActivity.this, NewContactActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Add Contact")
+                            .withText("This is new contact activity")
+                            .withAction(Info.Action.add_contact)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        } else {
+            Intent intent = new Intent(MainActivity.this, MockActivity.class);
+            intent.putExtras(EntityHelper.createBundle(item.getItemId()));
+            startActivityForResult(intent, 1);
+        }
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
