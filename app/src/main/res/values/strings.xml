@@ -20,4 +20,10 @@
 
     <string name="chat_list_title">%1$s %2$s</string>
 
+    <string name="hint_first_name">First Name (required)</string>
+    <string name="hint_last_name">Last Name (optional)</string>
+
+    <string name="gid_label">GID</string>
+    <string name="gid_pattern">___ ___ ___ ___</string>
+
 </resources>
