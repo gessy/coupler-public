@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,9 +13,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.ui.contact.listener.GidAutoFormatTextWatcher;
 
 
 public class NewContactActivity extends AppCompatActivity {
+
+    private EditText editText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class NewContactActivity extends AppCompatActivity {
             }
         });
 
+        editText = findViewById(R.id.gid_edit_text);
+        editText.addTextChangedListener(new GidAutoFormatTextWatcher(editText));
     }
 
 
