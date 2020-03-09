@@ -4,10 +4,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.offgrid.coupler.ui.contact.Updatable;
+
+import static com.offgrid.coupler.ui.contact.status.FieldState.CONTACT_GID;
+
 public class GidAutoFormatTextWatcher implements TextWatcher {
     private static final int BUNCH_SIZE = 3;
     private static final char BUNCH_SEPARATOR = '-';
     private static final String DIGIT_REGEX = "[^\\d.]";
+    private static final String GID_PATTERN = "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$";
 
     private boolean inEdit = false;
 
@@ -15,19 +20,15 @@ public class GidAutoFormatTextWatcher implements TextWatcher {
     private final char bunchSeparator;
     private EditText editText;
 
+    private Updatable updatable;
 
-    public GidAutoFormatTextWatcher(EditText editText, int bunchSize, char bunchSeparator) {
-        this.editText = editText;
-        this.bunchSize = bunchSize;
-        this.bunchSeparator = bunchSeparator;
-    }
 
-    public GidAutoFormatTextWatcher(EditText editText) {
+    public GidAutoFormatTextWatcher(EditText editText, Updatable updatable) {
         this.editText = editText;
         this.bunchSize = BUNCH_SIZE;
         this.bunchSeparator = BUNCH_SEPARATOR;
+        this.updatable = updatable;
     }
-
 
 
     @Override
@@ -58,6 +59,9 @@ public class GidAutoFormatTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-
+        int state = editable.toString().matches(GID_PATTERN)
+                ? CONTACT_GID
+                : CONTACT_GID * (-1);
+        updatable.updateState(state);
     }
 }

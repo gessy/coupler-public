@@ -13,12 +13,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.ui.contact.listener.FirstNameTextWatcher;
 import com.offgrid.coupler.ui.contact.listener.GidAutoFormatTextWatcher;
+import com.offgrid.coupler.ui.contact.status.InputFieldsStatusHolder;
 
 
-public class NewContactActivity extends AppCompatActivity {
+public class NewContactActivity extends AppCompatActivity implements Updatable {
 
-    private EditText editText;
+    private InputFieldsStatusHolder statusHolder = new InputFieldsStatusHolder();
+    private MenuItem menuItemDone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,14 +45,25 @@ public class NewContactActivity extends AppCompatActivity {
             }
         });
 
-        editText = findViewById(R.id.gid_edit_text);
-        editText.addTextChangedListener(new GidAutoFormatTextWatcher(editText));
+        EditText gidInput = findViewById(R.id.gid_edit_text);
+        gidInput.addTextChangedListener(new GidAutoFormatTextWatcher(gidInput, NewContactActivity.this));
+
+        EditText firstNameInput = findViewById(R.id.user_first_name);
+        firstNameInput.addTextChangedListener(new FirstNameTextWatcher(firstNameInput, NewContactActivity.this));
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_contact, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menuItemDone = menu.findItem(R.id.nav_done);
+        activateMenuItem(statusHolder.makeActive());
         return true;
     }
 
@@ -64,4 +78,23 @@ public class NewContactActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    public void updateState(int state) {
+        statusHolder.updateState(state);
+        activateMenuItem(statusHolder.makeActive());
+    }
+
+
+    private void activateMenuItem(boolean active) {
+        if (active) {
+            menuItemDone.setEnabled(true);
+            menuItemDone.getIcon().setAlpha(255);
+        } else {
+            menuItemDone.setEnabled(false);
+            menuItemDone.getIcon().setAlpha(130);
+        }
+    }
+
 }
