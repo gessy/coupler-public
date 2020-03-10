@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
@@ -22,6 +23,7 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
 
     private InputFieldsStatusHolder statusHolder = new InputFieldsStatusHolder();
     private MenuItem menuItemDone;
+    private ContactViewModel contactViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,9 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
                 finish();
             }
         });
+
+
+        contactViewModel = new ViewModelProvider(NewContactActivity.this).get(ContactViewModel.class);
 
         EditText gidInput = findViewById(R.id.gid_edit_text);
         gidInput.addTextChangedListener(new GidAutoFormatTextWatcher(gidInput, NewContactActivity.this));
