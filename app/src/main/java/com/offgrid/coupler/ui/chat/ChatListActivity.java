@@ -18,6 +18,7 @@ import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.ui.FragmentController;
+import com.offgrid.coupler.ui.contact.ContactListActivity;
 import com.offgrid.coupler.ui.contact.NewContactActivity;
 import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
@@ -109,27 +110,39 @@ public class ChatListActivity extends AppCompatActivity implements NavigationVie
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Intent intent;
 
-        if (R.id.nav_contact == item.getItemId()) {
-            Intent intent = new Intent(ChatListActivity.this, NewContactActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle("Add Contact")
-                            .withText("This is new contact activity")
-                            .withAction(Info.Action.add_contact)
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else {
-            Intent intent = new Intent(ChatListActivity.this, MockActivity.class);
-            intent.putExtras(EntityHelper.createBundle(item.getItemId()));
-            startActivityForResult(intent, 1);
+        switch (item.getItemId()) {
+            case R.id.nav_add_contact:
+                intent = new Intent(ChatListActivity.this, NewContactActivity.class);
+                intent.putExtras(
+                        new Info.BundleBuilder()
+                                .withTitle("Add Contact")
+                                .withText("This is new contact activity")
+                                .withAction(Info.Action.add_contact)
+                                .build()
+                );
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.nav_contact_list:
+                intent = new Intent(ChatListActivity.this, ContactListActivity.class);
+                intent.putExtras(
+                        new Info.BundleBuilder()
+                                .withTitle("Contacts")
+                                .withText("This is Contact list activity")
+                                .withAction(Info.Action.contact_list)
+                                .build()
+                );
+                startActivityForResult(intent, 1);
+                break;
+            default:
+                intent = new Intent(ChatListActivity.this, MockActivity.class);
+                intent.putExtras(EntityHelper.createBundle(item.getItemId()));
+                startActivityForResult(intent, 1);
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 }
