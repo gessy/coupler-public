@@ -1,0 +1,133 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/user_avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:elevation="12dp"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9"
+        app:cardCornerRadius="24dp">
+
+        <ImageView
+            android:id="@+id/chat_list_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/hugh_laurie" />
+    </androidx.cardview.widget.CardView>
+
+
+    <EditText
+        android:id="@+id/user_first_name"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:hint="@string/hint_first_name"
+        android:textColorHint="@color/light_grey"
+        android:background="@android:color/transparent"
+        android:inputType="text"
+        android:textSize="16sp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:text=""
+        android:importantForAutofill="no" />
+
+    <View
+        android:id="@+id/user_split_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/user_first_name"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:background="@color/colorPrimary" />
+
+
+    <EditText
+        android:id="@+id/user_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:layout_below="@+id/user_split_line"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/hint_last_name"
+        android:textColorHint="@color/light_grey"
+        android:background="@android:color/transparent"
+        android:inputType="text"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="16sp"
+        android:text=""
+        android:importantForAutofill="no" />
+
+    <View
+        android:id="@+id/end_of_user_definition_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/user_last_name"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:background="@color/lighter_grey" />
+
+
+    <LinearLayout
+        android:id="@+id/gid_layout"
+        android:layout_below="@+id/end_of_user_definition_line"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gid_text_label"
+            android:text="@string/gid_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"/>
+
+        <EditText
+            android:id="@+id/gid_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:inputType="phone"
+            android:layout_marginStart="18dp"
+            android:background="@android:color/transparent"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:maxLength="15"
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/gid_pattern"
+        android:text="@string/gid_pattern"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/end_of_user_definition_line"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:background="@android:color/transparent"
+        android:textColor="@color/medium_grey"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="60dp"/>
+
+</RelativeLayout>
