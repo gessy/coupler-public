@@ -15,7 +15,6 @@ import com.offgrid.coupler.data.repository.UserRepository;
 public class ContactViewModel extends AndroidViewModel {
 
     private UserRepository userRepository;
-
     private LiveData<User> liveUser;
 
     public ContactViewModel(Application application) {
@@ -46,4 +45,6 @@ public class ContactViewModel extends AndroidViewModel {
     void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super User> observer) {
         liveUser.observe(owner, observer);
     }
+
+
 }
