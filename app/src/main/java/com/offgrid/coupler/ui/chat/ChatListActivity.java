@@ -1,4 +1,4 @@
-package com.offgrid.coupler;
+package com.offgrid.coupler.ui.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,22 +14,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.offgrid.coupler.MockActivity;
+import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.ui.FragmentController;
-import com.offgrid.coupler.ui.chat.ChatListFragment;
 import com.offgrid.coupler.ui.contact.NewContactActivity;
 import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ChatListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentController fragmentController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chat_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(MainActivity.this);
+        navigationView.setNavigationItemSelectedListener(ChatListActivity.this);
 
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MockActivity.class);
+                Intent intent = new Intent(ChatListActivity.this, MockActivity.class);
                 intent.putExtras(
                         new Info.BundleBuilder()
                                 .withTitle("New Message")
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
 
         if (R.id.nav_contact == item.getItemId()) {
-            Intent intent = new Intent(MainActivity.this, NewContactActivity.class);
+            Intent intent = new Intent(ChatListActivity.this, NewContactActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
                             .withTitle("Add Contact")
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             );
             startActivityForResult(intent, 1);
         } else {
-            Intent intent = new Intent(MainActivity.this, MockActivity.class);
+            Intent intent = new Intent(ChatListActivity.this, MockActivity.class);
             intent.putExtras(EntityHelper.createBundle(item.getItemId()));
             startActivityForResult(intent, 1);
         }
