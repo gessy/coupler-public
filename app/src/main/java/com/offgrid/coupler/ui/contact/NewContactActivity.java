@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.ui.contact.listener.FirstNameTextWatcher;
 import com.offgrid.coupler.ui.contact.listener.GidAutoFormatTextWatcher;
@@ -24,6 +25,10 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
     private InputFieldsStatusHolder statusHolder = new InputFieldsStatusHolder();
     private MenuItem menuItemDone;
     private ContactViewModel contactViewModel;
+
+    private EditText gidInput;
+    private EditText fnInput;
+    private EditText lnInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +55,13 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
 
         contactViewModel = new ViewModelProvider(NewContactActivity.this).get(ContactViewModel.class);
 
-        EditText gidInput = findViewById(R.id.gid_edit_text);
+        gidInput = findViewById(R.id.gid_edit_text);
         gidInput.addTextChangedListener(new GidAutoFormatTextWatcher(gidInput, NewContactActivity.this));
 
-        EditText firstNameInput = findViewById(R.id.user_first_name);
-        firstNameInput.addTextChangedListener(new FirstNameTextWatcher(firstNameInput, NewContactActivity.this));
+        fnInput = findViewById(R.id.user_first_name);
+        fnInput.addTextChangedListener(new FirstNameTextWatcher(fnInput, NewContactActivity.this));
+
+        lnInput = findViewById(R.id.user_last_name);
     }
 
 
@@ -76,6 +83,14 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.nav_done) {
+            contactViewModel.insertUser(
+                    new User(
+                            fnInput.getText().toString(),
+                            lnInput.getText().toString(),
+                            gidInput.getText().toString()
+                    )
+            );
+
             setResult(RESULT_OK, new Intent());
             finish();
             return true;
@@ -101,5 +116,4 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
             menuItemDone.getIcon().setAlpha(130);
         }
     }
-
 }
