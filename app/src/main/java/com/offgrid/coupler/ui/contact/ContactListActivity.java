@@ -19,7 +19,7 @@ import com.offgrid.coupler.model.Info;
 import java.util.List;
 
 
-public class ContactListActivity extends AppCompatActivity implements Observer<List<User>> {
+public class ContactListActivity extends AppCompatActivity implements Observer<List<User>>, View.OnClickListener {
 
     private ContactListAdapter contactListAdapter;
     private ContactListViewModel contactListViewModel;
@@ -46,6 +46,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
             }
         });
 
+        findViewById(R.id.action_new_contact).setOnClickListener(this);
 
         contactListAdapter = new ContactListAdapter(this);
 
@@ -62,5 +63,21 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
     @Override
     public void onChanged(List<User> users) {
         contactListAdapter.setUsers(users);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.action_new_contact) {
+            Intent intent = new Intent(ContactListActivity.this, NewContactActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Add Contact")
+                            .withText("This is new contact activity")
+                            .withAction(Info.Action.add_contact)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        }
     }
 }

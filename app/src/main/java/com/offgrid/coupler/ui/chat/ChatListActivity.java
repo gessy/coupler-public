@@ -113,17 +113,6 @@ public class ChatListActivity extends AppCompatActivity implements NavigationVie
         Intent intent;
 
         switch (item.getItemId()) {
-            case R.id.nav_add_contact:
-                intent = new Intent(ChatListActivity.this, NewContactActivity.class);
-                intent.putExtras(
-                        new Info.BundleBuilder()
-                                .withTitle("Add Contact")
-                                .withText("This is new contact activity")
-                                .withAction(Info.Action.add_contact)
-                                .build()
-                );
-                startActivityForResult(intent, 1);
-                break;
             case R.id.nav_contact_list:
                 intent = new Intent(ChatListActivity.this, ContactListActivity.class);
                 intent.putExtras(
