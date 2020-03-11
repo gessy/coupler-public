@@ -7,12 +7,22 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
 
+import java.util.List;
 
-public class ContactListActivity extends AppCompatActivity {
+
+public class ContactListActivity extends AppCompatActivity implements Observer<List<User>> {
+
+    private ContactListAdapter contactListAdapter;
+    private ContactListViewModel contactListViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,5 +45,22 @@ public class ContactListActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        contactListAdapter = new ContactListAdapter(this);
+
+        contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
+        contactListViewModel.loadUsers();
+        contactListViewModel.observe(this, ContactListActivity.this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
+        recyclerView.setAdapter(contactListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+
+    @Override
+    public void onChanged(List<User> users) {
+        contactListAdapter.setUsers(users);
     }
 }

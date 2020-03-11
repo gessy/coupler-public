@@ -30,6 +30,10 @@ public class User {
     public User() {
     }
 
+    public static User getEmpty() {
+        return new User("No", "Name", "000-000-000-000");
+    }
+
     @Ignore
     public User(@NonNull String firstName, @NonNull String lastName, @NonNull String gid) {
         this.firstName = firstName;
