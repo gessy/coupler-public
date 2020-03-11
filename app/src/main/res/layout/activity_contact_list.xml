@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:alpha="0.7"
-                android:background="@drawable/ic_contact_24dp"/>
+                android:background="@drawable/ic_contact_add_24dp"/>
 
             <TextView
                 android:id="@+id/new_contact_label"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:ems="10"
-                android:layout_marginStart="27dp"
+                android:layout_marginStart="25dp"
                 android:textSize="15sp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="@string/new_contact_label" />

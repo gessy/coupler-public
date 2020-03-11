@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.chat;
+package com.offgrid.coupler.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,21 +17,20 @@ import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.ui.FragmentController;
+import com.offgrid.coupler.ui.chat.ChatListFragment;
 import com.offgrid.coupler.ui.contact.ContactListActivity;
-import com.offgrid.coupler.ui.contact.NewContactActivity;
 import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
 
 
-public class ChatListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentController fragmentController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_list);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,7 +42,7 @@ public class ChatListActivity extends AppCompatActivity implements NavigationVie
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(ChatListActivity.this);
+        navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
@@ -52,7 +51,7 @@ public class ChatListActivity extends AppCompatActivity implements NavigationVie
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatListActivity.this, MockActivity.class);
+                Intent intent = new Intent(MainActivity.this, MockActivity.class);
                 intent.putExtras(
                         new Info.BundleBuilder()
                                 .withTitle("New Message")
@@ -110,24 +109,20 @@ public class ChatListActivity extends AppCompatActivity implements NavigationVie
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Intent intent;
-
-        switch (item.getItemId()) {
-            case R.id.nav_contact_list:
-                intent = new Intent(ChatListActivity.this, ContactListActivity.class);
-                intent.putExtras(
-                        new Info.BundleBuilder()
-                                .withTitle("Contacts")
-                                .withText("This is Contact list activity")
-                                .withAction(Info.Action.contact_list)
-                                .build()
-                );
-                startActivityForResult(intent, 1);
-                break;
-            default:
-                intent = new Intent(ChatListActivity.this, MockActivity.class);
-                intent.putExtras(EntityHelper.createBundle(item.getItemId()));
-                startActivityForResult(intent, 1);
+        if (item.getItemId() == R.id.nav_contact_list) {
+            Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Contacts")
+                            .withText("This is Contact list activity")
+                            .withAction(Info.Action.contact_list)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        } else {
+            Intent intent = new Intent(MainActivity.this, MockActivity.class);
+            intent.putExtras(EntityHelper.createBundle(item.getItemId()));
+            startActivityForResult(intent, 1);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
