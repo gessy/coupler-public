@@ -36,7 +36,7 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_contact);
+        setContentView(R.layout.activity_new_contact);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

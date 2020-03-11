@@ -29,7 +29,7 @@ import com.offgrid.coupler.model.dto.ChatDto;
 import java.util.List;
 
 
-public class MessageListFragment extends Fragment implements Observer<List<Message>>, View.OnClickListener{
+public class MessageListFragment extends Fragment implements Observer<List<Message>>, View.OnClickListener {
 
     private MessageListViewModel messageListViewModel;
     private MessageListAdapter messageListAdapter;

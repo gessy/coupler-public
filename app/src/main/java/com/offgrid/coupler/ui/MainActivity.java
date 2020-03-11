@@ -1,4 +1,4 @@
-package com.offgrid.coupler;
+package com.offgrid.coupler.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +14,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.offgrid.coupler.MockActivity;
+import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.ui.FragmentController;
 import com.offgrid.coupler.ui.chat.ChatListFragment;
-import com.offgrid.coupler.ui.contact.NewContactActivity;
+import com.offgrid.coupler.ui.contact.ContactListActivity;
 import com.offgrid.coupler.ui.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
 
@@ -108,14 +109,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
-        if (R.id.nav_contact == item.getItemId()) {
-            Intent intent = new Intent(MainActivity.this, NewContactActivity.class);
+        if (item.getItemId() == R.id.nav_contact_list) {
+            Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
-                            .withTitle("Add Contact")
-                            .withText("This is new contact activity")
-                            .withAction(Info.Action.add_contact)
+                            .withTitle("Contacts")
+                            .withText("This is Contact list activity")
+                            .withAction(Info.Action.contact_list)
                             .build()
             );
             startActivityForResult(intent, 1);
@@ -125,10 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivityForResult(intent, 1);
         }
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 }
