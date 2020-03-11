@@ -31,6 +31,9 @@
         <activity
             android:name=".ui.contact.ContactListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.contact.ContactInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
