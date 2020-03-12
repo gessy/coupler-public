@@ -26,6 +26,14 @@ public class User {
     @ColumnInfo(name = "gid")
     private String gid;
 
+    @NonNull
+    @ColumnInfo(name = "allow_notify")
+    private boolean allowNotify;
+
+    @NonNull
+    @ColumnInfo(name = "last_seen")
+    private Long lastSeen;
+
 
     public User() {
     }
@@ -39,8 +47,9 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gid = gid;
+        this.allowNotify = true;
+        this.lastSeen = System.currentTimeMillis();
     }
-
 
     @NonNull
     public Long getId() {
@@ -76,5 +85,22 @@ public class User {
 
     public void setGid(@NonNull String gid) {
         this.gid = gid;
+    }
+
+    public boolean isAllowNotify() {
+        return allowNotify;
+    }
+
+    public void setAllowNotify(boolean allowNotify) {
+        this.allowNotify = allowNotify;
+    }
+
+    @NonNull
+    public Long getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(@NonNull Long lastSeen) {
+        this.lastSeen = lastSeen;
     }
 }

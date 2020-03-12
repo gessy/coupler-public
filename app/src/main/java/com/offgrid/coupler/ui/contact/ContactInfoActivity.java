@@ -10,13 +10,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.dto.UserDto;
 
 
-public class ContactInfoActivity extends AppCompatActivity {
+public class ContactInfoActivity extends AppCompatActivity implements Observer<User> {
 
     private ContactInfoViewModel contactInfoViewModel;
     private UserDto userDto;
@@ -43,12 +45,9 @@ public class ContactInfoActivity extends AppCompatActivity {
             }
         });
 
-        final TextView textView = findViewById(R.id.user_gid);
-        textView.setText(userDto.getGid());
-
         contactInfoViewModel = new ViewModelProvider(this).get(ContactInfoViewModel.class);
         contactInfoViewModel.loadUser(userDto.getGid());
-
+        contactInfoViewModel.observe(this, this);
     }
 
 
@@ -62,12 +61,22 @@ public class ContactInfoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_contact) {
-            contactInfoViewModel.delete(userDto.getGid());
+            contactInfoViewModel.delete();
             setResult(RESULT_OK, new Intent());
             finish();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onChanged(User user) {
+        if (user != null) {
+            ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
+            ((TextView) findViewById(R.id.notification_status)).setText(user.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
+            ((TextView) findViewById(R.id.user_full_name)).setText(user.getFirstName() + " " + user.getLastName());
+        }
     }
 }

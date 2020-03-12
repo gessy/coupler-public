@@ -35,17 +35,21 @@ public class ContactInfoViewModel extends AndroidViewModel {
         userRepository.insert(user);
     }
 
-    void delete(long id) {
-        userRepository.delete(id);
+    void delete() {
+        if (liveUser != null && liveUser.getValue() != null) {
+            userRepository.delete(liveUser.getValue().getId());
+        }
     }
 
     void delete(String gid) {
         userRepository.delete(gid);
     }
 
+    void delete(long id) {
+        userRepository.delete(id);
+    }
+
     void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super User> observer) {
         liveUser.observe(owner, observer);
     }
-
-
 }
