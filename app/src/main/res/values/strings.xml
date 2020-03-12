@@ -23,7 +23,7 @@
 
     <string name="gid">234-325-456-243</string>
     <string name="notification_status_on">On</string>
-    <string name="notification_status_off">Of</string>
+    <string name="notification_status_off">Off</string>
 
     <string name="new_contact_label">New Contact</string>
     <string name="contact_list_header">Sorted by last seen time</string>

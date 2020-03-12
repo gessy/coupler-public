@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,16 +21,15 @@ import com.offgrid.coupler.model.dto.UserDto;
 import com.offgrid.coupler.ui.contact.model.ContactViewModel;
 
 
-public class ContactInfoActivity extends AppCompatActivity implements Observer<User> {
+public class ContactInfoActivity extends AppCompatActivity
+        implements Observer<User>, CompoundButton.OnCheckedChangeListener {
 
     private ContactViewModel contactViewModel;
-    private UserDto userDto;
+    private Switch switcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        userDto = UserDto.getInstance(getIntent().getExtras());
 
         setContentView(R.layout.activity_contact_info);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -45,6 +46,12 @@ public class ContactInfoActivity extends AppCompatActivity implements Observer<U
                 finish();
             }
         });
+
+
+        UserDto userDto = UserDto.getInstance(getIntent().getExtras());
+
+        switcher = findViewById(R.id.notification_status_switcher);
+        switcher.setOnCheckedChangeListener(this);
 
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         contactViewModel.load(userDto.getGid());
@@ -93,6 +100,17 @@ public class ContactInfoActivity extends AppCompatActivity implements Observer<U
             ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
             ((TextView) findViewById(R.id.notification_status)).setText(user.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
             ((TextView) findViewById(R.id.user_full_name)).setText(user.getFirstName() + " " + user.getLastName());
+
+            if (switcher.isChecked() != user.isAllowNotify()) {
+                switcher.setChecked(user.isAllowNotify());
+            }
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        User user = contactViewModel.get();
+        user.setAllowNotify(b);
+        contactViewModel.update(user);
     }
 }

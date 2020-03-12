@@ -118,6 +118,29 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/lighter_grey" />
 
+            <View
+                android:id="@+id/split_right_line"
+                android:layout_width="1dp"
+                android:layout_height="28dp"
+                android:layout_below="@+id/contact_info_bottom_line"
+                android:layout_alignEnd="@+id/contact_info_bottom_line"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="62dp"
+                android:background="@color/lighter_grey" />
+
+            <Switch
+                android:id="@+id/notification_status_switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contact_info_bottom_line"
+                android:layout_alignEnd="@+id/contact_info_bottom_line"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="14dp"
+                android:checked="true"
+                android:theme="@style/Theme.AppCompat.Light.Switcher"
+                android:textOff="OFF"
+                android:textOn="ON"/>
+
             <TextView
                 android:id="@+id/notification_label"
                 android:layout_below="@+id/contact_info_bottom_line"
