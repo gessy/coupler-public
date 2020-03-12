@@ -16,11 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.dto.UserDto;
+import com.offgrid.coupler.ui.contact.model.ContactViewModel;
 
 
 public class ContactInfoActivity extends AppCompatActivity implements Observer<User> {
 
-    private ContactInfoViewModel contactInfoViewModel;
+    private ContactViewModel contactViewModel;
     private UserDto userDto;
 
     @Override
@@ -45,9 +46,9 @@ public class ContactInfoActivity extends AppCompatActivity implements Observer<U
             }
         });
 
-        contactInfoViewModel = new ViewModelProvider(this).get(ContactInfoViewModel.class);
-        contactInfoViewModel.loadUser(userDto.getGid());
-        contactInfoViewModel.observe(this, this);
+        contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        contactViewModel.load(userDto.getGid());
+        contactViewModel.observe(this, this);
     }
 
 
@@ -61,9 +62,24 @@ public class ContactInfoActivity extends AppCompatActivity implements Observer<U
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_contact) {
-            contactInfoViewModel.delete();
+            contactViewModel.delete();
             setResult(RESULT_OK, new Intent());
             finish();
+            return true;
+        } else if (item.getItemId() == R.id.action_edit_contact) {
+            Intent intent = new Intent(this, EditContactActivity.class);
+            User user = contactViewModel.get();
+            intent.putExtras(
+                    new UserDto
+                            .BundleBuilder()
+                            .withId(user.getId())
+                            .withFirstName(user.getFirstName())
+                            .withLastName(user.getLastName())
+                            .withGid(user.getGid())
+                            .build()
+            );
+            startActivity(intent);
+
             return true;
         }
 

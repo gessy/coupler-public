@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.ui.contact.model;
 
 import android.app.Application;
 
@@ -24,19 +24,16 @@ public class ContactListViewModel extends AndroidViewModel {
         userRepository = new UserRepository(application);
     }
 
-    void loadUsers() {
+    public void load() {
         liveUsers = userRepository.getUsers();
     }
 
-    List<User> getUsers() {
+    public List<User> get() {
         return liveUsers !=null ? liveUsers.getValue() : new ArrayList<User>();
     }
 
-    void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<User>> observer) {
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<User>> observer) {
         liveUsers.observe(owner, observer);
     }
 
-    void insertChat(User user) {
-        userRepository.insert(user);
-    }
 }

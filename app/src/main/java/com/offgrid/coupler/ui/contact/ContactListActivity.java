@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.ui.contact.model.ContactListViewModel;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
         contactListAdapter = new ContactListAdapter(this);
 
         contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
-        contactListViewModel.loadUsers();
+        contactListViewModel.load();
         contactListViewModel.observe(this, ContactListActivity.this);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
