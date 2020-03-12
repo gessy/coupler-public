@@ -21,6 +21,10 @@ public abstract class AbstractViewModel extends AndroidViewModel {
         userRepository.insert(user);
     }
 
+    public void update(User user) {
+        userRepository.update(user);
+    }
+
     public void delete(String gid) {
         userRepository.delete(gid);
     }

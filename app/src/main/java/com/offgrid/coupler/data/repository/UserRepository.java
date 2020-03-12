@@ -37,6 +37,15 @@ public class UserRepository {
         });
     }
 
+    public void update(final User user) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.update(user);
+            }
+        });
+    }
+
     public void delete(final long id) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override

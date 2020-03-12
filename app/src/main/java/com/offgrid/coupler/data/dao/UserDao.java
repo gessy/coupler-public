@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.User;
 
@@ -21,6 +22,9 @@ public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(User user);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    void update(User user);
 
     @Query("delete from T_User where gid = :gid")
     void deleteByGid(String gid);
