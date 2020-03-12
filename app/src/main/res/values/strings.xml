@@ -17,8 +17,13 @@
     <string name="menu_group_chat_item">Add group chat</string>
     <string name="menu_my_message_item">Add my message</string>
     <string name="menu_talker_message_item">Add talker message</string>
+    <string name="menu_edit_contact">Edit</string>
+    <string name="menu_delete_contact">Delete</string>
     <string name="menu_clear_message_history">Clear history</string>
 
+    <string name="gid">234-325-456-243</string>
+    <string name="notification_status_on">On</string>
+    <string name="notification_status_off">Off</string>
 
     <string name="new_contact_label">New Contact</string>
     <string name="contact_list_header">Sorted by last seen time</string>

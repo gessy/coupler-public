@@ -17,6 +17,7 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.ui.contact.listener.FirstNameTextWatcher;
 import com.offgrid.coupler.ui.contact.listener.GidAutoFormatTextWatcher;
+import com.offgrid.coupler.ui.contact.model.ContactViewModel;
 import com.offgrid.coupler.ui.contact.status.InputFieldsStatusHolder;
 
 
@@ -83,7 +84,7 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.nav_done) {
-            contactViewModel.insertUser(
+            contactViewModel.insert(
                     new User(
                             fnInput.getText().toString(),
                             lnInput.getText().toString(),
