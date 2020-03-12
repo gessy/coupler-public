@@ -84,19 +84,61 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp">
+
             <TextView
-                android:id="@+id/text"
+                android:id="@+id/user_gid"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                android:text="@string/gid"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <TextView
+                android:id="@+id/gid_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="8dp"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:text="fsdfsdfsdfsdfsfsdf"
-                android:textSize="20sp" />
-        </LinearLayout>
+                android:layout_below="@+id/user_gid"
+                android:layout_marginStart="16dp"
+                android:textSize="14sp"
+                android:text="GID"/>
+            <View
+                android:id="@+id/contact_info_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/gid_label"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/lighter_grey" />
+
+            <TextView
+                android:id="@+id/notification_label"
+                android:layout_below="@+id/contact_info_bottom_line"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                android:text="Notifications"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <TextView
+                android:id="@+id/notification_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/notification_label"
+                android:layout_marginStart="16dp"
+                android:textSize="14sp"
+                android:text="on"/>
+
+        </RelativeLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"

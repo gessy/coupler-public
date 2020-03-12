@@ -10,19 +10,22 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.dto.UserDto;
 
 
 public class ContactInfoActivity extends AppCompatActivity {
 
+    private ContactInfoViewModel contactInfoViewModel;
+    private UserDto userDto;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UserDto userDto = UserDto.getInstance(getIntent().getExtras());
+        userDto = UserDto.getInstance(getIntent().getExtras());
 
         setContentView(R.layout.activity_contact_info);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -40,8 +43,12 @@ public class ContactInfoActivity extends AppCompatActivity {
             }
         });
 
-        final TextView textView = findViewById(R.id.text);
-        textView.setText(userDto.getFirstName());
+        final TextView textView = findViewById(R.id.user_gid);
+        textView.setText(userDto.getGid());
+
+        contactInfoViewModel = new ViewModelProvider(this).get(ContactInfoViewModel.class);
+        contactInfoViewModel.loadUser(userDto.getGid());
+
     }
 
 
@@ -54,6 +61,13 @@ public class ContactInfoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_delete_contact) {
+            contactInfoViewModel.delete(userDto.getGid());
+            setResult(RESULT_OK, new Intent());
+            finish();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
