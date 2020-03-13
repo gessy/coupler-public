@@ -1,5 +1,6 @@
 package com.offgrid.coupler.ui.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,16 +18,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ChatListViewModel;
 
 import java.util.List;
 
-public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
+public class ChatListFragment extends Fragment implements Observer<List<Chat>>, View.OnClickListener {
 
     private ChatListViewModel chatListViewModel;
     private ChatListAdapter chatListAdapter;
+
+    private FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +54,9 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);
         recyclerView.setAdapter(chatListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        fab = getActivity().findViewById(R.id.fab_new_message);
+        fab.setOnClickListener(ChatListFragment.this);
 
         return root;
     }
@@ -72,4 +82,32 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
     public void onChanged(@Nullable final List<Chat> chats) {
         chatListAdapter.setChats(chats);
     }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.fab_new_message) {
+            Intent intent = new Intent(getActivity(), MockActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("New Message frag")
+                            .withText("This is new message activity")
+                            .withAction(Info.Action.new_message)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        }
+
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            fab.hide();
+        } else {
+            fab.show();
+        }
+    }
+
 }

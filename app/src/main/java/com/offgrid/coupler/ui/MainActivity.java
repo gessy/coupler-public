@@ -47,21 +47,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MockActivity.class);
-                intent.putExtras(
-                        new Info.BundleBuilder()
-                                .withTitle("New Message")
-                                .withText("This is new message activity")
-                                .withAction(Info.Action.new_message)
-                                .build()
-                );
-                startActivityForResult(intent, 1);
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, MockActivity.class);
+//                intent.putExtras(
+//                        new Info.BundleBuilder()
+//                                .withTitle("New Message")
+//                                .withText("This is new message activity")
+//                                .withAction(Info.Action.new_message)
+//                                .build()
+//                );
+//                startActivityForResult(intent, 1);
+//            }
+//        });
 
     }
 
