@@ -7,6 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.offgrid.coupler.data.model.ChatType;
+import com.offgrid.coupler.util.RandomTokenGenerator;
 
 @Entity(tableName = "T_Chat")
 public class Chat {
@@ -62,6 +63,13 @@ public class Chat {
 
     public static Chat personalChat(@NonNull String title, Long userId) {
         return new Chat(title, "", ChatType.PERSONAL.toString(), userId);
+    }
+
+    public static Chat randGroupChat() {
+        int id = RandomTokenGenerator.getRandInt();
+        String title = "Chat ID " + id;
+        String message = "Last message on Chat ID " + id;
+        return new Chat(title, message, ChatType.GROUP.toString(), null);
     }
 
     @NonNull
