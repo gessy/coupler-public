@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.model.ChatType;
+import com.offgrid.coupler.model.view.ChatListViewModel;
 import com.offgrid.coupler.util.RandomTokenGenerator;
 
 import java.util.List;

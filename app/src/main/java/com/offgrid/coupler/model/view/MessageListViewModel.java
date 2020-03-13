@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.message;
+package com.offgrid.coupler.model.view;
 
 import android.app.Application;
 
@@ -20,6 +20,7 @@ import java.util.List;
 public class MessageListViewModel extends AndroidViewModel {
 
     private MessageRepository messageRepository;
+
     private final MutableLiveData<Long> liveChatId = new MutableLiveData();
     private LiveData<List<Message>> liveMessages;
 
@@ -34,15 +35,15 @@ public class MessageListViewModel extends AndroidViewModel {
         });
     }
 
-    void loadChatMessages(@NonNull Long chatId) {
+    public void loadChatMessages(@NonNull Long chatId) {
         liveChatId.setValue(chatId);
     }
 
-    List<Message> getMessages() {
+    public List<Message> getMessages() {
         return liveMessages != null ? liveMessages.getValue() : new ArrayList<Message>();
     }
 
-    void insert(Message message) {
+    public void insert(Message message) {
         Long chatId = liveChatId.getValue();
         if (chatId != null) {
             message.setChatId(chatId);
@@ -50,14 +51,14 @@ public class MessageListViewModel extends AndroidViewModel {
         }
     }
 
-    void delete() {
+    public void delete() {
         Long chatId = liveChatId.getValue();
         if (chatId != null) {
             messageRepository.deleteChatMessages(chatId);
         }
     }
 
-    void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Message>> observer) {
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Message>> observer) {
         liveMessages.observe(owner, observer);
     }
 }

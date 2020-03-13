@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.ui.contact.model.ContactListViewModel;
+import com.offgrid.coupler.model.view.ContactListViewModel;
 
 import java.util.List;
 

@@ -21,7 +21,7 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
-import com.offgrid.coupler.ui.contact.model.ContactViewModel;
+import com.offgrid.coupler.model.view.ContactViewModel;
 import com.offgrid.coupler.ui.message.MessageActivity;
 
 
@@ -58,7 +58,7 @@ public class ContactInfoActivity extends AppCompatActivity
         switcher.setOnCheckedChangeListener(this);
 
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
-        contactViewModel.load(userDto.getGid());
+        contactViewModel.loadByGid(userDto.getGid());
         contactViewModel.observe(this, this);
 
         FloatingActionButton fab = findViewById(R.id.fb_start_user_chat);

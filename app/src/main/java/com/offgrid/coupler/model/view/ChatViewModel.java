@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.chat;
+package com.offgrid.coupler.model.view;
 
 import android.app.Application;
 
@@ -17,8 +17,8 @@ import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.repository.ChatRepository;
 
 
-import static com.offgrid.coupler.ui.chat.ChatViewModel.Entity.CHAT;
-import static com.offgrid.coupler.ui.chat.ChatViewModel.Entity.USER;
+import static com.offgrid.coupler.model.view.ChatViewModel.Entity.CHAT;
+import static com.offgrid.coupler.model.view.ChatViewModel.Entity.USER;
 
 public class ChatViewModel extends AndroidViewModel {
     public enum Entity {CHAT, USER, GROUP}

@@ -1,6 +1,5 @@
 package com.offgrid.coupler.ui.message;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,7 +25,8 @@ import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
-import com.offgrid.coupler.ui.chat.ChatViewModel;
+import com.offgrid.coupler.model.view.ChatViewModel;
+import com.offgrid.coupler.model.view.MessageListViewModel;
 
 import java.util.List;
 

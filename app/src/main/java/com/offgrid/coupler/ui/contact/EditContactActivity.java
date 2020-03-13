@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.dto.UserDto;
-import com.offgrid.coupler.ui.contact.model.ContactViewModel;
+import com.offgrid.coupler.model.view.ContactViewModel;
 
 
 public class EditContactActivity extends AppCompatActivity implements Observer<User> {
@@ -54,7 +54,7 @@ public class EditContactActivity extends AppCompatActivity implements Observer<U
         UserDto userDto = UserDto.getInstance(getIntent().getExtras());
 
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
-        contactViewModel.load(userDto.getGid());
+        contactViewModel.loadByGid(userDto.getGid());
         contactViewModel.observe(this, this);
     }
 

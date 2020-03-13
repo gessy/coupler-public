@@ -17,7 +17,7 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.ui.contact.listener.FirstNameTextWatcher;
 import com.offgrid.coupler.ui.contact.listener.GidAutoFormatTextWatcher;
-import com.offgrid.coupler.ui.contact.model.ContactViewModel;
+import com.offgrid.coupler.model.view.ContactViewModel;
 import com.offgrid.coupler.ui.contact.status.InputFieldsStatusHolder;
 
 
