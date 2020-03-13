@@ -24,6 +24,10 @@ public class ChatRepository {
         return dao.findAll();
     }
 
+    public LiveData<Chat> getChat(long chatId) {
+        return dao.findById(chatId);
+    }
+
     public void insert(final Chat chat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override

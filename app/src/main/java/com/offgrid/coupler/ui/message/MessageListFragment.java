@@ -87,10 +87,10 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_talker_message:
-                messageListViewModel.insertMessage(Message.talkerMessage(chatDto.getId()));
+                messageListViewModel.insert(Message.talkerMessage());
                 return true;
             case R.id.action_clear_message_history:
-                messageListViewModel.deleteChatMessages(chatDto.getId());
+                messageListViewModel.delete();
                 break;
         }
 
@@ -107,7 +107,7 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
     private void sendMessage() {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            messageListViewModel.insertMessage(Message.myMessage(chatDto.getId(), message));
+            messageListViewModel.insert(Message.myMessage(message));
             editText.getText().clear();
             InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
@@ -121,4 +121,12 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
+
+
+    }
 }
