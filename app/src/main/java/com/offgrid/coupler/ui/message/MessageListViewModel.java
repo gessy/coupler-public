@@ -20,17 +20,12 @@ import java.util.List;
 public class MessageListViewModel extends AndroidViewModel {
 
     private MessageRepository messageRepository;
-
     private final MutableLiveData<Long> liveChatId = new MutableLiveData();
-
-    private boolean newChat;
-
     private LiveData<List<Message>> liveMessages;
 
     public MessageListViewModel(Application application) {
         super(application);
         messageRepository = new MessageRepository(application);
-
         liveMessages = Transformations.switchMap(liveChatId, new Function<Long, LiveData<List<Message>>>() {
             @Override
             public LiveData<List<Message>> apply(Long chatId) {
@@ -39,7 +34,6 @@ public class MessageListViewModel extends AndroidViewModel {
         });
     }
 
-
     void loadChatMessages(@NonNull Long chatId) {
         liveChatId.setValue(chatId);
     }
@@ -47,7 +41,6 @@ public class MessageListViewModel extends AndroidViewModel {
     List<Message> getMessages() {
         return liveMessages != null ? liveMessages.getValue() : new ArrayList<Message>();
     }
-
 
     void insert(Message message) {
         Long chatId = liveChatId.getValue();

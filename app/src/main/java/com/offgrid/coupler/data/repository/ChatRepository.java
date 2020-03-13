@@ -24,15 +24,29 @@ public class ChatRepository {
         return dao.findAll();
     }
 
-    public LiveData<Chat> getChat(long chatId) {
+    public LiveData<Chat> getChat(Long chatId) {
         return dao.findById(chatId);
     }
+
+    public LiveData<Chat> getUserChat(Long userId) {
+        return dao.findByUserId(userId);
+    }
+
 
     public void insert(final Chat chat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 dao.insert(chat);
+            }
+        });
+    }
+
+    public void deleteChat(final long chat_id) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.deleteChat(chat_id);
             }
         });
     }

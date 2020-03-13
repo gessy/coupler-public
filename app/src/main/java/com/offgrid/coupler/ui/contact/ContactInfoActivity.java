@@ -15,10 +15,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.model.ChatType;
+import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
 import com.offgrid.coupler.ui.contact.model.ContactViewModel;
+import com.offgrid.coupler.ui.message.MessageActivity;
 
 
 public class ContactInfoActivity extends AppCompatActivity
@@ -56,6 +60,27 @@ public class ContactInfoActivity extends AppCompatActivity
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         contactViewModel.load(userDto.getGid());
         contactViewModel.observe(this, this);
+
+        FloatingActionButton fab = findViewById(R.id.fb_start_user_chat);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = contactViewModel.get();
+                if (user != null) {
+                    Intent intent = new Intent(ContactInfoActivity.this, MessageActivity.class);
+                    intent.putExtras(
+                            new ChatDto
+                                    .BundleBuilder()
+                                    .withReference(user.getId())
+                                    .withTitle(user.getFirstName() + " " + user.getLastName())
+                                    .withType(ChatType.PERSONAL)
+                                    .build()
+                    );
+                    startActivityForResult(intent, 1);
+                }
+            }
+        });
+
     }
 
 

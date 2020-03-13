@@ -6,6 +6,7 @@ import com.offgrid.coupler.data.model.ChatType;
 
 public class ChatDto {
     private Long id;
+    private Long reference;
     private String title;
     private ChatType type;
 
@@ -24,9 +25,14 @@ public class ChatDto {
         return type;
     }
 
+    public Long getReference() {
+        return reference;
+    }
+
     public static ChatDto getInstance(Bundle bundle) {
         ChatDto dto = new ChatDto();
-        dto.id = bundle.getLong("id");
+        dto.id =  bundle.containsKey("id") ? bundle.getLong("id") : null;
+        dto.reference = bundle.containsKey("reference") ? bundle.getLong("reference") : null;
         dto.title = bundle.getString("title");
         dto.type = ChatType.valueOf(bundle.getString("type"));
         return dto;
@@ -34,8 +40,9 @@ public class ChatDto {
 
 
     public static class BundleBuilder {
-        private Long id = 0L;
-        private String title = "";
+        private Long id;
+        private Long reference;
+        private String title;
         private ChatType type = ChatType.NONE;
 
         public BundleBuilder() {
@@ -43,6 +50,11 @@ public class ChatDto {
 
         public ChatDto.BundleBuilder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public ChatDto.BundleBuilder withReference(Long reference) {
+            this.reference = reference;
             return this;
         }
 
@@ -58,7 +70,14 @@ public class ChatDto {
 
         public Bundle build() {
             Bundle bundle = new Bundle();
-            bundle.putLong("id", id);
+            if (id != null) {
+                bundle.putLong("id", id);
+            }
+
+            if (reference != null) {
+                bundle.putLong("reference", reference);
+            }
+
             bundle.putString("title", title);
             bundle.putString("type", type.toString());
             return bundle;
