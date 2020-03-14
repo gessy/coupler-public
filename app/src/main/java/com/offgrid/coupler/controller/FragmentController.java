@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui;
+package com.offgrid.coupler.controller;
 
 import android.annotation.SuppressLint;
 
@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.offgrid.coupler.ui.FragmentController.Op.OP_ADD;
-import static com.offgrid.coupler.ui.FragmentController.Op.OP_HIDE;
-import static com.offgrid.coupler.ui.FragmentController.Op.OP_SHOW;
+import static com.offgrid.coupler.controller.FragmentController.Op.OP_ADD;
+import static com.offgrid.coupler.controller.FragmentController.Op.OP_HIDE;
+import static com.offgrid.coupler.controller.FragmentController.Op.OP_SHOW;
 
 public class FragmentController {
 

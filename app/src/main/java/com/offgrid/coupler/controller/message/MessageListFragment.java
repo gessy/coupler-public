@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.message;
+package com.offgrid.coupler.controller.message;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

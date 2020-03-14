@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.chat;
+package com.offgrid.coupler.controller.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import com.offgrid.coupler.adapter.ChatListAdapter;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ChatListViewModel;
-import com.offgrid.coupler.ui.message.NewMessageActivity;
+import com.offgrid.coupler.controller.message.NewMessageActivity;
 
 import java.util.List;
 

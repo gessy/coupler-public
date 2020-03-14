@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact.status;
+package com.offgrid.coupler.controller.contact.status;
 
 public class FieldState {
 

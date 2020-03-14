@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.controller.contact;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,6 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.adapter.ContactListAdapter;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ContactListViewModel;
-import com.offgrid.coupler.ui.chat.ChatListFragment;
 
 import java.util.List;
 

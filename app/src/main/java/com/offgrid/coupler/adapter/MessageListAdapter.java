@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.ui.message.holder.IncomeGroupMessageViewHolder;
-import com.offgrid.coupler.ui.message.holder.IncomePersonalMessageViewHolder;
-import com.offgrid.coupler.ui.message.holder.MessageViewHolder;
-import com.offgrid.coupler.ui.message.holder.OutcomeMessageViewHolder;
+import com.offgrid.coupler.holder.IncomeGroupMessageViewHolder;
+import com.offgrid.coupler.holder.IncomePersonalMessageViewHolder;
+import com.offgrid.coupler.holder.MessageViewHolder;
+import com.offgrid.coupler.holder.OutcomeMessageViewHolder;
 
 import java.util.List;
 

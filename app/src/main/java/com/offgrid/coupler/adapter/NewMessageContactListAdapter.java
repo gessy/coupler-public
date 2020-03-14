@@ -8,8 +8,8 @@ import android.view.View;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
-import com.offgrid.coupler.ui.contact.ContactListItemViewHolder;
-import com.offgrid.coupler.ui.message.MessageActivity;
+import com.offgrid.coupler.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.controller.message.MessageActivity;
 
 
 public class NewMessageContactListAdapter extends ContactListAdapter {

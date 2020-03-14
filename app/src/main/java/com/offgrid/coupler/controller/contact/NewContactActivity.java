@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.controller.contact;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,10 +15,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.ui.contact.listener.FirstNameTextWatcher;
-import com.offgrid.coupler.ui.contact.listener.GidAutoFormatTextWatcher;
+import com.offgrid.coupler.controller.contact.listener.FirstNameTextWatcher;
+import com.offgrid.coupler.controller.contact.listener.GidAutoFormatTextWatcher;
 import com.offgrid.coupler.model.view.ContactViewModel;
-import com.offgrid.coupler.ui.contact.status.InputFieldsStatusHolder;
+import com.offgrid.coupler.controller.contact.status.InputFieldsStatusHolder;
 
 
 public class NewContactActivity extends AppCompatActivity implements Updatable {

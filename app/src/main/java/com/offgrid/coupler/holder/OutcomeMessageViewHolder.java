@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.message.holder;
+package com.offgrid.coupler.holder;
 
 import android.content.Context;
 import android.view.View;
@@ -6,13 +6,14 @@ import android.widget.TextView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Message;
+import com.offgrid.coupler.holder.MessageViewHolder;
 
-public class IncomePersonalMessageViewHolder extends MessageViewHolder {
+public class OutcomeMessageViewHolder extends MessageViewHolder {
 
     private final TextView message;
     private Context context;
 
-    public IncomePersonalMessageViewHolder(View itemView) {
+    public OutcomeMessageViewHolder(View itemView) {
         super(itemView);
         context = itemView.getContext();
         message = itemView.findViewById(R.id.message_body);

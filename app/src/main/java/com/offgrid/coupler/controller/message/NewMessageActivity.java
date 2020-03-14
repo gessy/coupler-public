@@ -1,6 +1,5 @@
-package com.offgrid.coupler.ui.message;
+package com.offgrid.coupler.controller.message;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,7 +21,7 @@ import com.offgrid.coupler.adapter.NewMessageContactListAdapter;
 import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ContactListViewModel;
-import com.offgrid.coupler.ui.contact.NewContactActivity;
+import com.offgrid.coupler.controller.contact.NewContactActivity;
 
 import java.util.List;
 

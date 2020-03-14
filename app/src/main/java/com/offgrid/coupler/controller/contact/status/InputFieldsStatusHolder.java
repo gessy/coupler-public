@@ -1,7 +1,7 @@
-package com.offgrid.coupler.ui.contact.status;
+package com.offgrid.coupler.controller.contact.status;
 
-import static com.offgrid.coupler.ui.contact.status.FieldState.CONTACT_FIRST_NAME;
-import static com.offgrid.coupler.ui.contact.status.FieldState.CONTACT_GID;
+import static com.offgrid.coupler.controller.contact.status.FieldState.CONTACT_FIRST_NAME;
+import static com.offgrid.coupler.controller.contact.status.FieldState.CONTACT_GID;
 
 public class InputFieldsStatusHolder {
     private volatile int currentState;

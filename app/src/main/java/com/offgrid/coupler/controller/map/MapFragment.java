@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.map;
+package com.offgrid.coupler.controller.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
