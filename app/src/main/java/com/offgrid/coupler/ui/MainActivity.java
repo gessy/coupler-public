@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
@@ -47,22 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, MockActivity.class);
-//                intent.putExtras(
-//                        new Info.BundleBuilder()
-//                                .withTitle("New Message")
-//                                .withText("This is new message activity")
-//                                .withAction(Info.Action.new_message)
-//                                .build()
-//                );
-//                startActivityForResult(intent, 1);
-//            }
-//        });
-
     }
 
 
@@ -89,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 

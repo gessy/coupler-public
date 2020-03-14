@@ -68,7 +68,7 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_contact, menu);
+        getMenuInflater().inflate(R.menu.menu_done, menu);
         return true;
     }
 

@@ -65,7 +65,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_contact_list, menu);
+        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 

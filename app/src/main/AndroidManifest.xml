@@ -22,9 +22,16 @@
         <activity
             android:name=".MockActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+<!--        Message activities-->
         <activity
             android:name=".ui.message.MessageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.message.NewMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+<!--        Contact Activities-->
         <activity
             android:name=".ui.contact.NewContactActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -34,7 +41,6 @@
         <activity
             android:name=".ui.contact.ContactInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ui.contact.EditContactActivity"
             android:theme="@style/AppTheme.NoActionBar" />

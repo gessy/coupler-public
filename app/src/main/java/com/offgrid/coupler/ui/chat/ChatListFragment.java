@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ChatListViewModel;
+import com.offgrid.coupler.ui.message.NewMessageActivity;
 
 import java.util.List;
 
@@ -87,17 +86,16 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab_new_message) {
-            Intent intent = new Intent(getActivity(), MockActivity.class);
+            Intent intent = new Intent(getActivity(), NewMessageActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
-                            .withTitle("New Message frag")
+                            .withTitle("New Message")
                             .withText("This is new message activity")
                             .withAction(Info.Action.new_message)
                             .build()
             );
             startActivityForResult(intent, 1);
         }
-
     }
 
     @Override
