@@ -68,6 +68,14 @@ public class ChatViewModel extends AndroidViewModel {
         chatRepository.insert(chat);
     }
 
+    public void updateLastMessage(String message) {
+        Chat chat = liveChat.getValue();
+        if (chat != null) {
+            chat.setLastMessage(message);
+            chatRepository.update(chat);
+        }
+    }
+
     public void delete() {
         if (liveChat.getValue() != null) {
             chatRepository.deleteChat(liveChat.getValue().getId());

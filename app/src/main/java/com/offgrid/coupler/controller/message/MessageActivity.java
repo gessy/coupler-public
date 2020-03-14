@@ -111,7 +111,9 @@ public class MessageActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_talker_message:
-                messageListViewModel.insert(Message.talkerMessage());
+                Message message = Message.talkerMessage();
+                messageListViewModel.insert(message);
+                chatViewModel.updateLastMessage(message.getMessage());
                 return true;
             case R.id.action_clear_message_history:
                 messageListViewModel.delete();
@@ -132,6 +134,7 @@ public class MessageActivity
         String message = editText.getText().toString();
         if (message.length() > 0) {
             messageListViewModel.insert(Message.myMessage(message));
+            chatViewModel.updateLastMessage(message);
             editText.getText().clear();
             InputMethodManager inputManager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), HIDE_NOT_ALWAYS);
