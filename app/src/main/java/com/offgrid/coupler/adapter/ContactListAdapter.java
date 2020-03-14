@@ -10,12 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
-import com.offgrid.coupler.ui.contact.ContactInfoActivity;
-import com.offgrid.coupler.ui.contact.ContactListItemViewHolder;
-import com.offgrid.coupler.ui.message.MessageActivity;
+import com.offgrid.coupler.controller.contact.ContactInfoActivity;
+import com.offgrid.coupler.holder.ContactListItemViewHolder;
 
 import java.util.List;
 

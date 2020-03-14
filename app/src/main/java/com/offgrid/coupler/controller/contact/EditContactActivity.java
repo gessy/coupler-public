@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.controller.contact;
 
 import android.content.Intent;
 import android.os.Bundle;

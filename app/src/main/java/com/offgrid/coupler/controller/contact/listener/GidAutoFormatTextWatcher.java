@@ -1,12 +1,12 @@
-package com.offgrid.coupler.ui.contact.listener;
+package com.offgrid.coupler.controller.contact.listener;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.offgrid.coupler.ui.contact.Updatable;
+import com.offgrid.coupler.controller.contact.Updatable;
 
-import static com.offgrid.coupler.ui.contact.status.FieldState.CONTACT_GID;
+import static com.offgrid.coupler.controller.contact.status.FieldState.CONTACT_GID;
 
 public class GidAutoFormatTextWatcher implements TextWatcher {
     private static final int BUNCH_SIZE = 3;

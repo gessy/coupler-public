@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui;
+package com.offgrid.coupler.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.ui.chat.ChatListFragment;
-import com.offgrid.coupler.ui.contact.ContactListActivity;
-import com.offgrid.coupler.ui.map.MapFragment;
+import com.offgrid.coupler.controller.chat.ChatListFragment;
+import com.offgrid.coupler.controller.contact.ContactListActivity;
+import com.offgrid.coupler.controller.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
 
 

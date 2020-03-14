@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.message.holder;
+package com.offgrid.coupler.holder;
 
 import android.view.View;
 

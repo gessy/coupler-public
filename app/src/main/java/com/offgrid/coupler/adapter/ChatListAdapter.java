@@ -12,8 +12,8 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
-import com.offgrid.coupler.ui.chat.ChatListItemViewHolder;
-import com.offgrid.coupler.ui.message.MessageActivity;
+import com.offgrid.coupler.holder.ChatListItemViewHolder;
+import com.offgrid.coupler.controller.message.MessageActivity;
 
 import java.util.List;
 

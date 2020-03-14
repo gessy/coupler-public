@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.holder;
 
 import android.content.Context;
 import android.view.View;

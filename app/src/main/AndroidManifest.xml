@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".controller.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,24 +25,24 @@
 
 <!--        Message activities-->
         <activity
-            android:name=".ui.message.MessageActivity"
+            android:name=".controller.message.MessageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.message.NewMessageActivity"
+            android:name=".controller.message.NewMessageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
 <!--        Contact Activities-->
         <activity
-            android:name=".ui.contact.NewContactActivity"
+            android:name=".controller.contact.NewContactActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.contact.ContactListActivity"
+            android:name=".controller.contact.ContactListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.contact.ContactInfoActivity"
+            android:name=".controller.contact.ContactInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.contact.EditContactActivity"
+            android:name=".controller.contact.EditContactActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

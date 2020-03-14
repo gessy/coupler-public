@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.controller.contact;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +22,7 @@ import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
 import com.offgrid.coupler.model.view.ContactViewModel;
-import com.offgrid.coupler.ui.message.MessageActivity;
+import com.offgrid.coupler.controller.message.MessageActivity;
 
 
 public class ContactInfoActivity extends AppCompatActivity
