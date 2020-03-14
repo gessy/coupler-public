@@ -14,11 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.adapter.ContactListAdapter;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ContactListViewModel;
+import com.offgrid.coupler.ui.chat.ChatListFragment;
 
 import java.util.List;
 
@@ -50,8 +52,6 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
             }
         });
 
-        findViewById(R.id.action_new_contact).setOnClickListener(this);
-
         contactListAdapter = new ContactListAdapter(this);
 
         contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
@@ -61,6 +61,10 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
         RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setAdapter(contactListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        FloatingActionButton fab = findViewById(R.id.fab_new_contact);
+        fab.setOnClickListener(ContactListActivity.this);
+
     }
 
 
@@ -85,7 +89,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.action_new_contact) {
+        if (view.getId() == R.id.fab_new_contact) {
             Intent intent = new Intent(ContactListActivity.this, NewContactActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
