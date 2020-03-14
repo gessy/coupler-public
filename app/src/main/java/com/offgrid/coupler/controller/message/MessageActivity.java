@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,7 +21,6 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.adapter.MessageListAdapter;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Message;
-import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.view.ChatViewModel;
 import com.offgrid.coupler.model.view.MessageListViewModel;
@@ -30,6 +28,8 @@ import com.offgrid.coupler.model.view.MessageListViewModel;
 import java.util.List;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
+import static com.offgrid.coupler.data.entity.Chat.personalChat;
+import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
 
 
 public class MessageActivity
@@ -39,9 +39,7 @@ public class MessageActivity
     private MessageListViewModel messageListViewModel;
     private ChatViewModel chatViewModel;
 
-
     private MessageListAdapter messageListAdapter;
-    private NestedScrollView nestedScrollView;
     private ChatDto chatDto;
     private EditText editText;
 
@@ -67,24 +65,24 @@ public class MessageActivity
             }
         });
 
-        messageListAdapter = new MessageListAdapter(MessageActivity.this, chatDto.getType());
+        messageListAdapter = new MessageListAdapter(this, chatDto.getType());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_message_list);
         recyclerView.setAdapter(messageListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MessageActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        messageListViewModel = new ViewModelProvider(MessageActivity.this).get(MessageListViewModel.class);
-        messageListViewModel.observe(MessageActivity.this, MessageActivity.this);
+        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
+        messageListViewModel.observe(this, this);
         chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
         if (chatDto.getId() == null) {
-            chatViewModel.observe(MessageActivity.this, new Observer<Chat>() {
+            chatViewModel.observe(this, new Observer<Chat>() {
                 @Override
                 public void onChanged(Chat chat) {
                     if (chat != null) {
                         messageListViewModel.loadChatMessages(chat.getId());
-                    } else if (ChatType.PERSONAL.equals(chatDto.getType())) {
-                        chatViewModel.insert(Chat.personalChat(chatDto.getTitle(), chatDto.getReference()));
+                    } else if (PERSONAL.equals(chatDto.getType())) {
+                        chatViewModel.insert(personalChat(chatDto.getTitle(), chatDto.getReference()));
                     }
                 }
             });
@@ -99,9 +97,6 @@ public class MessageActivity
 
         ImageButton imageButton = findViewById(R.id.send_message);
         imageButton.setOnClickListener(MessageActivity.this);
-
-//        nestedScrollView = findViewById(R.id.nested_scroll_view);
-
     }
 
 
