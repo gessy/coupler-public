@@ -71,9 +71,6 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_group_chat) {
-            chatListViewModel.insertChat(Chat.randGroupChat());
-        }
         return super.onOptionsItemSelected(item);
     }
 

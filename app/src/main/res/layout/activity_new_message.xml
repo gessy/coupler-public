@@ -33,14 +33,15 @@
             android:id="@+id/action_new_group"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:alpha="0.7"
+                android:alpha="0.6"
                 android:background="@drawable/ic_group_add_24dp"/>
 
             <TextView
@@ -48,8 +49,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:ems="10"
                 android:layout_marginStart="25dp"
+                android:textStyle="bold"
                 android:textSize="15sp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="@string/new_group_label" />
@@ -59,14 +60,15 @@
             android:id="@+id/action_new_contact"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:alpha="0.7"
+                android:alpha="0.6"
                 android:background="@drawable/ic_contact_add_24dp"/>
 
             <TextView
@@ -74,13 +76,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:ems="10"
                 android:layout_marginStart="25dp"
+                android:textStyle="bold"
                 android:textSize="15sp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="@string/new_contact_label" />
         </LinearLayout>
-
 
         <TextView
             android:layout_width="match_parent"

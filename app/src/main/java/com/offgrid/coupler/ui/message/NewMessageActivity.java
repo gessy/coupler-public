@@ -1,5 +1,6 @@
 package com.offgrid.coupler.ui.message;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.adapter.NewMessageContactListAdapter;
+import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ContactListViewModel;
 import com.offgrid.coupler.ui.contact.NewContactActivity;
@@ -51,6 +54,7 @@ public class NewMessageActivity extends AppCompatActivity implements Observer<Li
         });
 
         findViewById(R.id.action_new_contact).setOnClickListener(this);
+        findViewById(R.id.action_new_group).setOnClickListener(this);
 
         contactListAdapter = new NewMessageContactListAdapter(this);
 
@@ -96,6 +100,10 @@ public class NewMessageActivity extends AppCompatActivity implements Observer<Li
                             .build()
             );
             startActivityForResult(intent, 1);
+        } else if (view.getId() == R.id.action_new_group) {
+            new ChatRepository(getApplication()).insert(Chat.randGroupChat());
+            setResult(RESULT_OK, new Intent());
+            finish();
         }
     }
 
