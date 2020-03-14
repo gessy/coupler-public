@@ -5,16 +5,28 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.adapter.NewMessageContactListAdapter;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.model.view.ContactListViewModel;
+import com.offgrid.coupler.ui.contact.NewContactActivity;
 
-public class NewMessageActivity extends AppCompatActivity {
+import java.util.List;
+
+public class NewMessageActivity extends AppCompatActivity implements Observer<List<User>>, View.OnClickListener {
+
+    private NewMessageContactListAdapter contactListAdapter;
+    private ContactListViewModel contactListViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +50,18 @@ public class NewMessageActivity extends AppCompatActivity {
             }
         });
 
-        final TextView textView = findViewById(R.id.text);
-        textView.setText(info.getText());
+        findViewById(R.id.action_new_contact).setOnClickListener(this);
+
+        contactListAdapter = new NewMessageContactListAdapter(this);
+
+        contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
+        contactListViewModel.load();
+        contactListViewModel.observe(this, NewMessageActivity.this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
+        recyclerView.setAdapter(contactListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
 
@@ -53,6 +75,28 @@ public class NewMessageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onChanged(List<User> users) {
+        contactListAdapter.setUsers(users);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.action_new_contact) {
+            Intent intent = new Intent(NewMessageActivity.this, NewContactActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Add Contact")
+                            .withText("This is new contact activity")
+                            .withAction(Info.Action.add_contact)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        }
     }
 
 }

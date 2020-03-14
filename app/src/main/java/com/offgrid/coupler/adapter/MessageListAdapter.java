@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.message;
+package com.offgrid.coupler.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,20 +16,29 @@ import com.offgrid.coupler.ui.message.holder.OutcomeMessageViewHolder;
 
 import java.util.List;
 
+import static com.offgrid.coupler.adapter.MessageListAdapter.Const.INCOME_GROUP_MESSAGE;
+import static com.offgrid.coupler.adapter.MessageListAdapter.Const.INCOME_PERSONAL_MESSAGE;
+import static com.offgrid.coupler.adapter.MessageListAdapter.Const.OUTCOME_GROUP_MESSAGE;
+import static com.offgrid.coupler.adapter.MessageListAdapter.Const.OUTCOME_PERSONAL_MESSAGE;
 import static com.offgrid.coupler.data.model.ChatType.GROUP;
-import static com.offgrid.coupler.ui.message.model.MessageConst.INCOME_GROUP_MESSAGE;
-import static com.offgrid.coupler.ui.message.model.MessageConst.OUTCOME_GROUP_MESSAGE;
-import static com.offgrid.coupler.ui.message.model.MessageConst.INCOME_PERSONAL_MESSAGE;
-import static com.offgrid.coupler.ui.message.model.MessageConst.OUTCOME_PERSONAL_MESSAGE;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> {
+
+    class Const {
+        static final int UNDEFINED = 0;
+        static final int INCOME_PERSONAL_MESSAGE = 1;
+        static final int INCOME_GROUP_MESSAGE = 2;
+        static final int OUTCOME_PERSONAL_MESSAGE = 3;
+        static final int OUTCOME_GROUP_MESSAGE = 4;
+    }
+
 
     private List<Message> messages;
     private ChatType chatType;
 
     private Context context;
 
-    MessageListAdapter(Context context, ChatType chatType) {
+    public MessageListAdapter(Context context, ChatType chatType) {
         this.context = context;
         this.chatType = chatType;
     }
@@ -64,7 +73,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> 
         holder.update(current);
     }
 
-    void setMessages(List<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
         notifyDataSetChanged();
     }

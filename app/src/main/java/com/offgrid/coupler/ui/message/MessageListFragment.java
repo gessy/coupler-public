@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.adapter.MessageListAdapter;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.model.ChatType;

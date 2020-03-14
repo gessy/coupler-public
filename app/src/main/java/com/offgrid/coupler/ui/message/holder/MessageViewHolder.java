@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.data.entity.Message;
 
 public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
-    MessageViewHolder(@NonNull View itemView) {
+    public MessageViewHolder(@NonNull View itemView) {
         super(itemView);
     }
     public abstract void update(Message message);

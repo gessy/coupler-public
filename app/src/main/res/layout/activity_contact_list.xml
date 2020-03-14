@@ -67,22 +67,7 @@
             android:textAppearance="?attr/textAppearanceListItemSecondary"
             android:text="@string/contact_list_header" />
 
-        <androidx.core.widget.NestedScrollView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:fillViewport="true"
-            android:id="@+id/nested_scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:isScrollContainer="true"
-            android:layout_marginTop="10dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_contact_list"
-                tools:listitem="@layout/contact_list_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="45dp"/>
-        </androidx.core.widget.NestedScrollView>
+        <include layout="@layout/contact_list"/>
 
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.chat;
+package com.offgrid.coupler.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
+import com.offgrid.coupler.ui.chat.ChatListItemViewHolder;
 import com.offgrid.coupler.ui.message.MessageActivity;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
 
     private Context context;
 
-    ChatListAdapter(Context context) {
+    public ChatListAdapter(Context context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
     }
@@ -55,7 +56,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
         });
     }
 
-    void setChats(List<Chat> chats) {
+    public void setChats(List<Chat> chats) {
         this.chats = chats;
         notifyDataSetChanged();
     }
