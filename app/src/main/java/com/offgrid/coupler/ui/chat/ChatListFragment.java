@@ -1,5 +1,6 @@
 package com.offgrid.coupler.ui.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,17 +17,22 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.adapter.ChatListAdapter;
 import com.offgrid.coupler.data.entity.Chat;
-import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.util.RandomTokenGenerator;
+import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.model.view.ChatListViewModel;
+import com.offgrid.coupler.ui.message.NewMessageActivity;
 
 import java.util.List;
 
-public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
+public class ChatListFragment extends Fragment implements Observer<List<Chat>>, View.OnClickListener {
 
     private ChatListViewModel chatListViewModel;
     private ChatListAdapter chatListAdapter;
+
+    private FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +55,9 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
         recyclerView.setAdapter(chatListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        fab = getActivity().findViewById(R.id.fab_new_message);
+        fab.setOnClickListener(ChatListFragment.this);
+
         return root;
     }
 
@@ -62,18 +71,6 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_personal_chat) {
-            int id = RandomTokenGenerator.getRandInt();
-            String title = "Chat ID " + id;
-            String message = "Last message on Chat ID " + id;
-            chatListViewModel.insertChat(new Chat(title, message, ChatType.PERSONAL.toString()));
-        } else if (item.getItemId() == R.id.action_add_group_chat) {
-            int id = RandomTokenGenerator.getRandInt();
-            String title = "Chat ID " + id;
-            String message = "Last message on Chat ID " + id;
-            chatListViewModel.insertChat(new Chat(title, message, ChatType.GROUP.toString()));
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -82,4 +79,31 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>> {
     public void onChanged(@Nullable final List<Chat> chats) {
         chatListAdapter.setChats(chats);
     }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.fab_new_message) {
+            Intent intent = new Intent(getActivity(), NewMessageActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("New Message")
+                            .withText("This is new message activity")
+                            .withAction(Info.Action.new_message)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            fab.hide();
+        } else {
+            fab.show();
+        }
+    }
+
 }

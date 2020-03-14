@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact.model;
+package com.offgrid.coupler.model.view;
 
 import android.app.Application;
 

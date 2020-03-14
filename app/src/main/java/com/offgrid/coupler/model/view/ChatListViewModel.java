@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.chat;
+package com.offgrid.coupler.model.view;
 
 import android.app.Application;
 
@@ -24,19 +24,19 @@ public class ChatListViewModel extends AndroidViewModel {
         chatRepository = new ChatRepository(application);
     }
 
-    void loadChats() {
+    public void loadChats() {
         liveChats = chatRepository.getChats();
     }
 
-    List<Chat> getChats() {
+    public List<Chat> getChats() {
         return liveChats !=null ? liveChats.getValue() : new ArrayList<Chat>();
     }
 
-    void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chat>> observer) {
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chat>> observer) {
         liveChats.observe(owner, observer);
     }
 
-    void insertChat(Chat chat) {
+    public void insertChat(Chat chat) {
         chatRepository.insert(chat);
     }
 }

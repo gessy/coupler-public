@@ -1,6 +1,5 @@
 package com.offgrid.coupler.ui.message;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,8 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.adapter.MessageListAdapter;
+import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Message;
+import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
+import com.offgrid.coupler.model.view.ChatViewModel;
+import com.offgrid.coupler.model.view.MessageListViewModel;
 
 import java.util.List;
 
@@ -32,6 +35,9 @@ import java.util.List;
 public class MessageListFragment extends Fragment implements Observer<List<Message>>, View.OnClickListener {
 
     private MessageListViewModel messageListViewModel;
+    private ChatViewModel chatViewModel;
+
+
     private MessageListAdapter messageListAdapter;
     private NestedScrollView nestedScrollView;
     private ChatDto chatDto;
@@ -62,8 +68,25 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         messageListViewModel = new ViewModelProvider(MessageListFragment.this).get(MessageListViewModel.class);
-        messageListViewModel.loadChatMessages(chatDto.getId());
         messageListViewModel.observe(getActivity(), MessageListFragment.this);
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+
+        if (chatDto.getId() == null) {
+            chatViewModel.observe(getActivity(), new Observer<Chat>() {
+                @Override
+                public void onChanged(Chat chat) {
+                    if (chat != null) {
+                        messageListViewModel.loadChatMessages(chat.getId());
+                    } else if (ChatType.PERSONAL.equals(chatDto.getType())) {
+                        chatViewModel.insert(Chat.personalChat(chatDto.getTitle(), chatDto.getReference()));
+                    }
+                }
+            });
+
+            chatViewModel.loadByUserId(chatDto.getReference());
+        } else {
+            messageListViewModel.loadChatMessages(chatDto.getId());
+        }
 
         editText = getActivity().findViewById(R.id.edit_text);
 
@@ -87,10 +110,10 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_talker_message:
-                messageListViewModel.insertMessage(Message.talkerMessage(chatDto.getId()));
+                messageListViewModel.insert(Message.talkerMessage());
                 return true;
             case R.id.action_clear_message_history:
-                messageListViewModel.deleteChatMessages(chatDto.getId());
+                messageListViewModel.delete();
                 break;
         }
 
@@ -107,10 +130,10 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
     private void sendMessage() {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            messageListViewModel.insertMessage(Message.myMessage(chatDto.getId(), message));
+            messageListViewModel.insert(Message.myMessage(message));
             editText.getText().clear();
             InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 
@@ -121,4 +144,11 @@ public class MessageListFragment extends Fragment implements Observer<List<Messa
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (messageListViewModel.getMessages().isEmpty()) {
+            chatViewModel.delete();
+        }
+    }
 }

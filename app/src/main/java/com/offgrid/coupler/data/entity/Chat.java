@@ -7,6 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.offgrid.coupler.data.model.ChatType;
+import com.offgrid.coupler.util.RandomTokenGenerator;
 
 @Entity(tableName = "T_Chat")
 public class Chat {
@@ -27,6 +28,8 @@ public class Chat {
     @ColumnInfo(name = "type")
     private String type;
 
+    @ColumnInfo(name = "user_id")
+    private Long userId;
 
     public static Chat getEmpty() {
         return new Chat("No data","No data");
@@ -42,6 +45,7 @@ public class Chat {
         this.type = ChatType.PERSONAL.toString();
     }
 
+
     @Ignore
     public Chat(@NonNull String title, @NonNull String message, @NonNull String type) {
         this.title = title;
@@ -49,6 +53,24 @@ public class Chat {
         this.type = type;
     }
 
+    @Ignore
+    public Chat(@NonNull String title, @NonNull String lastMessage, @NonNull String type, Long userId) {
+        this.title = title;
+        this.lastMessage = lastMessage;
+        this.type = type;
+        this.userId = userId;
+    }
+
+    public static Chat personalChat(@NonNull String title, Long userId) {
+        return new Chat(title, "", ChatType.PERSONAL.toString(), userId);
+    }
+
+    public static Chat randGroupChat() {
+        int id = RandomTokenGenerator.getRandInt();
+        String title = "Chat ID " + id;
+        String message = "Last message on Chat ID " + id;
+        return new Chat(title, message, ChatType.GROUP.toString(), null);
+    }
 
     @NonNull
     public Long getId() {
@@ -85,4 +107,18 @@ public class Chat {
     public void setType(@NonNull String type) {
         this.type = type;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+
+
+
+
+
 }

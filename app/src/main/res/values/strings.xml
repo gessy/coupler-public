@@ -25,6 +25,7 @@
     <string name="notification_status_on">On</string>
     <string name="notification_status_off">Off</string>
 
+    <string name="new_group_label">New Group</string>
     <string name="new_contact_label">New Contact</string>
     <string name="contact_list_header">Sorted by last seen time</string>
 

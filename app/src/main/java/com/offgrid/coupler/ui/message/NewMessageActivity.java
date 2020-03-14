@@ -1,5 +1,6 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.ui.message;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,20 +15,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.adapter.ContactListAdapter;
+import com.offgrid.coupler.adapter.NewMessageContactListAdapter;
+import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ContactListViewModel;
-import com.offgrid.coupler.ui.chat.ChatListFragment;
+import com.offgrid.coupler.ui.contact.NewContactActivity;
 
 import java.util.List;
 
+public class NewMessageActivity extends AppCompatActivity implements Observer<List<User>>, View.OnClickListener {
 
-public class ContactListActivity extends AppCompatActivity implements Observer<List<User>>, View.OnClickListener {
-
-    private ContactListAdapter contactListAdapter;
+    private NewMessageContactListAdapter contactListAdapter;
     private ContactListViewModel contactListViewModel;
 
     @Override
@@ -36,7 +37,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_contact_list);
+        setContentView(R.layout.activity_new_message);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -52,18 +53,18 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
             }
         });
 
-        contactListAdapter = new ContactListAdapter(this);
+        findViewById(R.id.action_new_contact).setOnClickListener(this);
+        findViewById(R.id.action_new_group).setOnClickListener(this);
+
+        contactListAdapter = new NewMessageContactListAdapter(this);
 
         contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
         contactListViewModel.load();
-        contactListViewModel.observe(this, ContactListActivity.this);
+        contactListViewModel.observe(this, NewMessageActivity.this);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setAdapter(contactListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        FloatingActionButton fab = findViewById(R.id.fab_new_contact);
-        fab.setOnClickListener(ContactListActivity.this);
 
     }
 
@@ -89,8 +90,8 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.fab_new_contact) {
-            Intent intent = new Intent(ContactListActivity.this, NewContactActivity.class);
+        if (view.getId() == R.id.action_new_contact) {
+            Intent intent = new Intent(NewMessageActivity.this, NewContactActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
                             .withTitle("Add Contact")
@@ -99,6 +100,11 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
                             .build()
             );
             startActivityForResult(intent, 1);
+        } else if (view.getId() == R.id.action_new_group) {
+            new ChatRepository(getApplication()).insert(Chat.randGroupChat());
+            setResult(RESULT_OK, new Intent());
+            finish();
         }
     }
+
 }

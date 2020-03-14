@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+
 import static com.offgrid.coupler.util.RandomTokenGenerator.getRandInt;
 import static java.lang.System.currentTimeMillis;
 
@@ -66,15 +68,28 @@ public class Message {
         this.isMine = isMine;
     }
 
-    public static Message myMessage(@NonNull Long chatId, @NonNull String message) {
-        return new Message(chatId, message, currentTimeMillis(), "Me", true);
+    @Ignore
+    private Message(@NonNull String message,
+                    @NonNull Long date,
+                    @NonNull String userFullName,
+                    boolean isMine) {
+        this.message = message;
+        this.date = date;
+        this.userFullName = userFullName;
+        this.isMine = isMine;
     }
+    
 
-
-    public static Message talkerMessage(@NonNull Long chatId) {
+    public static Message talkerMessage() {
         String message = "Message ID " + getRandInt() + " How are you doing? This is a long message that should probably wrap.";
-        return new Message(chatId, message, currentTimeMillis(), "Talker", false);
+        return new Message(message, currentTimeMillis(), "Talker", false);
     }
+
+
+    public static Message myMessage(String message) {
+        return new Message(message, currentTimeMillis(), "Me", true);
+    }
+
 
     @NonNull
     public Long getId() {

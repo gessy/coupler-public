@@ -1,4 +1,4 @@
-package com.offgrid.coupler.ui.contact;
+package com.offgrid.coupler.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
+import com.offgrid.coupler.ui.contact.ContactInfoActivity;
+import com.offgrid.coupler.ui.contact.ContactListItemViewHolder;
 import com.offgrid.coupler.ui.message.MessageActivity;
 
 import java.util.List;
@@ -20,10 +22,10 @@ import java.util.List;
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<User> users;
-    private Context context;
+    protected List<User> users;
+    protected Context context;
 
-    ContactListAdapter(Context context) {
+    public ContactListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
     }
@@ -54,10 +56,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemView
                 context.startActivity(intent);
             }
         });
-
     }
 
-    void setUsers(List<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
         notifyDataSetChanged();
     }

@@ -1,6 +1,5 @@
 package com.offgrid.coupler.ui.message;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
