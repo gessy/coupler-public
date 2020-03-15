@@ -15,6 +15,8 @@ import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.repository.MessageRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MessageListViewModel extends AndroidViewModel {
@@ -40,7 +42,14 @@ public class MessageListViewModel extends AndroidViewModel {
     }
 
     public List<Message> getMessages() {
-        return liveMessages != null ? liveMessages.getValue() : new ArrayList<Message>();
+        List<Message> messages = liveMessages.getValue();
+        return messages != null ? messages : new ArrayList<Message>();
+    }
+
+
+    public boolean isEmpty() {
+        List<Message> messages = liveMessages.getValue();
+        return messages == null || messages.isEmpty();
     }
 
     public void insert(Message message) {
