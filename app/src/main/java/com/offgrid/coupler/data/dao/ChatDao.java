@@ -5,11 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.Chat;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Dao
 public interface ChatDao {
@@ -25,6 +25,9 @@ public interface ChatDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Chat chat);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    void update(Chat user);
 
     @Query("delete from T_Chat")
     void deleteAll();

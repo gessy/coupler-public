@@ -45,7 +45,7 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat_list, container, false);
 
-        chatListAdapter = new ChatListAdapter(getActivity());
+        chatListAdapter = new ChatListAdapter(this);
 
         chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
         chatListViewModel.loadChats();
@@ -106,4 +106,8 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
