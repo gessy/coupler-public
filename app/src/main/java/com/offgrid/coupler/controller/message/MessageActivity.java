@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,24 +74,23 @@ public class MessageActivity
 
         messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
         messageListViewModel.observe(this, this);
+
         chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        chatViewModel.observe(this, new Observer<Chat>() {
+            @Override
+            public void onChanged(Chat chat) {
+                if (chat != null) {
+                    messageListViewModel.loadChatMessages(chat.getId());
+                } else if (PERSONAL.equals(chatDto.getType())) {
+                    chatViewModel.insert(personalChat(chatDto.getTitle(), chatDto.getReference()));
+                }
+            }
+        });
 
         if (chatDto.getId() == null) {
-            chatViewModel.observe(this, new Observer<Chat>() {
-                @Override
-                public void onChanged(Chat chat) {
-                    if (chat != null) {
-                        messageListViewModel.loadChatMessages(chat.getId());
-                    } else if (PERSONAL.equals(chatDto.getType())) {
-                        chatViewModel.insert(personalChat(chatDto.getTitle(), chatDto.getReference()));
-                    }
-                }
-            });
-
             chatViewModel.loadByUserId(chatDto.getReference());
         } else {
             chatViewModel.loadByChatId(chatDto.getId());
-            messageListViewModel.loadChatMessages(chatDto.getId());
         }
 
         editText = findViewById(R.id.edit_text);

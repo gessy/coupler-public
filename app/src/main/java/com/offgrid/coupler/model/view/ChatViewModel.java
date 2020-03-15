@@ -57,7 +57,7 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public Chat get() {
-        return liveChat != null ? liveChat.getValue() : null;
+        return liveChat.getValue();
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Chat> observer) {
@@ -72,8 +72,14 @@ public class ChatViewModel extends AndroidViewModel {
         Chat chat = liveChat.getValue();
         if (chat != null) {
             chat.setLastMessage(message);
+            chat.setLastModificationDate(System.currentTimeMillis());
             chatRepository.update(chat);
         }
+    }
+
+
+    public void update(Chat chat) {
+        chatRepository.update(chat);
     }
 
     public void delete() {

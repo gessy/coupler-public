@@ -1,6 +1,5 @@
 package com.offgrid.coupler.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
@@ -22,11 +22,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
     private final LayoutInflater mInflater;
     private List<Chat> chats;
 
-    private Context context;
+    private ChatListFragment fragment;
 
-    public ChatListAdapter(Context context) {
-        this.context = context;
-        mInflater = LayoutInflater.from(context);
+    public ChatListAdapter(ChatListFragment fragment) {
+        this.fragment = fragment;
+        mInflater = LayoutInflater.from(fragment.getActivity());
+
     }
 
     @Override
@@ -42,7 +43,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MessageActivity.class);
+                Intent intent = new Intent(fragment.getActivity(), MessageActivity.class);
                 intent.putExtras(
                         new ChatDto
                                 .BundleBuilder()
@@ -51,7 +52,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
                                 .withType(ChatType.valueOf(current.getType()))
                                 .build()
                 );
-                context.startActivity(intent);
+                fragment.startActivityForResult(intent, 1);
             }
         });
     }
@@ -60,6 +61,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
         this.chats = chats;
         notifyDataSetChanged();
     }
+
+    public void dataSetChanged() {
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {

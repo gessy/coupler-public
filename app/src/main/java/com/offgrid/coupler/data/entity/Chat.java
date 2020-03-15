@@ -31,6 +31,10 @@ public class Chat {
     @ColumnInfo(name = "user_id")
     private Long userId;
 
+    @ColumnInfo(name = "last_modification_date")
+    private Long lastModificationDate;
+
+
     public static Chat getEmpty() {
         return new Chat("No data","No data");
     }
@@ -43,6 +47,7 @@ public class Chat {
         this.title = title;
         this.lastMessage = message;
         this.type = ChatType.PERSONAL.toString();
+        this.lastModificationDate = System.currentTimeMillis();
     }
 
 
@@ -51,6 +56,7 @@ public class Chat {
         this.title = title;
         this.lastMessage = message;
         this.type = type;
+        this.lastModificationDate = System.currentTimeMillis();
     }
 
     @Ignore
@@ -59,6 +65,7 @@ public class Chat {
         this.lastMessage = lastMessage;
         this.type = type;
         this.userId = userId;
+        this.lastModificationDate = System.currentTimeMillis();
     }
 
     public static Chat personalChat(@NonNull String title, Long userId) {
@@ -116,9 +123,11 @@ public class Chat {
         this.userId = userId;
     }
 
+    public Long getLastModificationDate() {
+        return lastModificationDate;
+    }
 
-
-
-
-
+    public void setLastModificationDate(Long lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
 }
