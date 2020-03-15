@@ -17,19 +17,27 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
+import com.offgrid.coupler.model.view.ChatViewModel;
 import com.offgrid.coupler.model.view.ContactViewModel;
 import com.offgrid.coupler.controller.message.MessageActivity;
+import com.offgrid.coupler.model.view.MessageListViewModel;
 
 
 public class ContactInfoActivity extends AppCompatActivity
-        implements Observer<User>, CompoundButton.OnCheckedChangeListener {
+        implements Observer<Object>, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private ContactViewModel contactViewModel;
+    private ChatViewModel chatViewModel;
+    private MessageListViewModel messageListViewModel;
+
     private Switch switcher;
+
+    private UserDto userDto;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,38 +59,27 @@ public class ContactInfoActivity extends AppCompatActivity
             }
         });
 
-
-        UserDto userDto = UserDto.getInstance(getIntent().getExtras());
+        userDto = UserDto.getInstance(getIntent().getExtras());
+        initViewModels();
 
         switcher = findViewById(R.id.notification_status_switcher);
         switcher.setOnCheckedChangeListener(this);
 
+        FloatingActionButton fab = findViewById(R.id.fb_start_user_chat);
+        fab.setOnClickListener(this);
+    }
+
+    private void initViewModels() {
+        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
+
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        chatViewModel.loadByUserId(userDto.getId());
+        chatViewModel.observe(this, this);
+
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         contactViewModel.loadByGid(userDto.getGid());
         contactViewModel.observe(this, this);
-
-        FloatingActionButton fab = findViewById(R.id.fb_start_user_chat);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                User user = contactViewModel.get();
-                if (user != null) {
-                    Intent intent = new Intent(ContactInfoActivity.this, MessageActivity.class);
-                    intent.putExtras(
-                            new ChatDto
-                                    .BundleBuilder()
-                                    .withReference(user.getId())
-                                    .withTitle(user.getFirstName() + " " + user.getLastName())
-                                    .withType(ChatType.PERSONAL)
-                                    .build()
-                    );
-                    startActivityForResult(intent, 1);
-                }
-            }
-        });
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,10 +87,11 @@ public class ContactInfoActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_contact) {
+            messageListViewModel.delete();
+            chatViewModel.delete();
             contactViewModel.delete();
             setResult(RESULT_OK, new Intent());
             finish();
@@ -110,7 +108,7 @@ public class ContactInfoActivity extends AppCompatActivity
                             .withGid(user.getGid())
                             .build()
             );
-            startActivity(intent);
+            startActivityForResult(intent, 1);
 
             return true;
         }
@@ -118,10 +116,10 @@ public class ContactInfoActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public void onChanged(User user) {
-        if (user != null) {
+    public void onChanged(Object o) {
+        if (o instanceof User) {
+            User user = (User)o;
             ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
             ((TextView) findViewById(R.id.notification_status)).setText(user.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
             ((TextView) findViewById(R.id.user_full_name)).setText(user.getFirstName() + " " + user.getLastName());
@@ -129,6 +127,9 @@ public class ContactInfoActivity extends AppCompatActivity
             if (switcher.isChecked() != user.isAllowNotify()) {
                 switcher.setChecked(user.isAllowNotify());
             }
+        } else if (o instanceof Chat) {
+            Chat chat = (Chat)o;
+            messageListViewModel.loadChatMessages(chat.getId());
         }
     }
 
@@ -137,5 +138,24 @@ public class ContactInfoActivity extends AppCompatActivity
         User user = contactViewModel.get();
         user.setAllowNotify(b);
         contactViewModel.update(user);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.fb_start_user_chat) {
+            User user = contactViewModel.get();
+            if (user != null) {
+                Intent intent = new Intent(ContactInfoActivity.this, MessageActivity.class);
+                intent.putExtras(
+                        new ChatDto
+                                .BundleBuilder()
+                                .withReference(user.getId())
+                                .withTitle(user.getFirstName() + " " + user.getLastName())
+                                .withType(ChatType.PERSONAL)
+                                .build()
+                );
+                startActivityForResult(intent, 1);
+            }
+        }
     }
 }
