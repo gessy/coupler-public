@@ -117,6 +117,7 @@ public class MessageActivity
                 return true;
             case R.id.action_clear_message_history:
                 messageListViewModel.delete();
+                chatViewModel.updateLastMessage("");
                 break;
         }
 
