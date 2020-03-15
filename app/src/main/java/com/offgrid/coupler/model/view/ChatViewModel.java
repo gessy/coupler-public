@@ -27,6 +27,8 @@ public class ChatViewModel extends AndroidViewModel {
     private LiveData<Chat> liveChat;
     private final MutableLiveData<Pair<Entity, Long>> liveID = new MutableLiveData();
 
+    private LifecycleOwner curentOwner;
+
     public ChatViewModel(Application application) {
         super(application);
         chatRepository = new ChatRepository(application);
@@ -61,7 +63,11 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Chat> observer) {
-        liveChat.observe(owner, observer);
+        if (curentOwner != null) {
+            liveChat.removeObservers(curentOwner);
+        }
+        curentOwner = owner;
+        liveChat.observe(curentOwner, observer);
     }
 
     public void insert(Chat chat) {
@@ -83,8 +89,23 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     public void delete() {
-        if (liveChat.getValue() != null) {
-            chatRepository.deleteChat(liveChat.getValue().getId());
+        Chat chat = liveChat.getValue();
+        if (chat != null) {
+            chatRepository.deleteChat(chat.getId());
+        }
+    }
+
+    public void cleanUpAndDelete() {
+        Chat chat = liveChat.getValue();
+        if (chat != null) {
+            removeObservers();
+            chatRepository.deleteChat(chat.getId());
+        }
+    }
+
+    private void removeObservers() {
+        if (curentOwner != null) {
+            liveChat.removeObservers(curentOwner);
         }
     }
 }
