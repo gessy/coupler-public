@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.UserDao;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.entity.UserChat;
 
 import java.util.List;
 
@@ -25,7 +26,15 @@ public class UserRepository {
     }
 
     public LiveData<User> getUserByGid(String gid) {
-        return dao.findBuGid(gid);
+        return dao.findByGid(gid);
+    }
+
+    public LiveData<UserChat> getUserChatByUserId(Long userId) {
+        return dao.findUserChatByUserId(userId);
+    }
+
+    public LiveData<UserChat> getUserChatByGid(String gid) {
+        return dao.findUserChatByGid(gid);
     }
 
     public void insert(final User user) {

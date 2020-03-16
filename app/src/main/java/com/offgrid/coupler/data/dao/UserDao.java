@@ -5,9 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.entity.UserChat;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface UserDao {
     LiveData<List<User>> findAll();
 
     @Query("select * from T_User where gid = :gid")
-    LiveData<User> findBuGid(String gid);
+    LiveData<User> findByGid(String gid);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(User user);
@@ -34,4 +36,12 @@ public interface UserDao {
 
     @Query("delete from T_User")
     void deleteAll();
+
+    @Transaction
+    @Query("select * from T_User where id = :user_id")
+    LiveData<UserChat> findUserChatByUserId(long user_id);
+
+    @Transaction
+    @Query("select * from T_User where gid = :gid")
+    LiveData<UserChat> findUserChatByGid(String gid);
 }

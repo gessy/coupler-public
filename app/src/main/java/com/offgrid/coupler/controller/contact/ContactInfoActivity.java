@@ -17,23 +17,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.dto.ChatDto;
+import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.model.dto.UserDto;
-import com.offgrid.coupler.model.view.ChatViewModel;
+import com.offgrid.coupler.model.dto.wrapper.DtoChatWrapper;
+import com.offgrid.coupler.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.model.view.ContactViewModel;
 import com.offgrid.coupler.controller.message.MessageActivity;
-import com.offgrid.coupler.model.view.MessageListViewModel;
 
 
 public class ContactInfoActivity extends AppCompatActivity
         implements Observer<Object>, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private ContactViewModel contactViewModel;
-    private ChatViewModel chatViewModel;
-    private MessageListViewModel messageListViewModel;
 
     private Switch switcher;
 
@@ -70,12 +66,6 @@ public class ContactInfoActivity extends AppCompatActivity
     }
 
     private void initViewModels() {
-        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
-
-        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
-        chatViewModel.loadByUserId(userDto.getId());
-        chatViewModel.observe(this, this);
-
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         contactViewModel.loadByGid(userDto.getGid());
         contactViewModel.observe(this, this);
@@ -90,24 +80,14 @@ public class ContactInfoActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_contact) {
-            messageListViewModel.delete();
-            chatViewModel.delete();
             contactViewModel.delete();
             setResult(RESULT_OK, new Intent());
             finish();
             return true;
         } else if (item.getItemId() == R.id.action_edit_contact) {
             Intent intent = new Intent(this, EditContactActivity.class);
-            User user = contactViewModel.get();
-            intent.putExtras(
-                    new UserDto
-                            .BundleBuilder()
-                            .withId(user.getId())
-                            .withFirstName(user.getFirstName())
-                            .withLastName(user.getLastName())
-                            .withGid(user.getGid())
-                            .build()
-            );
+            User user = contactViewModel.getUser();
+            intent.putExtras(DtoUserWrapper.convertAndWrap(user));
             startActivityForResult(intent, 1);
 
             return true;
@@ -118,8 +98,8 @@ public class ContactInfoActivity extends AppCompatActivity
 
     @Override
     public void onChanged(Object o) {
-        if (o instanceof User) {
-            User user = (User)o;
+        if (o instanceof UserChat) {
+            User user = ((UserChat)o).user;
             ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
             ((TextView) findViewById(R.id.notification_status)).setText(user.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
             ((TextView) findViewById(R.id.user_full_name)).setText(user.getFirstName() + " " + user.getLastName());
@@ -127,33 +107,21 @@ public class ContactInfoActivity extends AppCompatActivity
             if (switcher.isChecked() != user.isAllowNotify()) {
                 switcher.setChecked(user.isAllowNotify());
             }
-        } else if (o instanceof Chat) {
-            Chat chat = (Chat)o;
-            messageListViewModel.loadChatMessages(chat.getId());
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        User user = contactViewModel.get();
-        user.setAllowNotify(b);
-        contactViewModel.update(user);
+        contactViewModel.allowNotification(b);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fb_start_user_chat) {
-            User user = contactViewModel.get();
+            User user = contactViewModel.getUser();
             if (user != null) {
                 Intent intent = new Intent(ContactInfoActivity.this, MessageActivity.class);
-                intent.putExtras(
-                        new ChatDto
-                                .BundleBuilder()
-                                .withReference(user.getId())
-                                .withTitle(user.getFirstName() + " " + user.getLastName())
-                                .withType(ChatType.PERSONAL)
-                                .build()
-                );
+                intent.putExtras(DtoChatWrapper.convertAndWrap(user));
                 startActivityForResult(intent, 1);
             }
         }

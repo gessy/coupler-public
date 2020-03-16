@@ -6,11 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-
 import static com.offgrid.coupler.util.RandomTokenGenerator.getRandInt;
 import static java.lang.System.currentTimeMillis;
-
 
 @Entity(tableName = "T_Message")
 public class Message {
@@ -78,7 +75,7 @@ public class Message {
         this.userFullName = userFullName;
         this.isMine = isMine;
     }
-    
+
 
     public static Message talkerMessage() {
         String message = "Message ID " + getRandInt() + " How are you doing? This is a long message that should probably wrap.";

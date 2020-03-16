@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.data.entity.Chat;
-import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.holder.ChatListItemViewHolder;
 import com.offgrid.coupler.controller.message.MessageActivity;
+import com.offgrid.coupler.model.dto.wrapper.DtoChatWrapper;
 
 import java.util.List;
 
@@ -44,14 +43,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(fragment.getActivity(), MessageActivity.class);
-                intent.putExtras(
-                        new ChatDto
-                                .BundleBuilder()
-                                .withId(current.getId())
-                                .withTitle(current.getTitle())
-                                .withType(ChatType.valueOf(current.getType()))
-                                .build()
-                );
+                intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 fragment.startActivityForResult(intent, 1);
             }
         });
@@ -61,11 +53,6 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
         this.chats = chats;
         notifyDataSetChanged();
     }
-
-    public void dataSetChanged() {
-        notifyDataSetChanged();
-    }
-
 
     @Override
     public int getItemCount() {
