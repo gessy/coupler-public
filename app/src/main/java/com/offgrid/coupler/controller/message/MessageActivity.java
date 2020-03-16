@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +49,7 @@ public class MessageActivity
         super.onCreate(savedInstanceState);
 
         chatDto = ChatDto.getInstance(getIntent().getExtras());
+        initViewModels();
 
         setContentView(R.layout.activity_message);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -75,6 +75,14 @@ public class MessageActivity
         recyclerView.setAdapter(messageListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        editText = findViewById(R.id.edit_text);
+
+        ImageButton imageButton = findViewById(R.id.send_message);
+        imageButton.setOnClickListener(MessageActivity.this);
+    }
+
+
+    public void initViewModels() {
         messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
         messageListViewModel.observe(this, this);
 
@@ -95,11 +103,6 @@ public class MessageActivity
         } else {
             chatViewModel.loadByChatId(chatDto.getId());
         }
-
-        editText = findViewById(R.id.edit_text);
-
-        ImageButton imageButton = findViewById(R.id.send_message);
-        imageButton.setOnClickListener(MessageActivity.this);
     }
 
 
@@ -129,7 +132,7 @@ public class MessageActivity
 
 
     @Override
-    public void onChanged(@Nullable final List<Message> messages) {
+    public void onChanged(@Nullable List<Message> messages) {
         messageListAdapter.setMessages(messages);
     }
 

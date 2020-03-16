@@ -83,6 +83,14 @@ public class ChatViewModel extends AndroidViewModel {
         }
     }
 
+    public void updateTitle(String title) {
+        Chat chat = liveChat.getValue();
+        if (chat != null) {
+            chat.setTitle(title);
+            chatRepository.update(chat);
+        }
+    }
+
 
     public void update(Chat chat) {
         chatRepository.update(chat);

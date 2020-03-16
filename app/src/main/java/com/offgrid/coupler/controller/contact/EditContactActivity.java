@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,12 +18,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.model.dto.UserDto;
+import com.offgrid.coupler.model.view.ChatViewModel;
 import com.offgrid.coupler.model.view.ContactViewModel;
 
 
-public class EditContactActivity extends AppCompatActivity implements Observer<User> {
+public class EditContactActivity extends AppCompatActivity implements Observer<Object> {
 
     private ContactViewModel contactViewModel;
+    private ChatViewModel chatViewModel;
+
+    private UserDto userDto;
 
     private EditText fnInput;
     private EditText lnInput;
@@ -47,15 +52,23 @@ public class EditContactActivity extends AppCompatActivity implements Observer<U
             }
         });
 
-
         fnInput = findViewById(R.id.user_first_name);
         lnInput = findViewById(R.id.user_last_name);
 
-        UserDto userDto = UserDto.getInstance(getIntent().getExtras());
+        userDto = UserDto.getInstance(getIntent().getExtras());
 
+        initViewModels();
+    }
+
+
+    private void initViewModels() {
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         contactViewModel.loadByGid(userDto.getGid());
         contactViewModel.observe(this, this);
+
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        chatViewModel.loadByUserId(userDto.getId());
+        chatViewModel.observe(this, this);
     }
 
 
@@ -74,6 +87,7 @@ public class EditContactActivity extends AppCompatActivity implements Observer<U
             user.setLastName(lnInput.getText().toString());
 
             contactViewModel.update(user);
+            chatViewModel.updateTitle(user.getFirstName() + " " + user.getLastName());
 
             setResult(RESULT_OK, new Intent());
             finish();
@@ -85,8 +99,9 @@ public class EditContactActivity extends AppCompatActivity implements Observer<U
 
 
     @Override
-    public void onChanged(User user) {
-        if (user != null) {
+    public void onChanged(Object o) {
+        if (o instanceof User) {
+            User user = (User)o;
             ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
             fnInput.setText(user.getFirstName());
             lnInput.setText(user.getLastName());
