@@ -14,7 +14,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.entity.ChatMessages;
+import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.repository.ChatRepository;
+import com.offgrid.coupler.data.repository.MessageRepository;
 
 
 import static com.offgrid.coupler.model.view.ChatViewModel.Entity.CHAT;
@@ -24,25 +27,28 @@ public class ChatViewModel extends AndroidViewModel {
     public enum Entity {CHAT, USER, GROUP}
 
     private ChatRepository chatRepository;
-    private LiveData<Chat> liveChat;
+    private MessageRepository messageRepository;
+
+    private LiveData<ChatMessages> liveChatMessages;
     private final MutableLiveData<Pair<Entity, Long>> liveID = new MutableLiveData();
 
-    private LifecycleOwner curentOwner;
+    private LifecycleOwner currentOwner;
 
     public ChatViewModel(Application application) {
         super(application);
         chatRepository = new ChatRepository(application);
+        messageRepository = new MessageRepository(application);
 
-        liveChat = Transformations.switchMap(liveID, new Function<Pair<Entity, Long>, LiveData<Chat>>() {
+        liveChatMessages = Transformations.switchMap(liveID, new Function<Pair<Entity, Long>, LiveData<ChatMessages>>() {
             @Override
-            public LiveData<Chat> apply(Pair<Entity, Long> pair) {
+            public LiveData<ChatMessages> apply(Pair<Entity, Long> pair) {
                 if (pair == null) return new MediatorLiveData<>();
 
                 switch (pair.first) {
                     case CHAT:
-                        return chatRepository.getChat(pair.second);
+                        return chatRepository.getChatMessages(pair.second);
                     case USER:
-                        return chatRepository.getUserChat(pair.second);
+                        return chatRepository.getUserChatMessages(pair.second);
                 }
 
                 return new MediatorLiveData<>();
@@ -58,62 +64,84 @@ public class ChatViewModel extends AndroidViewModel {
         liveID.setValue(new Pair<>(USER, userId));
     }
 
-    public Chat get() {
-        return liveChat.getValue();
+    public void addMessage(Message message) {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        if (chatMessages != null) {
+            Chat chat = chatMessages.chat;
+            chat.setLastMessage(message.getMessage());
+            chat.setLastModificationDate(System.currentTimeMillis());
+            chatRepository.update(chat);
+
+            message.setChatId(chat.getId());
+            messageRepository.insert(message);
+        }
     }
 
-    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Chat> observer) {
-        if (curentOwner != null) {
-            liveChat.removeObservers(curentOwner);
+    public void deleteMessages() {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        if (chatMessages != null) {
+            Chat chat = chatMessages.chat;
+            messageRepository.deleteChatMessages(chat.getId());
+
+            chat.setLastMessage("");
+            chat.setLastModificationDate(System.currentTimeMillis());
+            chatRepository.update(chat);
         }
-        curentOwner = owner;
-        liveChat.observe(curentOwner, observer);
+    }
+
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super ChatMessages> observer) {
+        if (currentOwner != null) {
+            liveChatMessages.removeObservers(currentOwner);
+        }
+        currentOwner = owner;
+        liveChatMessages.observe(currentOwner, observer);
     }
 
     public void insert(Chat chat) {
         chatRepository.insert(chat);
     }
 
-    public void updateLastMessage(String message) {
-        Chat chat = liveChat.getValue();
-        if (chat != null) {
-            chat.setLastMessage(message);
-            chat.setLastModificationDate(System.currentTimeMillis());
-            chatRepository.update(chat);
-        }
-    }
-
     public void updateTitle(String title) {
-        Chat chat = liveChat.getValue();
-        if (chat != null) {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        if (chatMessages != null) {
+            Chat chat = chatMessages.chat;
             chat.setTitle(title);
             chatRepository.update(chat);
         }
     }
-
 
     public void update(Chat chat) {
         chatRepository.update(chat);
     }
 
     public void delete() {
-        Chat chat = liveChat.getValue();
-        if (chat != null) {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        if (chatMessages != null) {
+            Chat chat = chatMessages.chat;
+            messageRepository.deleteChatMessages(chat.getId());
             chatRepository.deleteChat(chat.getId());
         }
     }
 
     public void cleanUpAndDelete() {
-        Chat chat = liveChat.getValue();
-        if (chat != null) {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        if (chatMessages != null) {
             removeObservers();
+            Chat chat = chatMessages.chat;
+            messageRepository.deleteChatMessages(chat.getId());
             chatRepository.deleteChat(chat.getId());
         }
     }
 
     private void removeObservers() {
-        if (curentOwner != null) {
-            liveChat.removeObservers(curentOwner);
+        if (currentOwner != null) {
+            liveChatMessages.removeObservers(currentOwner);
         }
     }
+
+    public boolean noMessages() {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        return chatMessages == null || chatMessages.messages.isEmpty();
+    }
+
 }

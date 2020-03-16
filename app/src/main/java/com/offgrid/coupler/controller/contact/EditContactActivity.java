@@ -85,7 +85,6 @@ public class EditContactActivity extends AppCompatActivity implements Observer<O
             User user = contactViewModel.get();
             user.setFirstName(fnInput.getText().toString());
             user.setLastName(lnInput.getText().toString());
-
             contactViewModel.update(user);
             chatViewModel.updateTitle(user.getFirstName() + " " + user.getLastName());
 

@@ -17,15 +17,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.dto.UserDto;
+import com.offgrid.coupler.model.dto.wrapper.DtoChatWrapper;
+import com.offgrid.coupler.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.model.view.ChatViewModel;
 import com.offgrid.coupler.model.view.ContactViewModel;
 import com.offgrid.coupler.controller.message.MessageActivity;
-import com.offgrid.coupler.model.view.MessageListViewModel;
 
 
 public class ContactInfoActivity extends AppCompatActivity
@@ -33,7 +31,6 @@ public class ContactInfoActivity extends AppCompatActivity
 
     private ContactViewModel contactViewModel;
     private ChatViewModel chatViewModel;
-    private MessageListViewModel messageListViewModel;
 
     private Switch switcher;
 
@@ -70,8 +67,6 @@ public class ContactInfoActivity extends AppCompatActivity
     }
 
     private void initViewModels() {
-        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
-
         chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         chatViewModel.loadByUserId(userDto.getId());
         chatViewModel.observe(this, this);
@@ -90,7 +85,6 @@ public class ContactInfoActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_delete_contact) {
-            messageListViewModel.delete();
             chatViewModel.delete();
             contactViewModel.delete();
             setResult(RESULT_OK, new Intent());
@@ -99,15 +93,7 @@ public class ContactInfoActivity extends AppCompatActivity
         } else if (item.getItemId() == R.id.action_edit_contact) {
             Intent intent = new Intent(this, EditContactActivity.class);
             User user = contactViewModel.get();
-            intent.putExtras(
-                    new UserDto
-                            .BundleBuilder()
-                            .withId(user.getId())
-                            .withFirstName(user.getFirstName())
-                            .withLastName(user.getLastName())
-                            .withGid(user.getGid())
-                            .build()
-            );
+            intent.putExtras(DtoUserWrapper.convertAndWrap(user));
             startActivityForResult(intent, 1);
 
             return true;
@@ -127,9 +113,6 @@ public class ContactInfoActivity extends AppCompatActivity
             if (switcher.isChecked() != user.isAllowNotify()) {
                 switcher.setChecked(user.isAllowNotify());
             }
-        } else if (o instanceof Chat) {
-            Chat chat = (Chat)o;
-            messageListViewModel.loadChatMessages(chat.getId());
         }
     }
 
@@ -146,14 +129,7 @@ public class ContactInfoActivity extends AppCompatActivity
             User user = contactViewModel.get();
             if (user != null) {
                 Intent intent = new Intent(ContactInfoActivity.this, MessageActivity.class);
-                intent.putExtras(
-                        new ChatDto
-                                .BundleBuilder()
-                                .withReference(user.getId())
-                                .withTitle(user.getFirstName() + " " + user.getLastName())
-                                .withType(ChatType.PERSONAL)
-                                .build()
-                );
+                intent.putExtras(DtoChatWrapper.convertAndWrap(user));
                 startActivityForResult(intent, 1);
             }
         }

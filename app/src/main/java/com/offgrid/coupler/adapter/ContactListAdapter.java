@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.model.dto.UserDto;
 import com.offgrid.coupler.controller.contact.ContactInfoActivity;
 import com.offgrid.coupler.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.model.dto.wrapper.DtoUserWrapper;
 
 import java.util.List;
 
@@ -41,15 +41,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ContactInfoActivity.class);
-                intent.putExtras(
-                        new UserDto
-                                .BundleBuilder()
-                                .withId(current.getId())
-                                .withFirstName(current.getFirstName())
-                                .withLastName(current.getLastName())
-                                .withGid(current.getGid())
-                                .build()
-                );
+                intent.putExtras(DtoUserWrapper.convertAndWrap(current));
                 context.startActivity(intent);
             }
         });

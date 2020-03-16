@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.view.View;
 
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.holder.ContactListItemViewHolder;
 import com.offgrid.coupler.controller.message.MessageActivity;
+import com.offgrid.coupler.model.dto.wrapper.DtoChatWrapper;
 
 
 public class NewMessageContactListAdapter extends ContactListAdapter {
@@ -26,18 +25,10 @@ public class NewMessageContactListAdapter extends ContactListAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtras(
-                        new ChatDto
-                                .BundleBuilder()
-                                .withReference(current.getId())
-                                .withTitle(current.getFirstName() + " " + current.getLastName())
-                                .withType(ChatType.PERSONAL)
-                                .build()
-                );
+                intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 context.startActivity(intent);
                 ((Activity)context).finish();
             }
         });
     }
-
 }

@@ -19,24 +19,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.adapter.MessageListAdapter;
-import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.view.ChatViewModel;
-import com.offgrid.coupler.model.view.MessageListViewModel;
 
-import java.util.List;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 import static com.offgrid.coupler.data.entity.Chat.personalChat;
-import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
 
 
 public class MessageActivity
         extends AppCompatActivity
-        implements Observer<List<Message>>, View.OnClickListener {
+        implements Observer<ChatMessages>, View.OnClickListener {
 
-    private MessageListViewModel messageListViewModel;
     private ChatViewModel chatViewModel;
 
     private MessageListAdapter messageListAdapter;
@@ -62,7 +58,7 @@ public class MessageActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (messageListViewModel.isEmpty()) {
+                if (chatViewModel.noMessages()) {
                     chatViewModel.cleanUpAndDelete();
                 }
                 onBackPressed();
@@ -83,20 +79,8 @@ public class MessageActivity
 
 
     public void initViewModels() {
-        messageListViewModel = new ViewModelProvider(this).get(MessageListViewModel.class);
-        messageListViewModel.observe(this, this);
-
         chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
-        chatViewModel.observe(this, new Observer<Chat>() {
-            @Override
-            public void onChanged(Chat chat) {
-                if (chat != null) {
-                    messageListViewModel.loadChatMessages(chat.getId());
-                } else if (PERSONAL.equals(chatDto.getType())) {
-                    chatViewModel.insert(personalChat(chatDto.getTitle(), chatDto.getReference()));
-                }
-            }
-        });
+        chatViewModel.observe(this, this);
 
         if (chatDto.getId() == null) {
             chatViewModel.loadByUserId(chatDto.getReference());
@@ -117,13 +101,10 @@ public class MessageActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_talker_message:
-                Message message = Message.talkerMessage();
-                messageListViewModel.insert(message);
-                chatViewModel.updateLastMessage(message.getMessage());
+                chatViewModel.addMessage(Message.talkerMessage());
                 return true;
             case R.id.action_clear_message_history:
-                messageListViewModel.delete();
-                chatViewModel.updateLastMessage("");
+                chatViewModel.deleteMessages();
                 break;
         }
 
@@ -132,16 +113,19 @@ public class MessageActivity
 
 
     @Override
-    public void onChanged(@Nullable List<Message> messages) {
-        messageListAdapter.setMessages(messages);
+    public void onChanged(ChatMessages chatMessages) {
+        if (chatMessages == null) {
+            chatViewModel.insert(personalChat(chatDto.getTitle(), chatDto.getReference()));
+        } else {
+            messageListAdapter.setMessages(chatMessages.messages);
+        }
     }
 
 
     private void sendMessage() {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            messageListViewModel.insert(Message.myMessage(message));
-            chatViewModel.updateLastMessage(message);
+            chatViewModel.addMessage(Message.myMessage(message));
             editText.getText().clear();
             InputMethodManager inputManager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), HIDE_NOT_ALWAYS);
