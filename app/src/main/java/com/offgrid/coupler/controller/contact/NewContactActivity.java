@@ -24,9 +24,10 @@ import com.offgrid.coupler.controller.contact.status.InputFieldsStatusHolder;
 public class NewContactActivity extends AppCompatActivity implements Updatable {
 
     private InputFieldsStatusHolder statusHolder = new InputFieldsStatusHolder();
-    private MenuItem menuItemDone;
+
     private ContactViewModel contactViewModel;
 
+    private MenuItem menuItemDone;
     private EditText gidInput;
     private EditText fnInput;
     private EditText lnInput;

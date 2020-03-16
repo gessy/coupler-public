@@ -6,7 +6,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-
 @Entity(tableName = "T_User")
 public class User {
     @PrimaryKey(autoGenerate = true)

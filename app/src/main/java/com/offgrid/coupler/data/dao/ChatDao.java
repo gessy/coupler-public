@@ -44,5 +44,4 @@ public interface ChatDao {
     @Transaction
     @Query("select * from T_Chat where user_id = :user_id")
     LiveData<ChatMessages> getUserChatMessages(long user_id);
-
 }
