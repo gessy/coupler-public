@@ -16,6 +16,7 @@ import androidx.lifecycle.Transformations;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
+import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 
@@ -142,6 +143,15 @@ public class ChatViewModel extends AndroidViewModel {
     public boolean noMessages() {
         ChatMessages chatMessages = liveChatMessages.getValue();
         return chatMessages == null || chatMessages.messages.isEmpty();
+    }
+
+    public boolean isPersonal() {
+        ChatMessages chatMessages = liveChatMessages.getValue();
+        if (chatMessages != null) {
+            Chat chat = chatMessages.chat;
+            return ChatType.PERSONAL.toString().equals(chat.getType());
+        }
+        return false;
     }
 
 }

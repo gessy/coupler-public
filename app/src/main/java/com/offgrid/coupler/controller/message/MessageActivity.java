@@ -58,7 +58,7 @@ public class MessageActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (chatViewModel.noMessages()) {
+                if (chatViewModel.isPersonal() && chatViewModel.noMessages()) {
                     chatViewModel.cleanUpAndDelete();
                 }
                 onBackPressed();
