@@ -14,7 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.controller.group.GroupActivity;
+import com.offgrid.coupler.controller.group.NewGroupActivity;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
@@ -97,23 +97,23 @@ public class MainActivity
             Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
-                            .withTitle("Add Group")
-                            .withText("This is new group activity")
-                            .withAction(Info.Action.add_group)
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else if (item.getItemId() == R.id.nav_group) {
-            Intent intent = new Intent(MainActivity.this, GroupActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
                             .withTitle("Contacts")
                             .withText("This is Contact list activity")
                             .withAction(Info.Action.contact_list)
                             .build()
             );
             startActivityForResult(intent, 1);
-        }else {
+        } else if (item.getItemId() == R.id.nav_group) {
+            Intent intent = new Intent(MainActivity.this, NewGroupActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Add Group")
+                            .withText("This is new group activity")
+                            .withAction(Info.Action.add_group)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        } else {
             Intent intent = new Intent(MainActivity.this, MockActivity.class);
             intent.putExtras(EntityHelper.createBundle(item.getItemId()));
             startActivityForResult(intent, 1);

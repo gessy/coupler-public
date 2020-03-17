@@ -34,6 +34,8 @@
     <string name="hint_first_name">First Name (required)</string>
     <string name="hint_last_name">Last Name (optional)</string>
 
+    <string name="hint_new_group_name">Enter group name</string>
+
     <string name="gid_label">GID</string>
     <string name="gid_pattern">___ ___ ___ ___</string>
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +14,7 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.model.Info;
 
 
-public class GroupActivity extends AppCompatActivity {
+public class NewGroupActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +22,7 @@ public class GroupActivity extends AppCompatActivity {
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_group);
+        setContentView(R.layout.activity_new_group);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -38,9 +37,6 @@ public class GroupActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        final TextView textView = findViewById(R.id.text);
-        textView.setText(info.getText() + " - ZZZ");
     }
 
 

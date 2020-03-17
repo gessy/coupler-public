@@ -46,7 +46,7 @@
 
 <!--        Group Activities-->
         <activity
-            android:name=".controller.group.GroupActivity"
+            android:name=".controller.group.NewGroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
