@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.util.RandomTokenGenerator;
 
+import static java.lang.System.currentTimeMillis;
+
 @Entity(tableName = "T_Chat")
 public class Chat {
     @PrimaryKey(autoGenerate = true)
@@ -31,52 +33,40 @@ public class Chat {
     @ColumnInfo(name = "user_id")
     private Long userId;
 
+    @ColumnInfo(name = "group_id")
+    private Long groupId;
+
     @ColumnInfo(name = "last_modification_date")
     private Long lastModificationDate;
 
-
-    public static Chat getEmpty() {
-        return new Chat("No data","No data");
-    }
 
     public Chat() {
     }
 
     @Ignore
-    public Chat(@NonNull String title, @NonNull String message) {
-        this.title = title;
-        this.lastMessage = message;
-        this.type = ChatType.PERSONAL.toString();
-        this.lastModificationDate = System.currentTimeMillis();
-    }
-
-
-    @Ignore
-    public Chat(@NonNull String title, @NonNull String message, @NonNull String type) {
-        this.title = title;
-        this.lastMessage = message;
-        this.type = type;
-        this.lastModificationDate = System.currentTimeMillis();
-    }
-
-    @Ignore
-    public Chat(@NonNull String title, @NonNull String lastMessage, @NonNull String type, Long userId) {
+    private Chat(@NonNull String title, @NonNull String lastMessage, @NonNull String type, Long userId, Long groupId) {
         this.title = title;
         this.lastMessage = lastMessage;
         this.type = type;
         this.userId = userId;
-        this.lastModificationDate = System.currentTimeMillis();
+        this.groupId = groupId;
+        this.lastModificationDate = currentTimeMillis();
+    }
+
+
+    public static Chat getEmpty() {
+        return new Chat("No data", "No data", ChatType.PERSONAL.toString(), null, null);
     }
 
     public static Chat personalChat(@NonNull String title, Long userId) {
-        return new Chat(title, "", ChatType.PERSONAL.toString(), userId);
+        return new Chat(title, "", ChatType.PERSONAL.toString(), userId, null);
     }
 
     public static Chat randGroupChat() {
         int id = RandomTokenGenerator.getRandInt();
         String title = "Chat ID " + id;
         String message = "Last message on Chat ID " + id;
-        return new Chat(title, message, ChatType.GROUP.toString(), null);
+        return new Chat(title, message, ChatType.GROUP.toString(), null, null);
     }
 
     @NonNull
@@ -129,5 +119,13 @@ public class Chat {
 
     public void setLastModificationDate(Long lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 }
