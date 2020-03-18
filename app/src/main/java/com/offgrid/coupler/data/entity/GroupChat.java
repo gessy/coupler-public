@@ -6,11 +6,8 @@ import androidx.room.Relation;
 public class GroupChat {
     @Embedded
     public Group group;
-    @Relation(
-            parentColumn = "id",
-            entityColumn = "group_id",
-            entity = Chat.class
-    )
+
+    @Relation(parentColumn = "id", entityColumn = "group_id", entity = Chat.class)
     public Chat chat;
 
     public GroupChat(Group group, Chat chat) {

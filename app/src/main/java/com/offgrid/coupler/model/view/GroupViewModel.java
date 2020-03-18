@@ -49,7 +49,7 @@ public class GroupViewModel extends AndroidViewModel {
     public void delete() {
         GroupChat groupChat = liveGroupChat.getValue();
         if (groupChat != null) {
-            groupRepository.delete(groupChat.group);
+            groupRepository.delete(groupChat);
         }
     }
 

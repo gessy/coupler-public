@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.util.RandomTokenGenerator;
 
+import static androidx.room.ForeignKey.CASCADE;
 import static java.lang.System.currentTimeMillis;
 
 @Entity(tableName = "T_Chat")
@@ -34,12 +35,7 @@ public class Chat {
     @ColumnInfo(name = "user_id")
     private Long userId;
 
-    @ForeignKey(
-            entity = Group.class,
-            parentColumns = "id",
-            childColumns = "group_id",
-            onDelete = ForeignKey.CASCADE
-    )
+    @ForeignKey(entity = Group.class, parentColumns = "id", childColumns = "group_id", onDelete = CASCADE)
     @ColumnInfo(name = "group_id")
     private Long groupId;
 

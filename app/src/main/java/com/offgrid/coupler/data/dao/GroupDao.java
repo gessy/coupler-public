@@ -2,6 +2,7 @@ package com.offgrid.coupler.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -42,14 +43,28 @@ public abstract class GroupDao {
         Chat chat = groupChat.chat;
         if (chat != null) {
             chat.setGroupId(id);
-            insert(chat);
+            _insert(chat);
         }
     }
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+
+    @Transaction
+    public void delete(GroupChat groupChat) {
+        if (groupChat.group != null) delete(groupChat.group);
+        if (groupChat.chat != null) _delete(groupChat.chat);
+    }
+
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Group.class)
     public abstract long insert(Group group);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract long insert(Chat chat);
+    @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Chat.class)
+    abstract long _insert(Chat chat);
+
+    @Delete(entity = Group.class)
+    public abstract void delete(Group group);
+
+    @Delete(entity = Chat.class)
+    abstract void _delete(Chat chat);
 
 }
