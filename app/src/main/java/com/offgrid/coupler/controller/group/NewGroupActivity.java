@@ -9,12 +9,17 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.model.view.GroupViewModel;
 
 
 public class NewGroupActivity extends AppCompatActivity {
+
+    GroupViewModel groupViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class NewGroupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
     }
 
 
@@ -50,6 +57,7 @@ public class NewGroupActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.nav_done) {
+            groupViewModel.insert(new Group("ZZZZZZ"));
             setResult(RESULT_OK, new Intent());
             finish();
             return true;

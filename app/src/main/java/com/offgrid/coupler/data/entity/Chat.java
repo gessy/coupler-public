@@ -3,6 +3,7 @@ package com.offgrid.coupler.data.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -33,6 +34,12 @@ public class Chat {
     @ColumnInfo(name = "user_id")
     private Long userId;
 
+    @ForeignKey(
+            entity = Group.class,
+            parentColumns = "id",
+            childColumns = "group_id",
+            onDelete = ForeignKey.CASCADE
+    )
     @ColumnInfo(name = "group_id")
     private Long groupId;
 
@@ -60,6 +67,10 @@ public class Chat {
 
     public static Chat personalChat(@NonNull String title, Long userId) {
         return new Chat(title, "", ChatType.PERSONAL.toString(), userId, null);
+    }
+
+    public static Chat groupChat(@NonNull String title) {
+        return new Chat(title, "", ChatType.GROUP.toString(), null, null);
     }
 
     public static Chat randGroupChat() {
