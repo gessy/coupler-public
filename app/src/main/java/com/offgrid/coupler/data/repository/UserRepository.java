@@ -9,6 +9,7 @@ import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.UserDao;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
+import com.offgrid.coupler.data.entity.UserChatMessages;
 
 import java.util.List;
 
@@ -36,6 +37,12 @@ public class UserRepository {
     public LiveData<UserChat> getUserChatByGid(String gid) {
         return dao.findUserChatByGid(gid);
     }
+
+
+    public LiveData<UserChatMessages> getUserChatMessagesByUserId(Long userId) {
+        return dao.findUserChatMessagesByUserId(userId);
+    }
+
 
     public void insert(final User user) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {

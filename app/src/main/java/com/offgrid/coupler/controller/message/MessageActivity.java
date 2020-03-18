@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,19 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.adapter.MessageListAdapter;
-import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
+import com.offgrid.coupler.data.entity.UserChatMessages;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.view.ChatViewModel;
+import com.offgrid.coupler.model.view.UserChatViewModel;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
-import static com.offgrid.coupler.data.entity.Chat.personalChat;
 
 
 public class MessageActivity
         extends AppCompatActivity
-        implements Observer<ChatMessages>, View.OnClickListener {
+        implements View.OnClickListener, Observer<Object> {
 
     private ChatViewModel chatViewModel;
 
@@ -58,8 +57,12 @@ public class MessageActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (chatViewModel.isPersonal() && chatViewModel.noMessages()) {
-                    chatViewModel.cleanUpAndDelete();
+                if (chatViewModel.isPersonal()) {
+                    if (chatViewModel.noMessages()) {
+                        chatViewModel.setVisibility(false);
+                    } else {
+                        chatViewModel.setVisibility(true);
+                    }
                 }
                 onBackPressed();
             }
@@ -79,14 +82,9 @@ public class MessageActivity
 
 
     public void initViewModels() {
-        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        chatViewModel = new ViewModelProvider(this).get(UserChatViewModel.class);
         chatViewModel.observe(this, this);
-
-        if (chatDto.getId() == null) {
-            chatViewModel.loadByUserId(chatDto.getReference());
-        } else {
-            chatViewModel.loadByChatId(chatDto.getId());
-        }
+        chatViewModel.loadByReferenceId(chatDto.getReference());
     }
 
 
@@ -112,16 +110,6 @@ public class MessageActivity
     }
 
 
-    @Override
-    public void onChanged(ChatMessages chatMessages) {
-        if (chatMessages == null) {
-            chatViewModel.insert(personalChat(chatDto.getTitle(), chatDto.getReference()));
-        } else {
-            messageListAdapter.setMessages(chatMessages.messages);
-        }
-    }
-
-
     private void sendMessage() {
         String message = editText.getText().toString();
         if (message.length() > 0) {
@@ -139,4 +127,16 @@ public class MessageActivity
         }
     }
 
+
+    @Override
+    public void onChanged(Object o) {
+        if (o instanceof UserChatMessages) {
+            UserChatMessages userChatMessages = (UserChatMessages) o;
+            if (userChatMessages.chat == null) {
+                chatViewModel.createChat();
+            } else {
+                messageListAdapter.setMessages(userChatMessages.messages);
+            }
+        }
+    }
 }
