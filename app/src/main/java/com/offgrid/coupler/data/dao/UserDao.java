@@ -47,6 +47,6 @@ public interface UserDao {
     LiveData<UserChat> findUserChatByGid(String gid);
 
     @Transaction
-    @Query("select * from T_User where id = :user_id")
+    @Query("select user_id as uid, id as cid from T_Chat where user_id = :user_id")
     LiveData<UserChatMessages> findUserChatMessagesByUserId(long user_id);
 }
