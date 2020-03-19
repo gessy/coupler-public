@@ -15,17 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.controller.group.NewGroupActivity;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.adapter.NewMessageContactListAdapter;
-import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.model.view.ContactListViewModel;
 import com.offgrid.coupler.controller.contact.NewContactActivity;
 
 import java.util.List;
 
-public class NewMessageActivity extends AppCompatActivity implements Observer<List<User>>, View.OnClickListener {
+public class NewMessageActivity
+        extends AppCompatActivity
+        implements Observer<List<User>>, View.OnClickListener {
 
     private NewMessageContactListAdapter contactListAdapter;
     private ContactListViewModel contactListViewModel;
@@ -100,10 +101,16 @@ public class NewMessageActivity extends AppCompatActivity implements Observer<Li
             );
             startActivityForResult(intent, 1);
         } else if (view.getId() == R.id.action_new_group) {
-            new ChatRepository(getApplication()).insert(Chat.randGroupChat());
-            setResult(RESULT_OK, new Intent());
+            Intent intent = new Intent(NewMessageActivity.this, NewGroupActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Add Group")
+                            .withText("This is new group activity")
+                            .withAction(Info.Action.add_group)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
             finish();
         }
     }
-
 }

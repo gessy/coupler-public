@@ -87,7 +87,11 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     public void insert(User user) {
-        userRepository.insert(user);
+        UserChat userChat = new UserChat();
+        userChat.user = user;
+        userChat.chat = Chat.personalChat(user.getFirstName() + " " + user.getLastName(), null);
+
+        userRepository.insert(userChat);
     }
 
     public void update(User user) {

@@ -21,6 +21,9 @@ public class DtoChatWrapper {
         return new ChatDto
                 .BundleBuilder()
                 .withId(chat.getId())
+                .withReference(chat.getType().equalsIgnoreCase(ChatType.GROUP.toString())
+                        ? chat.getGroupId()
+                        : chat.getUserId())
                 .withTitle(chat.getTitle())
                 .withType(ChatType.valueOf(chat.getType()))
                 .build();

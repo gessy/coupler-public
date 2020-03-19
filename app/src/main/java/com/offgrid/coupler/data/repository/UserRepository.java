@@ -7,8 +7,10 @@ import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.UserDao;
+import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
+import com.offgrid.coupler.data.entity.UserChatMessages;
 
 import java.util.List;
 
@@ -25,9 +27,6 @@ public class UserRepository {
         return dao.findAll();
     }
 
-    public LiveData<User> getUserByGid(String gid) {
-        return dao.findByGid(gid);
-    }
 
     public LiveData<UserChat> getUserChatByUserId(Long userId) {
         return dao.findUserChatByUserId(userId);
@@ -37,11 +36,26 @@ public class UserRepository {
         return dao.findUserChatByGid(gid);
     }
 
+
+    public LiveData<UserChatMessages> getUserChatMessagesByUserId(Long userId) {
+        return dao.findUserChatMessagesByUserId(userId);
+    }
+
+
     public void insert(final User user) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 dao.insert(user);
+            }
+        });
+    }
+
+    public void insert(final UserChat userChat) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.insert(userChat);
             }
         });
     }

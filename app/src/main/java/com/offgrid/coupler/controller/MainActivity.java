@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.group.NewGroupActivity;
 import com.offgrid.coupler.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
@@ -21,7 +22,9 @@ import com.offgrid.coupler.controller.map.MapFragment;
 import com.offgrid.coupler.util.EntityHelper;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity
+        extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentController fragmentController;
 
@@ -44,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
-
     }
 
 
@@ -98,6 +100,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .withTitle("Contacts")
                             .withText("This is Contact list activity")
                             .withAction(Info.Action.contact_list)
+                            .build()
+            );
+            startActivityForResult(intent, 1);
+        } else if (item.getItemId() == R.id.nav_group) {
+            Intent intent = new Intent(MainActivity.this, NewGroupActivity.class);
+            intent.putExtras(
+                    new Info.BundleBuilder()
+                            .withTitle("Add Group")
+                            .withText("This is new group activity")
+                            .withAction(Info.Action.add_group)
                             .build()
             );
             startActivityForResult(intent, 1);

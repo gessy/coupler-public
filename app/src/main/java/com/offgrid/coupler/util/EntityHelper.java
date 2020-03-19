@@ -10,12 +10,6 @@ public class EntityHelper {
 
     public static Bundle createBundle(int itemId) {
         switch (itemId) {
-            case R.id.nav_group:
-                return new Info.BundleBuilder()
-                        .withTitle("Add Group")
-                        .withText("This is new group activity")
-                        .withAction(Info.Action.add_group)
-                        .build();
             case R.id.nav_settings:
                 return  new Info.BundleBuilder()
                         .withTitle("Settings")
