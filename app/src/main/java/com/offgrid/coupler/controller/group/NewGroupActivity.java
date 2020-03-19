@@ -62,10 +62,12 @@ public class NewGroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.nav_done) {
             String name = gnInput.getText().toString();
-            groupViewModel.insert(new Group(name));
-            setResult(RESULT_OK, new Intent());
-            finish();
-            return true;
+            if (name.length() >= 3) {
+                groupViewModel.insert(new Group(name));
+                setResult(RESULT_OK, new Intent());
+                finish();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
