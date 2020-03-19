@@ -19,11 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.adapter.ChatListAdapter;
+import com.offgrid.coupler.core.adapter.ChatListAdapter;
 import com.offgrid.coupler.data.entity.Chat;
-import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.model.view.ChatListViewModel;
-import com.offgrid.coupler.controller.message.NewMessageActivity;
+import com.offgrid.coupler.core.model.Info;
+import com.offgrid.coupler.core.model.view.ChatListViewModel;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
         chatListAdapter = new ChatListAdapter(this);
 
         chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
-        chatListViewModel.loadChats();
+        chatListViewModel.load();
         chatListViewModel.observe(getActivity(), ChatListFragment.this);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);

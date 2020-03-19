@@ -7,6 +7,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 import static com.offgrid.coupler.util.RandomTokenGenerator.getRandInt;
 import static java.lang.System.currentTimeMillis;
 
@@ -28,7 +30,7 @@ public class Message {
 
     @NonNull
     @ColumnInfo(name = "date")
-    private Long date;
+    private Date date;
 
     @NonNull
     @ColumnInfo(name = "user_full_name")
@@ -51,13 +53,13 @@ public class Message {
         this.chatId = chatId;
         this.message = message;
         this.userFullName = "No Name";
-        this.date = System.currentTimeMillis();
+        this.date = new Date();
     }
 
     @Ignore
     public Message(@NonNull Long chatId,
                    @NonNull String message,
-                   @NonNull Long date,
+                   @NonNull Date date,
                    @NonNull String userFullName,
                    boolean isMine) {
         this.chatId = chatId;
@@ -67,9 +69,10 @@ public class Message {
         this.isMine = isMine;
     }
 
+
     @Ignore
     private Message(@NonNull String message,
-                    @NonNull Long date,
+                    @NonNull Date date,
                     @NonNull String userFullName,
                     boolean isMine) {
         this.message = message;
@@ -81,12 +84,16 @@ public class Message {
 
     public static Message talkerMessage() {
         String message = "Message ID " + getRandInt() + " How are you doing? This is a long message that should probably wrap.";
-        return new Message(message, currentTimeMillis(), "Talker", false);
+        return new Message(message, new Date(), "Talker", false);
     }
 
 
     public static Message myMessage(String message) {
-        return new Message(message, currentTimeMillis(), "Me", true);
+        return new Message(message, new Date(), "Me", true);
+    }
+
+    public static Message myMessage(String message, Long chatId) {
+        return new Message(chatId, message, new Date(), "Me", true);
     }
 
 
@@ -118,11 +125,11 @@ public class Message {
     }
 
     @NonNull
-    public Long getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(@NonNull Long date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 

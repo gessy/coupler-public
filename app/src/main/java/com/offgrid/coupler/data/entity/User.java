@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "T_User")
 public class User {
     @PrimaryKey(autoGenerate = true)
@@ -31,7 +33,7 @@ public class User {
 
     @NonNull
     @ColumnInfo(name = "last_seen")
-    private Long lastSeen;
+    private Date lastSeen;
 
 
     public User() {
@@ -47,7 +49,7 @@ public class User {
         this.lastName = lastName;
         this.gid = gid;
         this.allowNotify = true;
-        this.lastSeen = System.currentTimeMillis();
+        this.lastSeen = new Date();
     }
 
     @NonNull
@@ -95,11 +97,15 @@ public class User {
     }
 
     @NonNull
-    public Long getLastSeen() {
+    public Date getLastSeen() {
         return lastSeen;
     }
 
-    public void setLastSeen(@NonNull Long lastSeen) {
+    public void setLastSeen(@NonNull Date lastSeen) {
         this.lastSeen = lastSeen;
+    }
+
+    public String chatTitle() {
+        return firstName + " " + lastName;
     }
 }

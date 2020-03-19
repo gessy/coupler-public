@@ -40,8 +40,20 @@ public abstract class UserDao {
         }
     }
 
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     public abstract void update(User user);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    abstract void _update(Chat chat);
+
+    @Transaction
+    public void update(UserChat userChat) {
+        update(userChat.user);
+        if (userChat.chat != null) {
+            _update(userChat.chat);
+        }
+    }
 
     @Query("delete from T_User where gid = :gid")
     public abstract void deleteByGid(String gid);

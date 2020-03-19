@@ -24,10 +24,10 @@
 
 <!--        Message activities-->
         <activity
-            android:name=".controller.message.MessageActivity"
+            android:name=".controller.chat.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controller.message.NewMessageActivity"
+            android:name=".controller.chat.NewMessageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
 <!--        Contact Activities-->

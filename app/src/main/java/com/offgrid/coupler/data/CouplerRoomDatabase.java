@@ -6,8 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.offgrid.coupler.data.converter.ChatTypeConverter;
+import com.offgrid.coupler.data.converter.DateConverter;
 import com.offgrid.coupler.data.dao.ChatDao;
 import com.offgrid.coupler.data.dao.GroupDao;
 import com.offgrid.coupler.data.dao.MessageDao;
@@ -29,6 +32,7 @@ import java.util.concurrent.Executors;
         version = 1,
         exportSchema = false
 )
+@TypeConverters({DateConverter.class, ChatTypeConverter.class})
 public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();

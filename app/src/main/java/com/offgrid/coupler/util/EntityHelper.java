@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.core.model.Info;
 
 public class EntityHelper {
 
