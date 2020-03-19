@@ -1,4 +1,4 @@
-package com.offgrid.coupler.adapter;
+package com.offgrid.coupler.core.adapter;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.data.entity.Chat;
-import com.offgrid.coupler.holder.ChatListItemViewHolder;
+import com.offgrid.coupler.core.holder.ChatListItemViewHolder;
 import com.offgrid.coupler.controller.message.MessageActivity;
-import com.offgrid.coupler.model.dto.wrapper.DtoChatWrapper;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 
 import java.util.List;
 

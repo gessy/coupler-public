@@ -15,7 +15,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
-import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;

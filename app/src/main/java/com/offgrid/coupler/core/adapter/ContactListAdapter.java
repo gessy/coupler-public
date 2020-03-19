@@ -1,4 +1,4 @@
-package com.offgrid.coupler.adapter;
+package com.offgrid.coupler.core.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.controller.contact.ContactInfoActivity;
-import com.offgrid.coupler.holder.ContactListItemViewHolder;
-import com.offgrid.coupler.model.dto.wrapper.DtoUserWrapper;
+import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 
 import java.util.List;
 

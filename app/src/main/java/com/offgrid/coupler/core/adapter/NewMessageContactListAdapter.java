@@ -1,4 +1,4 @@
-package com.offgrid.coupler.adapter;
+package com.offgrid.coupler.core.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.view.View;
 
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
 import com.offgrid.coupler.controller.message.MessageActivity;
-import com.offgrid.coupler.model.dto.wrapper.DtoChatWrapper;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 
 
 public class NewMessageContactListAdapter extends ContactListAdapter {

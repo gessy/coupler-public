@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.adapter.NewMessageContactListAdapter;
-import com.offgrid.coupler.model.Info;
-import com.offgrid.coupler.model.view.ContactListViewModel;
+import com.offgrid.coupler.core.adapter.NewMessageContactListAdapter;
+import com.offgrid.coupler.core.model.Info;
+import com.offgrid.coupler.core.model.view.ContactListViewModel;
 import com.offgrid.coupler.controller.contact.NewContactActivity;
 
 import java.util.List;

@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
-import com.offgrid.coupler.model.dto.UserDto;
-import com.offgrid.coupler.model.view.ContactViewModel;
+import com.offgrid.coupler.core.model.dto.UserDto;
+import com.offgrid.coupler.core.model.view.ContactViewModel;
 
 
 public class EditContactActivity extends AppCompatActivity implements Observer<Object> {

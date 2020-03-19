@@ -1,4 +1,4 @@
-package com.offgrid.coupler.model.view;
+package com.offgrid.coupler.core.model.view;
 
 import android.app.Application;
 
@@ -20,8 +20,8 @@ import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 import com.offgrid.coupler.data.repository.UserRepository;
 
-import static com.offgrid.coupler.model.view.ContactViewModel.Entity.GID;
-import static com.offgrid.coupler.model.view.ContactViewModel.Entity.UID;
+import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.GID;
+import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.UID;
 
 
 public class ContactViewModel extends AndroidViewModel {

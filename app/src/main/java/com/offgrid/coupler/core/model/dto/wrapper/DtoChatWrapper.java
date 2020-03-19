@@ -1,11 +1,11 @@
-package com.offgrid.coupler.model.dto.wrapper;
+package com.offgrid.coupler.core.model.dto.wrapper;
 
 import android.os.Bundle;
 
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.dto.ChatDto;
+import com.offgrid.coupler.core.model.dto.ChatDto;
 
 public class DtoChatWrapper {
     public static Bundle convertAndWrap(User user) {

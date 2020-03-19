@@ -1,4 +1,4 @@
-package com.offgrid.coupler.model.view;
+package com.offgrid.coupler.core.model.view;
 
 import android.app.Application;
 
@@ -14,40 +14,40 @@ import androidx.lifecycle.Transformations;
 
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.ChatMessages;
+import com.offgrid.coupler.data.entity.GroupChatMessages;
 import com.offgrid.coupler.data.entity.Message;
-import com.offgrid.coupler.data.entity.UserChatMessages;
 import com.offgrid.coupler.data.repository.ChatRepository;
+import com.offgrid.coupler.data.repository.GroupRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
-import com.offgrid.coupler.data.repository.UserRepository;
 
 import java.util.List;
 
 import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
 
 
-public class UserChatViewModel extends AndroidViewModel implements ChatViewModel {
+public class GroupChatViewModel extends AndroidViewModel implements ChatViewModel {
 
-    private UserRepository userRepository;
+    private GroupRepository groupRepository;
     private ChatRepository chatRepository;
     private MessageRepository messageRepository;
 
     private final MutableLiveData<Long> liveID = new MutableLiveData();
-    private LiveData<UserChatMessages> liveChat;
+    private LiveData<GroupChatMessages> liveChat;
 
     private LifecycleOwner currentOwner;
 
-    public UserChatViewModel(Application application) {
+    public GroupChatViewModel(Application application) {
         super(application);
-        userRepository = new UserRepository(application);
+        groupRepository = new GroupRepository(application);
         chatRepository = new ChatRepository(application);
         messageRepository = new MessageRepository(application);
 
-        liveChat = Transformations.switchMap(liveID, new Function<Long, LiveData<UserChatMessages>>() {
+        liveChat = Transformations.switchMap(liveID, new Function<Long, LiveData<GroupChatMessages>>() {
             @Override
-            public LiveData<UserChatMessages> apply(Long userId) {
-                return (userId != null)
-                        ? userRepository.getUserChatMessagesByUserId(userId)
-                        : new MediatorLiveData<UserChatMessages>();
+            public LiveData<GroupChatMessages> apply(Long groupId) {
+                return (groupId != null)
+                        ? groupRepository.getGroupChatMessagesByGroupId(groupId)
+                        : new MediatorLiveData<GroupChatMessages>();
             }
         });
     }
@@ -59,9 +59,9 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
 
     @Override
     public void addMessage(Message message) {
-        UserChatMessages userChatMessages = liveChat.getValue();
-        if (userChatMessages != null) {
-            Chat chat = userChatMessages.chat;
+        GroupChatMessages groupChatMessages = liveChat.getValue();
+        if (groupChatMessages != null) {
+            Chat chat = groupChatMessages.chat;
             chat.setLastMessage(message.getMessage());
             chat.setLastModificationDate(System.currentTimeMillis());
             chatRepository.update(chat);
@@ -73,9 +73,9 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
 
     @Override
     public void deleteMessages() {
-        UserChatMessages userChatMessages = liveChat.getValue();
-        if (userChatMessages != null) {
-            Chat chat = userChatMessages.chat;
+        GroupChatMessages groupChatMessages = liveChat.getValue();
+        if (groupChatMessages != null) {
+            Chat chat = groupChatMessages.chat;
             messageRepository.deleteChatMessages(chat.getId());
 
             chat.setLastMessage("");

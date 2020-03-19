@@ -1,4 +1,4 @@
-package com.offgrid.coupler.adapter;
+package com.offgrid.coupler.core.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,17 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.holder.IncomeGroupMessageViewHolder;
-import com.offgrid.coupler.holder.IncomePersonalMessageViewHolder;
-import com.offgrid.coupler.holder.MessageViewHolder;
-import com.offgrid.coupler.holder.OutcomeMessageViewHolder;
+import com.offgrid.coupler.core.holder.IncomeGroupMessageViewHolder;
+import com.offgrid.coupler.core.holder.IncomePersonalMessageViewHolder;
+import com.offgrid.coupler.core.holder.MessageViewHolder;
+import com.offgrid.coupler.core.holder.OutcomeMessageViewHolder;
 
 import java.util.List;
 
-import static com.offgrid.coupler.adapter.MessageListAdapter.Const.INCOME_GROUP_MESSAGE;
-import static com.offgrid.coupler.adapter.MessageListAdapter.Const.INCOME_PERSONAL_MESSAGE;
-import static com.offgrid.coupler.adapter.MessageListAdapter.Const.OUTCOME_GROUP_MESSAGE;
-import static com.offgrid.coupler.adapter.MessageListAdapter.Const.OUTCOME_PERSONAL_MESSAGE;
+import static com.offgrid.coupler.core.adapter.MessageListAdapter.Const.INCOME_GROUP_MESSAGE;
+import static com.offgrid.coupler.core.adapter.MessageListAdapter.Const.INCOME_PERSONAL_MESSAGE;
+import static com.offgrid.coupler.core.adapter.MessageListAdapter.Const.OUTCOME_GROUP_MESSAGE;
+import static com.offgrid.coupler.core.adapter.MessageListAdapter.Const.OUTCOME_PERSONAL_MESSAGE;
 import static com.offgrid.coupler.data.model.ChatType.GROUP;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageViewHolder> {

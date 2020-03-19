@@ -1,9 +1,9 @@
-package com.offgrid.coupler.model.dto.wrapper;
+package com.offgrid.coupler.core.model.dto.wrapper;
 
 import android.os.Bundle;
 
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.model.dto.UserDto;
+import com.offgrid.coupler.core.model.dto.UserDto;
 
 public class DtoUserWrapper {
     public static Bundle convertAndWrap(User user) {

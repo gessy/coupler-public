@@ -1,4 +1,4 @@
-package com.offgrid.coupler.model;
+package com.offgrid.coupler.core.model;
 
 import android.os.Bundle;
 

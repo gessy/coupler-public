@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.adapter.MessageListAdapter;
+import com.offgrid.coupler.core.adapter.MessageListAdapter;
 import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
-import com.offgrid.coupler.model.dto.ChatDto;
-import com.offgrid.coupler.model.view.ChatViewModel;
-import com.offgrid.coupler.provider.ChatViewModelProvider;
+import com.offgrid.coupler.core.model.dto.ChatDto;
+import com.offgrid.coupler.core.model.view.ChatViewModel;
+import com.offgrid.coupler.core.provider.ChatViewModelProvider;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;

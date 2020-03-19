@@ -1,4 +1,4 @@
-package com.offgrid.coupler.model.dto;
+package com.offgrid.coupler.core.model.dto;
 
 import android.os.Bundle;
 

@@ -1,4 +1,4 @@
-package com.offgrid.coupler.holder;
+package com.offgrid.coupler.core.holder;
 
 import android.content.Context;
 import android.view.View;

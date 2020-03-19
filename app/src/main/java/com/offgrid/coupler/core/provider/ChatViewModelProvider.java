@@ -1,13 +1,13 @@
-package com.offgrid.coupler.provider;
+package com.offgrid.coupler.core.provider;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.model.view.ChatViewModel;
-import com.offgrid.coupler.model.view.GroupChatViewModel;
-import com.offgrid.coupler.model.view.UserChatViewModel;
+import com.offgrid.coupler.core.model.view.ChatViewModel;
+import com.offgrid.coupler.core.model.view.GroupChatViewModel;
+import com.offgrid.coupler.core.model.view.UserChatViewModel;
 
 import static com.offgrid.coupler.data.model.ChatType.GROUP;
 

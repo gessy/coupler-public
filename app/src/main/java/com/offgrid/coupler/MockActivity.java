@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.core.model.Info;
 
 
 public class MockActivity extends AppCompatActivity {
