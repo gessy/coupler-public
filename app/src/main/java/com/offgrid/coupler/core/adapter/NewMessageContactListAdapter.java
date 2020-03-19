@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
-import com.offgrid.coupler.controller.message.MessageActivity;
+import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 
 
@@ -24,7 +24,7 @@ public class NewMessageContactListAdapter extends ContactListAdapter {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MessageActivity.class);
+                Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 context.startActivity(intent);
                 ((Activity)context).finish();

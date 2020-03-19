@@ -23,7 +23,6 @@ import com.offgrid.coupler.core.adapter.ChatListAdapter;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.ChatListViewModel;
-import com.offgrid.coupler.controller.message.NewMessageActivity;
 
 import java.util.List;
 

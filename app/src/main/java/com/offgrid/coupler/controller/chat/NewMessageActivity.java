@@ -1,4 +1,4 @@
-package com.offgrid.coupler.controller.message;
+package com.offgrid.coupler.controller.chat;
 
 import android.content.Intent;
 import android.os.Bundle;

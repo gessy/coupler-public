@@ -23,7 +23,7 @@ import com.offgrid.coupler.core.model.dto.UserDto;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.core.model.view.ContactViewModel;
-import com.offgrid.coupler.controller.message.MessageActivity;
+import com.offgrid.coupler.controller.chat.ChatActivity;
 
 
 public class ContactInfoActivity extends AppCompatActivity
@@ -120,7 +120,7 @@ public class ContactInfoActivity extends AppCompatActivity
         if (view.getId() == R.id.fb_start_user_chat) {
             User user = contactViewModel.getUser();
             if (user != null) {
-                Intent intent = new Intent(ContactInfoActivity.this, MessageActivity.class);
+                Intent intent = new Intent(ContactInfoActivity.this, ChatActivity.class);
                 intent.putExtras(DtoChatWrapper.convertAndWrap(user));
                 startActivityForResult(intent, 1);
             }

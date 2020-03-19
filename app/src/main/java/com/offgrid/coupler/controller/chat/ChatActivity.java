@@ -1,4 +1,4 @@
-package com.offgrid.coupler.controller.message;
+package com.offgrid.coupler.controller.chat;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,7 +27,7 @@ import com.offgrid.coupler.core.provider.ChatViewModelProvider;
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 
 
-public class MessageActivity
+public class ChatActivity
         extends AppCompatActivity
         implements View.OnClickListener, Observer<ChatMessages> {
 
@@ -45,7 +45,7 @@ public class MessageActivity
         chatDto = ChatDto.getInstance(getIntent().getExtras());
         initViewModels();
 
-        setContentView(R.layout.activity_message);
+        setContentView(R.layout.activity_chat);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,10 +73,10 @@ public class MessageActivity
         recyclerView.setAdapter(messageListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        editText = findViewById(R.id.edit_text);
+        editText = findViewById(R.id.message_text);
 
         ImageButton imageButton = findViewById(R.id.send_message);
-        imageButton.setOnClickListener(MessageActivity.this);
+        imageButton.setOnClickListener(ChatActivity.this);
     }
 
 
@@ -89,7 +89,7 @@ public class MessageActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_message_list, menu);
+        getMenuInflater().inflate(R.menu.menu_chat, menu);
         return true;
     }
 

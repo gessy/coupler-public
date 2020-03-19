@@ -11,7 +11,7 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.core.holder.ChatListItemViewHolder;
-import com.offgrid.coupler.controller.message.MessageActivity;
+import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(fragment.getActivity(), MessageActivity.class);
+                Intent intent = new Intent(fragment.getActivity(), ChatActivity.class);
                 intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 fragment.startActivityForResult(intent, 1);
             }
