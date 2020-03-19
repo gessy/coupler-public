@@ -2,6 +2,7 @@ package com.offgrid.coupler.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -16,7 +17,7 @@ import java.util.List;
 @Dao
 public interface ChatDao {
 
-    @Query("select * from T_Chat")
+    @Query("select * from T_Chat where visible = 1")
     LiveData<List<Chat>> findAll();
 
     @Query("select * from T_Chat where id = :id")
@@ -29,13 +30,16 @@ public interface ChatDao {
     void insert(Chat chat);
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
-    void update(Chat user);
+    void update(Chat chat);
 
     @Query("delete from T_Chat")
     void deleteAll();
 
     @Query("delete from T_Chat where id = :chat_id")
     void deleteChat(long chat_id);
+
+    @Delete(entity = Chat.class)
+    void delete(Chat chat);
 
     @Transaction
     @Query("select * from T_Chat where id = :chat_id")

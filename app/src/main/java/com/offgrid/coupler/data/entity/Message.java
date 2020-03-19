@@ -3,6 +3,7 @@ package com.offgrid.coupler.data.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -16,6 +17,7 @@ public class Message {
     @ColumnInfo(name = "id")
     private Long id;
 
+    @ForeignKey(entity = Chat.class, parentColumns = "id", childColumns = "chat_id")
     @NonNull
     @ColumnInfo(name = "chat_id")
     private Long chatId;

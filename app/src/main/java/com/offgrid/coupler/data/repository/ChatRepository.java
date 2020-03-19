@@ -67,4 +67,14 @@ public class ChatRepository {
             }
         });
     }
+
+    public void delete(final Chat chat) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.delete(chat);
+            }
+        });
+    }
+
 }

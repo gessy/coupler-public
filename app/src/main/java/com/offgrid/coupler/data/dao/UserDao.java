@@ -10,6 +10,7 @@ import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
+import com.offgrid.coupler.data.entity.UserChatMessages;
 
 import java.util.List;
 
@@ -44,4 +45,8 @@ public interface UserDao {
     @Transaction
     @Query("select * from T_User where gid = :gid")
     LiveData<UserChat> findUserChatByGid(String gid);
+
+    @Transaction
+    @Query("select * from T_User where id = :user_id")
+    LiveData<UserChatMessages> findUserChatMessagesByUserId(long user_id);
 }
