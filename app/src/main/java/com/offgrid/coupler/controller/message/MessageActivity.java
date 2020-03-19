@@ -23,6 +23,7 @@ import com.offgrid.coupler.data.entity.UserChatMessages;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.view.ChatViewModel;
 import com.offgrid.coupler.model.view.UserChatViewModel;
+import com.offgrid.coupler.provider.ChatViewModelProvider;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
@@ -82,7 +83,7 @@ public class MessageActivity
 
 
     public void initViewModels() {
-        chatViewModel = new ViewModelProvider(this).get(UserChatViewModel.class);
+        chatViewModel = new ChatViewModelProvider(this).getPersonal();
         chatViewModel.observe(this, this);
         chatViewModel.loadByReferenceId(chatDto.getReference());
     }

@@ -52,10 +52,12 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         });
     }
 
+    @Override
     public void loadByReferenceId(Long RefId) {
         liveID.setValue(RefId);
     }
 
+    @Override
     public void addMessage(Message message) {
         UserChatMessages userChatMessages = liveChat.getValue();
         if (userChatMessages != null) {
@@ -69,6 +71,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         }
     }
 
+    @Override
     public void deleteMessages() {
         UserChatMessages userChatMessages = liveChat.getValue();
         if (userChatMessages != null) {
@@ -81,6 +84,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         }
     }
 
+    @Override
     public void createChat() {
         UserChatMessages userChatMessages = liveChat.getValue();
         if (userChatMessages != null) {
@@ -90,6 +94,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         }
     }
 
+    @Override
     public void deleteChat() {
         UserChatMessages userChatMessages = liveChat.getValue();
         if (userChatMessages != null) {
@@ -100,22 +105,26 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         }
     }
 
+    @Override
     public boolean noMessages() {
         List<Message> messages = liveChat.getValue().messages;
         return messages == null || messages.isEmpty();
     }
 
+    @Override
     public boolean isPersonal() {
         Chat chat = liveChat.getValue().chat;
         return PERSONAL.toString().equals(chat.getType());
     }
 
+    @Override
     public void setVisibility(boolean visible) {
         Chat chat = liveChat.getValue().chat;
         chat.setVisible(visible);
         chatRepository.update(chat);
     }
 
+    @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Object> observer) {
         if (currentOwner != null) {
             liveChat.removeObservers(currentOwner);
