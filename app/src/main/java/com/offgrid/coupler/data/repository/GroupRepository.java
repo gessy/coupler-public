@@ -7,10 +7,11 @@ import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.GroupDao;
+import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
+import com.offgrid.coupler.data.entity.GroupChatMessages;
 
-import java.util.List;
 
 public class GroupRepository {
 
@@ -21,16 +22,12 @@ public class GroupRepository {
         dao = db.groupDao();
     }
 
-    public LiveData<List<Group>> getGroups() {
-        return dao.findAll();
-    }
-
-    public LiveData<Group> getGroup(Long id) {
-        return dao.findById(id);
-    }
-
     public LiveData<GroupChat> getGroupChat(Long id) {
         return dao.findGroupChatByGroupId(id);
+    }
+
+    public LiveData<GroupChatMessages> getGroupChatMessagesByGroupId(Long groupId) {
+        return dao.findGroupChatMessagesByGroupId(groupId);
     }
 
     public void insert(final Group group) {
@@ -60,7 +57,6 @@ public class GroupRepository {
         });
     }
 
-
     public void delete(final GroupChat groupChat) {
         if (groupChat != null) {
             CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
@@ -71,7 +67,6 @@ public class GroupRepository {
             });
         }
     }
-
 
     public void delete(final Group group) {
         if (group != null) {

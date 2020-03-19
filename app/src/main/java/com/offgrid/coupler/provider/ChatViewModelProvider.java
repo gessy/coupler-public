@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.model.view.ChatViewModel;
+import com.offgrid.coupler.model.view.GroupChatViewModel;
 import com.offgrid.coupler.model.view.UserChatViewModel;
+
+import static com.offgrid.coupler.data.model.ChatType.GROUP;
 
 public class ChatViewModelProvider extends ViewModelProvider {
 
@@ -19,13 +22,15 @@ public class ChatViewModelProvider extends ViewModelProvider {
         return super.get(UserChatViewModel.class);
     }
 
+    @NonNull
+    public ChatViewModel getGroup() {
+        return super.get(GroupChatViewModel.class);
+    }
 
     @NonNull
     public ChatViewModel get(ChatType chatType) {
-        if (chatType.equals(ChatType.GROUP)) {
-            //TODO
-        }
-        return super.get(UserChatViewModel.class);
+        return chatType.equals(GROUP)
+                ? super.get(GroupChatViewModel.class)
+                : super.get(UserChatViewModel.class);
     }
-
 }

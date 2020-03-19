@@ -79,6 +79,11 @@ public class Chat {
         return new Chat(title, "", ChatType.GROUP.toString(), null, null, true);
     }
 
+
+    public static Chat groupChat(@NonNull String title, Long groupId) {
+        return new Chat(title, "", ChatType.GROUP.toString(), null, groupId, true);
+    }
+
     public static Chat randGroupChat() {
         int id = RandomTokenGenerator.getRandInt();
         String title = "Chat ID " + id;

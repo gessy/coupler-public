@@ -12,17 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.adapter.MessageListAdapter;
+import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
-import com.offgrid.coupler.data.entity.UserChatMessages;
 import com.offgrid.coupler.model.dto.ChatDto;
 import com.offgrid.coupler.model.view.ChatViewModel;
-import com.offgrid.coupler.model.view.UserChatViewModel;
 import com.offgrid.coupler.provider.ChatViewModelProvider;
 
 
@@ -31,7 +29,7 @@ import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 
 public class MessageActivity
         extends AppCompatActivity
-        implements View.OnClickListener, Observer<Object> {
+        implements View.OnClickListener, Observer<ChatMessages> {
 
     private ChatViewModel chatViewModel;
 
@@ -83,7 +81,7 @@ public class MessageActivity
 
 
     public void initViewModels() {
-        chatViewModel = new ChatViewModelProvider(this).getPersonal();
+        chatViewModel = new ChatViewModelProvider(this).get(chatDto.getType());
         chatViewModel.observe(this, this);
         chatViewModel.loadByReferenceId(chatDto.getReference());
     }
@@ -128,16 +126,8 @@ public class MessageActivity
         }
     }
 
-
     @Override
-    public void onChanged(Object o) {
-        if (o instanceof UserChatMessages) {
-            UserChatMessages userChatMessages = (UserChatMessages) o;
-            if (userChatMessages.chat == null) {
-                chatViewModel.createChat();
-            } else {
-                messageListAdapter.setMessages(userChatMessages.messages);
-            }
-        }
+    public void onChanged(ChatMessages chatMessages) {
+        messageListAdapter.setMessages(chatMessages.messages());
     }
 }

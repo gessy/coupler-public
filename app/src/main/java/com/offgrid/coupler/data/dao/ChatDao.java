@@ -6,11 +6,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.Chat;
-import com.offgrid.coupler.data.entity.ChatMessages;
 
 import java.util.List;
 
@@ -41,11 +39,4 @@ public interface ChatDao {
     @Delete(entity = Chat.class)
     void delete(Chat chat);
 
-    @Transaction
-    @Query("select * from T_Chat where id = :chat_id")
-    LiveData<ChatMessages> getChatMessages(long chat_id);
-
-    @Transaction
-    @Query("select * from T_Chat where user_id = :user_id")
-    LiveData<ChatMessages> getUserChatMessages(long user_id);
 }

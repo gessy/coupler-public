@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +20,8 @@ import com.offgrid.coupler.model.view.GroupViewModel;
 
 public class NewGroupActivity extends AppCompatActivity {
 
-    GroupViewModel groupViewModel;
+    private GroupViewModel groupViewModel;
+    private EditText gnInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class NewGroupActivity extends AppCompatActivity {
             }
         });
 
+        gnInput = findViewById(R.id.group_name);
+
         groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
     }
 
@@ -57,7 +61,8 @@ public class NewGroupActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.nav_done) {
-            groupViewModel.insert(new Group("ZZZZZZ"));
+            String name = gnInput.getText().toString();
+            groupViewModel.insert(new Group(name));
             setResult(RESULT_OK, new Intent());
             finish();
             return true;

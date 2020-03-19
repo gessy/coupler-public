@@ -12,6 +12,7 @@ import androidx.room.Update;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
+import com.offgrid.coupler.data.entity.GroupChatMessages;
 
 import java.util.List;
 
@@ -36,6 +37,10 @@ public abstract class GroupDao {
     @Transaction
     @Query("select * from T_Group where id = :group_id")
     public abstract LiveData<GroupChat> findGroupChatByGroupId(long group_id);
+
+    @Transaction
+    @Query("select group_id as gid, id as cid from T_Chat where group_id = :group_id")
+    public abstract LiveData<GroupChatMessages> findGroupChatMessagesByGroupId(long group_id);
 
     @Transaction
     public void insert(GroupChat groupChat) {
