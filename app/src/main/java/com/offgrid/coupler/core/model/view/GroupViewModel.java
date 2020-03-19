@@ -17,6 +17,8 @@ import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.repository.GroupRepository;
 
+import static com.offgrid.coupler.data.entity.Chat.groupChat;
+
 
 public class GroupViewModel extends AndroidViewModel {
     private GroupRepository groupRepository;
@@ -58,6 +60,6 @@ public class GroupViewModel extends AndroidViewModel {
     }
 
     public void insert(Group group) {
-        groupRepository.insert(new GroupChat(group, Chat.groupChat(group.getName())));
+        groupRepository.insert(new GroupChat(group, groupChat(group.getName())));
     }
 }

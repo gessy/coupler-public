@@ -13,7 +13,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
-import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.data.repository.ChatRepository;
@@ -22,6 +21,8 @@ import com.offgrid.coupler.data.repository.UserRepository;
 
 import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.GID;
 import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.UID;
+import static com.offgrid.coupler.data.entity.Chat.personalChat;
+import static java.lang.System.currentTimeMillis;
 
 
 public class ContactViewModel extends AndroidViewModel {
@@ -55,7 +56,6 @@ public class ContactViewModel extends AndroidViewModel {
                 return new MediatorLiveData<>();
             }
         });
-
     }
 
     public void loadByGid(String gid) {
@@ -87,16 +87,9 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     public void insert(User user) {
-        UserChat userChat = new UserChat();
-        userChat.user = user;
-        userChat.chat = Chat.personalChat(user.getFirstName() + " " + user.getLastName(), null);
-
-        userRepository.insert(userChat);
+        userRepository.insert(new UserChat(user, personalChat(user.chatTitle())));
     }
 
-    public void update(User user) {
-        userRepository.update(user);
-    }
 
     public void allowNotification(boolean allow) {
         UserChat userChat = liveUserChat.getValue();
@@ -110,17 +103,12 @@ public class ContactViewModel extends AndroidViewModel {
     public void updateFullName(String firstName, String lastName) {
         UserChat userChat = liveUserChat.getValue();
         if (userChat != null) {
-            User user = userChat.user;
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            userRepository.update(user);
+            userChat.user.setFirstName(firstName);
+            userChat.user.setLastName(lastName);
+            userChat.chat.setTitle(userChat.user.chatTitle());
+            userChat.chat.setLastModificationDate(currentTimeMillis());
 
-            if (userChat.chat != null) {
-                Chat chat = userChat.chat;
-                chat.setTitle(firstName + " " + lastName);
-                chat.setLastModificationDate(System.currentTimeMillis());
-                chatRepository.update(chat);
-            }
+            userRepository.update(userChat);
         }
     }
 

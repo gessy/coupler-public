@@ -22,6 +22,7 @@ import com.offgrid.coupler.data.repository.MessageRepository;
 
 import java.util.List;
 
+import static com.offgrid.coupler.data.entity.Message.myMessage;
 import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
 
 
@@ -70,6 +71,7 @@ public class GroupChatViewModel extends AndroidViewModel implements ChatViewMode
             messageRepository.insert(message);
         }
     }
+
 
     @Override
     public void deleteMessages() {

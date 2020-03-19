@@ -71,25 +71,14 @@ public class Chat {
         return new Chat("No data", "No data", ChatType.PERSONAL.toString(), null, null, true);
     }
 
-    public static Chat personalChat(@NonNull String title, Long userId) {
-        return new Chat(title, "", ChatType.PERSONAL.toString(), userId, null, false);
+    public static Chat personalChat(@NonNull String title) {
+        return new Chat(title, "", ChatType.PERSONAL.toString(), null, null, false);
     }
 
     public static Chat groupChat(@NonNull String title) {
         return new Chat(title, "", ChatType.GROUP.toString(), null, null, true);
     }
 
-
-    public static Chat groupChat(@NonNull String title, Long groupId) {
-        return new Chat(title, "", ChatType.GROUP.toString(), null, groupId, true);
-    }
-
-    public static Chat randGroupChat() {
-        int id = RandomTokenGenerator.getRandInt();
-        String title = "Chat ID " + id;
-        String message = "Last message on Chat ID " + id;
-        return new Chat(title, message, ChatType.GROUP.toString(), null, null, true);
-    }
 
     @NonNull
     public Long getId() {

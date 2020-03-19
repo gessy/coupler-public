@@ -47,7 +47,7 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
         chatListAdapter = new ChatListAdapter(this);
 
         chatListViewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
-        chatListViewModel.loadChats();
+        chatListViewModel.load();
         chatListViewModel.observe(getActivity(), ChatListFragment.this);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerview_chat_list);

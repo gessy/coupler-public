@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListViewModel extends AndroidViewModel {
@@ -26,10 +25,6 @@ public class ContactListViewModel extends AndroidViewModel {
 
     public void load() {
         liveUsers = userRepository.getUsers();
-    }
-
-    public List<User> get() {
-        return liveUsers !=null ? liveUsers.getValue() : new ArrayList<User>();
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<User>> observer) {

@@ -65,7 +65,6 @@ public class NewMessageActivity
         RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setAdapter(contactListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
 

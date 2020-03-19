@@ -67,6 +67,8 @@ public class Message {
         this.isMine = isMine;
     }
 
+
+
     @Ignore
     private Message(@NonNull String message,
                     @NonNull Long date,
@@ -87,6 +89,10 @@ public class Message {
 
     public static Message myMessage(String message) {
         return new Message(message, currentTimeMillis(), "Me", true);
+    }
+
+    public static Message myMessage(String message, Long chatId) {
+        return new Message(chatId, message, currentTimeMillis(), "Me", true);
     }
 
 

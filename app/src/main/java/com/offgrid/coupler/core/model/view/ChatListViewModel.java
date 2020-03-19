@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.repository.ChatRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChatListViewModel extends AndroidViewModel {
@@ -24,19 +23,11 @@ public class ChatListViewModel extends AndroidViewModel {
         chatRepository = new ChatRepository(application);
     }
 
-    public void loadChats() {
+    public void load() {
         liveChats = chatRepository.getChats();
-    }
-
-    public List<Chat> getChats() {
-        return liveChats !=null ? liveChats.getValue() : new ArrayList<Chat>();
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chat>> observer) {
         liveChats.observe(owner, observer);
-    }
-
-    public void insertChat(Chat chat) {
-        chatRepository.insert(chat);
     }
 }

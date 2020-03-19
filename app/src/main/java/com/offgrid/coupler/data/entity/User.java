@@ -102,4 +102,9 @@ public class User {
     public void setLastSeen(@NonNull Long lastSeen) {
         this.lastSeen = lastSeen;
     }
+
+    public String chatTitle() {
+        return firstName + " " + lastName;
+    }
+
 }
