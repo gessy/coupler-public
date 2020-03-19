@@ -24,11 +24,7 @@ public class ChatListItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void update(Chat chat) {
-        String suffix = chat.getType().substring(0, 1);
-        String title = suffix.equals("G")
-                ? chat.getTitle() + " " + chat.getType().substring(0, 1)
-                : chat.getTitle();
-        this.title.setText(title);
+        this.title.setText(chat.getTitle());
         this.message.setText(chat.getLastMessage());
     }
 

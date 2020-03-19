@@ -20,6 +20,7 @@ import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 import com.offgrid.coupler.data.repository.UserRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
@@ -63,7 +64,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         if (userChatMessages != null) {
             Chat chat = userChatMessages.chat;
             chat.setLastMessage(message.getMessage());
-            chat.setLastModificationDate(System.currentTimeMillis());
+            chat.setLastModificationDate(new Date());
             chatRepository.update(chat);
 
             message.setChatId(chat.getId());
@@ -79,7 +80,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
             messageRepository.deleteChatMessages(chat.getId());
 
             chat.setLastMessage("");
-            chat.setLastModificationDate(System.currentTimeMillis());
+            chat.setLastModificationDate(new Date());
             chatRepository.update(chat);
         }
     }
@@ -93,7 +94,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
     @Override
     public boolean isPersonal() {
         Chat chat = liveChat.getValue().chat;
-        return PERSONAL.toString().equals(chat.getType());
+        return PERSONAL.equals(chat.getType());
     }
 
     @Override

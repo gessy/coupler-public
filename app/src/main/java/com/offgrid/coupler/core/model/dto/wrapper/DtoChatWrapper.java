@@ -7,6 +7,8 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.model.ChatType;
 import com.offgrid.coupler.core.model.dto.ChatDto;
 
+import static com.offgrid.coupler.data.model.ChatType.GROUP;
+
 public class DtoChatWrapper {
     public static Bundle convertAndWrap(User user) {
         return new ChatDto
@@ -21,11 +23,11 @@ public class DtoChatWrapper {
         return new ChatDto
                 .BundleBuilder()
                 .withId(chat.getId())
-                .withReference(chat.getType().equalsIgnoreCase(ChatType.GROUP.toString())
+                .withReference(chat.getType().equals(GROUP)
                         ? chat.getGroupId()
                         : chat.getUserId())
                 .withTitle(chat.getTitle())
-                .withType(ChatType.valueOf(chat.getType()))
+                .withType(chat.getType())
                 .build();
     }
 }

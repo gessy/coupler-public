@@ -19,6 +19,8 @@ import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 import com.offgrid.coupler.data.repository.UserRepository;
 
+import java.util.Date;
+
 import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.GID;
 import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.UID;
 import static com.offgrid.coupler.data.entity.Chat.personalChat;
@@ -106,7 +108,7 @@ public class ContactViewModel extends AndroidViewModel {
             userChat.user.setFirstName(firstName);
             userChat.user.setLastName(lastName);
             userChat.chat.setTitle(userChat.user.chatTitle());
-            userChat.chat.setLastModificationDate(currentTimeMillis());
+            userChat.chat.setLastModificationDate(new Date());
 
             userRepository.update(userChat);
         }

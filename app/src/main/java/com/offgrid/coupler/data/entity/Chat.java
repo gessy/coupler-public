@@ -8,9 +8,12 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.offgrid.coupler.data.model.ChatType;
-import com.offgrid.coupler.util.RandomTokenGenerator;
 
-import static java.lang.System.currentTimeMillis;
+import java.util.Date;
+
+import static com.offgrid.coupler.data.model.ChatType.GROUP;
+import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
+
 
 @Entity(tableName = "T_Chat")
 public class Chat {
@@ -29,7 +32,7 @@ public class Chat {
 
     @NonNull
     @ColumnInfo(name = "type")
-    private String type;
+    private ChatType type;
 
     @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "user_id")
     @ColumnInfo(name = "user_id")
@@ -40,7 +43,7 @@ public class Chat {
     private Long groupId;
 
     @ColumnInfo(name = "last_modification_date")
-    private Long lastModificationDate;
+    private Date lastModificationDate;
 
     @NonNull
     @ColumnInfo(name = "visible")
@@ -53,7 +56,7 @@ public class Chat {
     @Ignore
     private Chat(@NonNull String title,
                  @NonNull String lastMessage,
-                 @NonNull String type,
+                 @NonNull ChatType type,
                  Long userId,
                  Long groupId,
                  boolean visible) {
@@ -62,21 +65,21 @@ public class Chat {
         this.type = type;
         this.userId = userId;
         this.groupId = groupId;
-        this.lastModificationDate = currentTimeMillis();
+        this.lastModificationDate = new Date();
         this.visible = visible;
     }
 
 
     public static Chat getEmpty() {
-        return new Chat("No data", "No data", ChatType.PERSONAL.toString(), null, null, true);
+        return new Chat("No data", "No data", PERSONAL, null, null, true);
     }
 
     public static Chat personalChat(@NonNull String title) {
-        return new Chat(title, "", ChatType.PERSONAL.toString(), null, null, false);
+        return new Chat(title, "", PERSONAL, null, null, false);
     }
 
     public static Chat groupChat(@NonNull String title) {
-        return new Chat(title, "", ChatType.GROUP.toString(), null, null, true);
+        return new Chat(title, "", GROUP, null, null, true);
     }
 
 
@@ -108,11 +111,11 @@ public class Chat {
     }
 
     @NonNull
-    public String getType() {
+    public ChatType getType() {
         return type;
     }
 
-    public void setType(@NonNull String type) {
+    public void setType(@NonNull ChatType type) {
         this.type = type;
     }
 
@@ -124,11 +127,11 @@ public class Chat {
         this.userId = userId;
     }
 
-    public Long getLastModificationDate() {
+    public Date getLastModificationDate() {
         return lastModificationDate;
     }
 
-    public void setLastModificationDate(Long lastModificationDate) {
+    public void setLastModificationDate(Date lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
     }
 
