@@ -17,12 +17,17 @@ public class Group {
     @ColumnInfo(name = "name")
     private String name;
 
+    @NonNull
+    @ColumnInfo(name = "description")
+    private String description;
+
     public Group() {
     }
 
     @Ignore
-    public Group(@NonNull String name) {
+    public Group(@NonNull String name, @NonNull String description) {
         this.name = name;
+        this.description = description;
     }
 
     @NonNull
@@ -41,5 +46,14 @@ public class Group {
 
     public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    @NonNull
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(@NonNull String description) {
+        this.description = description;
     }
 }
