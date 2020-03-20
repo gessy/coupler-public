@@ -64,7 +64,7 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:hint="@string/hint_new_group_name"
+                android:hint="@string/hint_group_name"
                 android:textColorHint="@color/light_grey"
                 android:background="@android:color/transparent"
                 android:inputType="text"
@@ -82,8 +82,24 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/user_avatar"
                 android:background="@color/lighter_grey" />
-
         </RelativeLayout>
+
+        <EditText
+            android:id="@+id/group_description"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/hint_group_description"
+            android:textColorHint="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text=""
+            android:importantForAutofill="no" />
 
     </LinearLayout>
 

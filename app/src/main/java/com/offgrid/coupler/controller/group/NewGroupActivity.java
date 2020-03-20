@@ -22,6 +22,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
     private GroupViewModel groupViewModel;
     private EditText gnInput;
+    private EditText gdInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class NewGroupActivity extends AppCompatActivity {
         });
 
         gnInput = findViewById(R.id.group_name);
+        gdInput = findViewById(R.id.group_description);
 
         groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
     }
@@ -62,8 +64,9 @@ public class NewGroupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.nav_done) {
             String name = gnInput.getText().toString();
+            String description = gdInput.getText().toString();
             if (name.length() >= 3) {
-                groupViewModel.insert(new Group(name));
+                groupViewModel.insert(new Group(name, description));
                 setResult(RESULT_OK, new Intent());
                 finish();
                 return true;
