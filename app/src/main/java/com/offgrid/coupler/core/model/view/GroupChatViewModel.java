@@ -14,6 +14,8 @@ import androidx.lifecycle.Transformations;
 
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.ChatMessages;
+import com.offgrid.coupler.data.entity.Group;
+import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.entity.GroupChatMessages;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.repository.ChatRepository;
@@ -79,6 +81,17 @@ public class GroupChatViewModel extends AndroidViewModel implements ChatViewMode
         }
     }
 
+
+    @Override
+    public void deleteChat() {
+        GroupChatMessages groupChatMessages = liveChat.getValue();
+        if (groupChatMessages != null) {
+            Chat chat = groupChatMessages.chat;
+            Group group = groupChatMessages.group;
+            messageRepository.deleteChatMessages(chat.getId());
+            groupRepository.delete(new GroupChat(group, chat));
+        }
+    }
 
     @Override
     public void deleteMessages() {

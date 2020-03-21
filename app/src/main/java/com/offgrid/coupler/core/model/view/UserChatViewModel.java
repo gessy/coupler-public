@@ -78,6 +78,12 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         }
     }
 
+
+    @Override
+    public void deleteChat() {
+        throw new RuntimeException("Stub!");
+    }
+
     @Override
     public void deleteMessages() {
         UserChatMessages userChatMessages = liveChat.getValue();

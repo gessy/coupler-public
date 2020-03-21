@@ -71,5 +71,4 @@ public abstract class GroupDao {
 
     @Delete(entity = Chat.class)
     abstract void _delete(Chat chat);
-
 }
