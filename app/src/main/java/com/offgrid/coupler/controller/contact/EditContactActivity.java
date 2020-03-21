@@ -48,8 +48,7 @@ public class EditContactActivity extends AppCompatActivity implements Observer<O
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
+                onBackPressed();
             }
         });
 
@@ -77,7 +76,7 @@ public class EditContactActivity extends AppCompatActivity implements Observer<O
         if (item.getItemId() == R.id.nav_done) {
             contactViewModel.updateFullName(fnInput.getText().toString(), lnInput.getText().toString());
             setResult(RESULT_OK, new Intent());
-            finish();
+            onBackPressed();
             return true;
         }
 
@@ -95,4 +94,9 @@ public class EditContactActivity extends AppCompatActivity implements Observer<O
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
+    }
 }

@@ -41,8 +41,7 @@ public class NewGroupActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
+                onBackPressed();
             }
         });
 
@@ -74,5 +73,11 @@ public class NewGroupActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
 }

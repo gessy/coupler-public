@@ -1,5 +1,6 @@
 package com.offgrid.coupler.core.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,10 +10,10 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.chat.ChatActivity;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.controller.contact.ContactInfoActivity;
 import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
-import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 
 import java.util.List;
 
@@ -40,9 +41,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ContactInfoActivity.class);
-                intent.putExtras(DtoUserWrapper.convertAndWrap(current));
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 context.startActivity(intent);
+                ((Activity)context).finish();
+                ((Activity)context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
             }
         });
     }

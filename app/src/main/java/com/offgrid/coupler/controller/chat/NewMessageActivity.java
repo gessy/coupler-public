@@ -48,8 +48,7 @@ public class NewMessageActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
+                onBackPressed();
             }
         });
 
@@ -111,5 +110,13 @@ public class NewMessageActivity
             startActivityForResult(intent, 1);
             finish();
         }
+        overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
 }

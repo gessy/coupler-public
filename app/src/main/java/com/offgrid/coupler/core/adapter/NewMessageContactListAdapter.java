@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
 import com.offgrid.coupler.controller.chat.ChatActivity;
@@ -28,6 +29,7 @@ public class NewMessageContactListAdapter extends ContactListAdapter {
                 intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 context.startActivity(intent);
                 ((Activity)context).finish();
+                ((Activity)context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
             }
         });
     }

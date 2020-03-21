@@ -49,8 +49,7 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
+                onBackPressed();
             }
         });
 
@@ -93,8 +92,8 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
                     )
             );
 
-            setResult(RESULT_OK, new Intent());
             finish();
+            overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
             return true;
         }
 
@@ -117,5 +116,11 @@ public class NewContactActivity extends AppCompatActivity implements Updatable {
             menuItemDone.setEnabled(false);
             menuItemDone.getIcon().setAlpha(130);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
 }

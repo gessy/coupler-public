@@ -45,6 +45,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
                 Intent intent = new Intent(fragment.getActivity(), ChatActivity.class);
                 intent.putExtras(DtoChatWrapper.convertAndWrap(current));
                 fragment.startActivityForResult(intent, 1);
+                fragment.getActivity().overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
             }
         });
     }

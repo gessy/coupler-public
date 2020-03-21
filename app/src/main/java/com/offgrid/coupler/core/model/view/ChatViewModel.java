@@ -8,7 +8,9 @@ import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
 
 public interface ChatViewModel {
-    void loadByReferenceId(Long RefId);
+    void loadByOwnerId(Long RefId);
+
+    Object getOwner();
 
     void addMessage(Message message);
 

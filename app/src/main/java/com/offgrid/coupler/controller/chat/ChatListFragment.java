@@ -92,6 +92,7 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
                             .build()
             );
             startActivityForResult(intent, 1);
+            getActivity().overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         }
     }
 

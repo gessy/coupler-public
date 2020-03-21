@@ -46,8 +46,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
+                onBackPressed();
             }
         });
 
@@ -63,7 +62,6 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
 
         FloatingActionButton fab = findViewById(R.id.fab_new_contact);
         fab.setOnClickListener(ContactListActivity.this);
-
     }
 
 
@@ -98,6 +96,14 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
                             .build()
             );
             startActivityForResult(intent, 1);
+            overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
 }
