@@ -123,4 +123,11 @@ public class ContactInfoActivity extends AppCompatActivity
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
+    }
+
 }
