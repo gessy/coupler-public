@@ -16,6 +16,8 @@ public interface ChatViewModel {
 
     void deleteMessages();
 
+    void deleteChat();
+
     boolean noMessages();
 
     boolean isPersonal();

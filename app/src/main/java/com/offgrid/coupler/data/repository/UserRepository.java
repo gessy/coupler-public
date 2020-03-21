@@ -78,6 +78,16 @@ public class UserRepository {
         });
     }
 
+
+    public void delete(final UserChat userChat) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.delete(userChat);
+            }
+        });
+    }
+
     public void delete(final long id) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override

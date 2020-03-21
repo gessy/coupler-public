@@ -2,6 +2,7 @@ package com.offgrid.coupler.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -53,6 +54,18 @@ public abstract class UserDao {
         if (userChat.chat != null) {
             _update(userChat.chat);
         }
+    }
+
+    @Delete(entity = Chat.class)
+    abstract void _delete(Chat chat);
+
+    @Delete(entity = User.class)
+    abstract void delete(User user);
+
+    @Transaction
+    public void delete(UserChat userChat) {
+        if (userChat.user != null ) delete(userChat.user);
+        if (userChat.chat != null ) _delete(userChat.chat);
     }
 
     @Query("delete from T_User where gid = :gid")

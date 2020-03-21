@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        app:showAsAction="never"
+        android:orderInCategory="100">
+        <item
+            android:id="@+id/action_add_talker_message"
+            android:title="@string/menu_talker_message_item" />
+        <item
+            android:id="@+id/action_clear_message_history"
+            android:title="@string/menu_clear_message_history" />
+        <item
+            android:id="@+id/action_delete_user_chat"
+            android:title="@string/menu_delete_chat" />
+    </group>
+
+</menu>

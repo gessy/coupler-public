@@ -26,9 +26,11 @@ import com.offgrid.coupler.core.model.dto.ChatDto;
 import com.offgrid.coupler.core.model.view.ChatViewModel;
 import com.offgrid.coupler.core.provider.ChatViewModelProvider;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.model.ChatType;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
+import static com.offgrid.coupler.data.model.ChatType.GROUP;
 
 
 public class ChatActivity
@@ -101,7 +103,11 @@ public class ChatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_chat, menu);
+        if (GROUP.equals(chatDto.getType())) {
+            getMenuInflater().inflate(R.menu.menu_group_chat, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_user_chat, menu);
+        }
         return true;
     }
 
@@ -114,6 +120,16 @@ public class ChatActivity
                 return true;
             case R.id.action_clear_message_history:
                 chatViewModel.deleteMessages();
+                break;
+            case R.id.action_delete_user_chat:
+                chatViewModel.setVisibility(false);
+                finish();
+                overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
+                break;
+            case R.id.action_delete_leave_group:
+                chatViewModel.deleteChat();
+                finish();
+                overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
                 break;
         }
 
@@ -140,7 +156,9 @@ public class ChatActivity
 
     @Override
     public void onChanged(ChatMessages chatMessages) {
-        messageListAdapter.setMessages(chatMessages.messages());
+        if (chatMessages != null) {
+            messageListAdapter.setMessages(chatMessages.messages());
+        }
     }
 
     @Override
