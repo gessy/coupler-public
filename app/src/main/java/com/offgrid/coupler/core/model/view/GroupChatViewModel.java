@@ -55,8 +55,14 @@ public class GroupChatViewModel extends AndroidViewModel implements ChatViewMode
     }
 
     @Override
-    public void loadByReferenceId(Long RefId) {
+    public void loadByOwnerId(Long RefId) {
         liveID.setValue(RefId);
+    }
+
+    @Override
+    public Object getOwner() {
+        GroupChatMessages groupChatMessages = liveChat.getValue();
+        return groupChatMessages != null ? groupChatMessages.group : null;
     }
 
     @Override

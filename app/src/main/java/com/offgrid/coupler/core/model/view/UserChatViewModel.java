@@ -54,8 +54,14 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
     }
 
     @Override
-    public void loadByReferenceId(Long RefId) {
+    public void loadByOwnerId(Long RefId) {
         liveID.setValue(RefId);
+    }
+
+    @Override
+    public Object getOwner() {
+        UserChatMessages userChatMessages = liveChat.getValue();
+        return userChatMessages != null ? userChatMessages.user : null;
     }
 
     @Override

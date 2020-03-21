@@ -1,5 +1,6 @@
 package com.offgrid.coupler.controller.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +17,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.contact.ContactInfoActivity;
 import com.offgrid.coupler.core.adapter.MessageListAdapter;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.core.model.dto.ChatDto;
 import com.offgrid.coupler.core.model.view.ChatViewModel;
 import com.offgrid.coupler.core.provider.ChatViewModelProvider;
+import com.offgrid.coupler.data.entity.User;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
@@ -56,16 +60,24 @@ public class ChatActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (chatViewModel.isPersonal()) {
-                    if (chatViewModel.noMessages()) {
-                        chatViewModel.setVisibility(false);
-                    } else {
-                        chatViewModel.setVisibility(true);
-                    }
-                }
                 onBackPressed();
             }
         });
+
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Object o = chatViewModel.getOwner();
+                if (o instanceof User) {
+                    Intent intent = new Intent(ChatActivity.this, ContactInfoActivity.class);
+                    intent.putExtras(DtoUserWrapper.convertAndWrap((User) o));
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+                }
+            }
+        });
+
 
         messageListAdapter = new MessageListAdapter(this, chatDto.getType());
 
@@ -83,7 +95,7 @@ public class ChatActivity
     public void initViewModels() {
         chatViewModel = new ChatViewModelProvider(this).get(chatDto.getType());
         chatViewModel.observe(this, this);
-        chatViewModel.loadByReferenceId(chatDto.getReference());
+        chatViewModel.loadByOwnerId(chatDto.getReference());
     }
 
 
@@ -130,4 +142,18 @@ public class ChatActivity
     public void onChanged(ChatMessages chatMessages) {
         messageListAdapter.setMessages(chatMessages.messages());
     }
+
+    @Override
+    public void onBackPressed() {
+        if (chatViewModel.isPersonal()) {
+            if (chatViewModel.noMessages()) {
+                chatViewModel.setVisibility(false);
+            } else {
+                chatViewModel.setVisibility(true);
+            }
+        }
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
+    }
+
 }

@@ -121,6 +121,8 @@ public class MainActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         return true;
     }
 }

@@ -44,16 +44,8 @@ public class ContactInfoActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("");
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
-            }
-        });
 
         userDto = UserDto.getInstance(getIntent().getExtras());
         initViewModels();
@@ -83,12 +75,14 @@ public class ContactInfoActivity extends AppCompatActivity
             contactViewModel.delete();
             setResult(RESULT_OK, new Intent());
             finish();
+            overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
             return true;
         } else if (item.getItemId() == R.id.action_edit_contact) {
             Intent intent = new Intent(this, EditContactActivity.class);
             User user = contactViewModel.getUser();
             intent.putExtras(DtoUserWrapper.convertAndWrap(user));
             startActivityForResult(intent, 1);
+            overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
 
             return true;
         }
@@ -102,7 +96,7 @@ public class ContactInfoActivity extends AppCompatActivity
             User user = ((UserChat)o).user;
             ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
             ((TextView) findViewById(R.id.notification_status)).setText(user.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
-            ((TextView) findViewById(R.id.user_full_name)).setText(user.getFirstName() + " " + user.getLastName());
+            ((TextView) findViewById(R.id.user_full_name)).setText(user.fullName());
 
             if (switcher.isChecked() != user.isAllowNotify()) {
                 switcher.setChecked(user.isAllowNotify());
@@ -124,6 +118,9 @@ public class ContactInfoActivity extends AppCompatActivity
                 intent.putExtras(DtoChatWrapper.convertAndWrap(user));
                 startActivityForResult(intent, 1);
             }
+            finish();
+            overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
         }
     }
+
 }

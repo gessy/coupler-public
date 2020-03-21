@@ -106,6 +106,10 @@ public class User {
     }
 
     public String chatTitle() {
+        return fullName();
+    }
+
+    public String fullName() {
         return firstName + " " + lastName;
     }
 }
