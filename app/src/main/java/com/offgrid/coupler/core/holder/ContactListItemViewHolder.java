@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.util.DateUtil;
 
 public class ContactListItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,7 +26,7 @@ public class ContactListItemViewHolder extends RecyclerView.ViewHolder {
 
     public void update(User user) {
         this.title.setText(user.getFirstName() + " " + user.getLastName());
-        this.message.setText("Online");
+        this.message.setText(DateUtil.formatUserActivityDate(user.getLastSeen()));
     }
 
 }
