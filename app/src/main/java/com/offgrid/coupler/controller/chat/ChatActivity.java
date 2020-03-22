@@ -26,7 +26,6 @@ import com.offgrid.coupler.core.model.dto.ChatDto;
 import com.offgrid.coupler.core.model.view.ChatViewModel;
 import com.offgrid.coupler.core.provider.ChatViewModelProvider;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.data.model.ChatType;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;

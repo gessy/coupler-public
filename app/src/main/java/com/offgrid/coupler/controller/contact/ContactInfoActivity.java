@@ -24,6 +24,7 @@ import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.core.model.view.ContactViewModel;
 import com.offgrid.coupler.controller.chat.ChatActivity;
+import com.offgrid.coupler.util.DateUtil;
 
 
 public class ContactInfoActivity extends AppCompatActivity
@@ -97,6 +98,7 @@ public class ContactInfoActivity extends AppCompatActivity
             ((TextView) findViewById(R.id.user_gid)).setText(user.getGid());
             ((TextView) findViewById(R.id.notification_status)).setText(user.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
             ((TextView) findViewById(R.id.user_full_name)).setText(user.fullName());
+            ((TextView) findViewById(R.id.user_last_seen)).setText(DateUtil.formatUserActivityDate(user.getLastSeen()));
 
             if (switcher.isChecked() != user.isAllowNotify()) {
                 switcher.setChecked(user.isAllowNotify());

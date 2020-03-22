@@ -31,6 +31,10 @@ public class Chat {
     private String lastMessage;
 
     @NonNull
+    @ColumnInfo(name = "is_mine_last_message")
+    private boolean isMineLastMessage;
+
+    @NonNull
     @ColumnInfo(name = "type")
     private ChatType type;
 
@@ -62,6 +66,7 @@ public class Chat {
                  boolean visible) {
         this.title = title;
         this.lastMessage = lastMessage;
+        this.isMineLastMessage = false;
         this.type = type;
         this.userId = userId;
         this.groupId = groupId;
@@ -149,5 +154,14 @@ public class Chat {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+
+    public boolean isMineLastMessage() {
+        return isMineLastMessage;
+    }
+
+    public void setMineLastMessage(boolean mineLastMessage) {
+        isMineLastMessage = mineLastMessage;
     }
 }
