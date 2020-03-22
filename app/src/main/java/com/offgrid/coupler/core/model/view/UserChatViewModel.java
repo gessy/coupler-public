@@ -70,6 +70,7 @@ public class UserChatViewModel extends AndroidViewModel implements ChatViewModel
         if (userChatMessages != null) {
             Chat chat = userChatMessages.chat;
             chat.setLastMessage(message.getMessage());
+            chat.setMineLastMessage(message.isMine());
             chat.setLastModificationDate(new Date());
             chatRepository.update(chat);
 

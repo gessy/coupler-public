@@ -73,6 +73,7 @@ public class GroupChatViewModel extends AndroidViewModel implements ChatViewMode
         if (groupChatMessages != null) {
             Chat chat = groupChatMessages.chat;
             chat.setLastMessage(message.getMessage());
+            chat.setMineLastMessage(message.isMine());
             chat.setLastModificationDate(new Date());
             chatRepository.update(chat);
 
