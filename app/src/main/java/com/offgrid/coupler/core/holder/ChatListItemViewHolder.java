@@ -28,7 +28,7 @@ public class ChatListItemViewHolder extends RecyclerView.ViewHolder {
     public void update(Chat chat) {
         this.title.setText(chat.getTitle());
         this.message.setText(chat.getLastMessage());
-        this.messageDate.setText(DateUtil.formatDate(chat.getLastModificationDate()));
+        this.messageDate.setText(DateUtil.formatMessageDate(chat.getLastModificationDate()));
     }
 
 }
