@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/user_avatar"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:elevation="12dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="27dp">
+
+                <ImageView
+                    android:id="@+id/chat_list_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/hugh_laurie" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/user_gid"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_toEndOf="@+id/user_avatar"
+                android:layout_marginStart="25dp"
+                android:background="@android:color/transparent"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/gid"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:importantForAutofill="no" />
+
+            <TextView
+                android:id="@+id/user_last_seen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/user_avatar"
+                android:layout_below="@+id/user_gid"
+                android:layout_marginStart="26dp"
+                android:background="@android:color/transparent"
+                android:textSize="12sp"
+                android:text="Last seen at 15:43"
+                android:importantForAutofill="no" />
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/user_first_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/hint_first_name"
+            android:textColorHint="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:textSize="18sp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text=""
+            android:importantForAutofill="no" />
+
+        <View
+            android:id="@+id/user_split_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary" />
+
+        <EditText
+            android:id="@+id/user_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/hint_last_name"
+            android:textColorHint="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="18sp"
+            android:text=""
+            android:importantForAutofill="no" />
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+

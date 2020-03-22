@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.offgrid.coupler.model.Info;
+import com.offgrid.coupler.core.model.Info;
 
 
 public class MockActivity extends AppCompatActivity {
@@ -33,8 +33,7 @@ public class MockActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED, new Intent());
-                finish();
+                onBackPressed();
             }
         });
 
@@ -55,9 +54,17 @@ public class MockActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.nav_done) {
             setResult(RESULT_OK, new Intent());
             finish();
+            overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
 }

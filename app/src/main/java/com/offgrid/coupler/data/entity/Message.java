@@ -3,12 +3,14 @@ package com.offgrid.coupler.data.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 import static com.offgrid.coupler.util.RandomTokenGenerator.getRandInt;
 import static java.lang.System.currentTimeMillis;
-
 
 @Entity(tableName = "T_Message")
 public class Message {
@@ -17,6 +19,7 @@ public class Message {
     @ColumnInfo(name = "id")
     private Long id;
 
+    @ForeignKey(entity = Chat.class, parentColumns = "id", childColumns = "chat_id")
     @NonNull
     @ColumnInfo(name = "chat_id")
     private Long chatId;
@@ -27,7 +30,7 @@ public class Message {
 
     @NonNull
     @ColumnInfo(name = "date")
-    private Long date;
+    private Date date;
 
     @NonNull
     @ColumnInfo(name = "user_full_name")
@@ -50,13 +53,13 @@ public class Message {
         this.chatId = chatId;
         this.message = message;
         this.userFullName = "No Name";
-        this.date = System.currentTimeMillis();
+        this.date = new Date();
     }
 
     @Ignore
     public Message(@NonNull Long chatId,
                    @NonNull String message,
-                   @NonNull Long date,
+                   @NonNull Date date,
                    @NonNull String userFullName,
                    boolean isMine) {
         this.chatId = chatId;
@@ -66,15 +69,33 @@ public class Message {
         this.isMine = isMine;
     }
 
-    public static Message myMessage(@NonNull Long chatId, @NonNull String message) {
-        return new Message(chatId, message, currentTimeMillis(), "Me", true);
+
+    @Ignore
+    private Message(@NonNull String message,
+                    @NonNull Date date,
+                    @NonNull String userFullName,
+                    boolean isMine) {
+        this.message = message;
+        this.date = date;
+        this.userFullName = userFullName;
+        this.isMine = isMine;
     }
 
 
-    public static Message talkerMessage(@NonNull Long chatId) {
+    public static Message talkerMessage() {
         String message = "Message ID " + getRandInt() + " How are you doing? This is a long message that should probably wrap.";
-        return new Message(chatId, message, currentTimeMillis(), "Talker", false);
+        return new Message(message, new Date(), "Talker", false);
     }
+
+
+    public static Message myMessage(String message) {
+        return new Message(message, new Date(), "Me", true);
+    }
+
+    public static Message myMessage(String message, Long chatId) {
+        return new Message(chatId, message, new Date(), "Me", true);
+    }
+
 
     @NonNull
     public Long getId() {
@@ -104,11 +125,11 @@ public class Message {
     }
 
     @NonNull
-    public Long getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(@NonNull Long date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 

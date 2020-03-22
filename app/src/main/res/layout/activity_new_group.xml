@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/user_avatar"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:elevation="12dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="24dp">
+
+                <ImageView
+                    android:id="@+id/chat_list_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/hugh_laurie" />
+            </androidx.cardview.widget.CardView>
+
+
+            <EditText
+                android:id="@+id/group_name"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_toEndOf="@+id/user_avatar"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="16dp"
+                android:ems="10"
+                android:hint="@string/hint_group_name"
+                android:textColorHint="@color/light_grey"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text=""
+                android:importantForAutofill="no" />
+
+            <View
+                android:id="@+id/end_of_group_definition_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/group_name"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/user_avatar"
+                android:background="@color/lighter_grey" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/group_description"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/hint_group_description"
+            android:textColorHint="@color/light_grey"
+            android:background="@android:color/transparent"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text=""
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

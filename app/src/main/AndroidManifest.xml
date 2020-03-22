@@ -10,21 +10,44 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".controller.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MockActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+<!--        Message activities-->
         <activity
-            android:name=".ui.message.MessageActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".controller.chat.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controller.chat.NewMessageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+<!--        Contact Activities-->
+        <activity
+            android:name=".controller.contact.NewContactActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controller.contact.ContactListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controller.contact.ContactInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controller.contact.EditContactActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+<!--        Group Activities-->
+        <activity
+            android:name=".controller.group.NewGroupActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
