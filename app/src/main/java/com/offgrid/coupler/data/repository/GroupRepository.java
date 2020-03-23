@@ -57,6 +57,15 @@ public class GroupRepository {
         });
     }
 
+    public void update(final GroupChat groupChat) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.update(groupChat);
+            }
+        });
+    }
+
     public void delete(final GroupChat groupChat) {
         if (groupChat != null) {
             CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
