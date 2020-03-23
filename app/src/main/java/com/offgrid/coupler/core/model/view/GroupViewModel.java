@@ -20,6 +20,8 @@ import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.data.repository.GroupRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 
+import java.util.Date;
+
 import static com.offgrid.coupler.data.entity.Chat.groupChat;
 
 
@@ -82,4 +84,16 @@ public class GroupViewModel extends AndroidViewModel {
     public void insert(Group group) {
         groupRepository.insert(new GroupChat(group, groupChat(group.getName())));
     }
+
+    public void updateGroup(String name, String description) {
+        GroupChat groupChat = liveGroupChat.getValue();
+        if (groupChat != null) {
+            groupChat.group.setName(name);
+            groupChat.group.setDescription(description);
+            groupChat.chat.setTitle(name);
+            groupChat.chat.setLastModificationDate(new Date());
+            groupRepository.update(groupChat);
+        }
+    }
+
 }

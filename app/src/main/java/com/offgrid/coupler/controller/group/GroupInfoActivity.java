@@ -20,6 +20,7 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.GroupDto;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoGroupWrapper;
 import com.offgrid.coupler.core.model.view.GroupViewModel;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
@@ -76,13 +77,12 @@ public class GroupInfoActivity extends AppCompatActivity
             finish();
             overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
             return true;
-        } else if (item.getItemId() == R.id.action_edit_contact) {
-//            Intent intent = new Intent(this, EditContactActivity.class);
-//            User user = contactViewModel.getUser();
-//            intent.putExtras(DtoUserWrapper.convertAndWrap(user));
-//            startActivityForResult(intent, 1);
-//            overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
-
+        } else if (item.getItemId() == R.id.action_edit_group) {
+            Intent intent = new Intent(this, EditGroupActivity.class);
+            Group group = groupViewModel.getGroup();
+            intent.putExtras(DtoGroupWrapper.convertAndWrap(group));
+            startActivityForResult(intent, 1);
+            overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
             return true;
         }
 

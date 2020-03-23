@@ -25,9 +25,6 @@ public abstract class GroupDao {
     @Query("select * from T_Group where id = :id")
     public abstract LiveData<Group> findById(Long id);
 
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void update(Group group);
-
     @Query("delete from T_Group where id = :id")
     public abstract void deleteById(Long id);
 
@@ -54,6 +51,12 @@ public abstract class GroupDao {
 
 
     @Transaction
+    public void update(GroupChat groupChat) {
+        if (groupChat.group != null) update(groupChat.group);
+        if (groupChat.chat != null) _update(groupChat.chat);
+    }
+
+    @Transaction
     public void delete(GroupChat groupChat) {
         if (groupChat.group != null) delete(groupChat.group);
         if (groupChat.chat != null) _delete(groupChat.chat);
@@ -65,6 +68,12 @@ public abstract class GroupDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Chat.class)
     abstract long _insert(Chat chat);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE, entity = Group.class)
+    public abstract void update(Group group);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE, entity = Chat.class)
+    abstract void _update(Chat chat);
 
     @Delete(entity = Group.class)
     public abstract void delete(Group group);
