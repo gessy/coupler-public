@@ -18,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.contact.ContactInfoActivity;
+import com.offgrid.coupler.controller.group.GroupInfoActivity;
 import com.offgrid.coupler.core.adapter.MessageListAdapter;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoGroupWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.data.entity.ChatMessages;
+import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.core.model.dto.ChatDto;
 import com.offgrid.coupler.core.model.view.ChatViewModel;
@@ -69,16 +72,22 @@ public class ChatActivity
             @Override
             public void onClick(View view) {
                 Object o = chatViewModel.getOwner();
+                Intent intent = null;
                 if (o instanceof User) {
-                    Intent intent = new Intent(ChatActivity.this, ContactInfoActivity.class);
+                    intent = new Intent(ChatActivity.this, ContactInfoActivity.class);
                     intent.putExtras(DtoUserWrapper.convertAndWrap((User) o));
+                } else if (o instanceof Group) {
+                    intent = new Intent(ChatActivity.this, GroupInfoActivity.class);
+                    intent.putExtras(DtoGroupWrapper.convertAndWrap((Group) o));
+                }
+
+                if (intent != null) {
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
                 }
             }
         });
-
 
         messageListAdapter = new MessageListAdapter(this, chatDto.getType());
 
