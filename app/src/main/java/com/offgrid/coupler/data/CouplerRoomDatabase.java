@@ -55,8 +55,10 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
     public abstract UserGroupDao userGroupDao();
 
 
+    private static final String DB_NAME = "coupler_database";
     private static volatile CouplerRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
+
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public static CouplerRoomDatabase getDatabase(final Context context) {
@@ -66,7 +68,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
                     INSTANCE = Room
                             .databaseBuilder(
                                     context.getApplicationContext(),
-                                    CouplerRoomDatabase.class, "coupler_database")
+                                    CouplerRoomDatabase.class,
+                                    DB_NAME)
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
