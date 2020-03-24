@@ -17,10 +17,12 @@ import com.offgrid.coupler.data.dao.GroupDao;
 import com.offgrid.coupler.data.dao.MessageDao;
 import com.offgrid.coupler.data.dao.UserChatDao;
 import com.offgrid.coupler.data.dao.UserDao;
+import com.offgrid.coupler.data.dao.UserGroupDao;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.entity.UserGroupRef;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,7 +32,8 @@ import java.util.concurrent.Executors;
                 Chat.class,
                 Message.class,
                 User.class,
-                Group.class},
+                Group.class,
+                UserGroupRef.class},
         version = 1,
         exportSchema = false
 )
@@ -48,6 +51,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
     public abstract GroupDao groupDao();
 
     public abstract GroupChatDao groupChatDao();
+
+    public abstract UserGroupDao userGroupDao();
 
 
     private static volatile CouplerRoomDatabase INSTANCE;
