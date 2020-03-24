@@ -6,8 +6,8 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
+import com.offgrid.coupler.data.dao.UserChatDao;
 import com.offgrid.coupler.data.dao.UserDao;
-import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.data.entity.UserChatMessages;
@@ -17,10 +17,12 @@ import java.util.List;
 public class UserRepository {
 
     private UserDao dao;
+    private UserChatDao userChatDao;
 
     public UserRepository(Application application) {
         CouplerRoomDatabase db = CouplerRoomDatabase.getDatabase(application);
         dao = db.userDao();
+        userChatDao = db.userChatDao();
     }
 
     public LiveData<List<User>> getUsers() {
@@ -42,20 +44,11 @@ public class UserRepository {
     }
 
 
-    public void insert(final User user) {
-        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.insert(user);
-            }
-        });
-    }
-
     public void insert(final UserChat userChat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.insert(userChat);
+                userChatDao.insert(userChat);
             }
         });
     }
@@ -73,7 +66,7 @@ public class UserRepository {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.update(userChat);
+                userChatDao.update(userChat);
             }
         });
     }
@@ -83,26 +76,9 @@ public class UserRepository {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.delete(userChat);
+                userChatDao.delete(userChat);
             }
         });
     }
 
-    public void delete(final long id) {
-        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.deleteById(id);
-            }
-        });
-    }
-
-    public void delete(final String gid) {
-        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.deleteByGid(gid);
-            }
-        });
-    }
 }

@@ -12,8 +12,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.offgrid.coupler.data.converter.ChatTypeConverter;
 import com.offgrid.coupler.data.converter.DateConverter;
 import com.offgrid.coupler.data.dao.ChatDao;
+import com.offgrid.coupler.data.dao.GroupChatDao;
 import com.offgrid.coupler.data.dao.GroupDao;
 import com.offgrid.coupler.data.dao.MessageDao;
+import com.offgrid.coupler.data.dao.UserChatDao;
 import com.offgrid.coupler.data.dao.UserDao;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Group;
@@ -41,7 +43,11 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
 
+    public abstract UserChatDao userChatDao();
+
     public abstract GroupDao groupDao();
+
+    public abstract GroupChatDao groupChatDao();
 
 
     private static volatile CouplerRoomDatabase INSTANCE;

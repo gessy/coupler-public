@@ -12,11 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
-import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
-import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.data.repository.GroupRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 
