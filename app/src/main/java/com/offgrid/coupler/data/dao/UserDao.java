@@ -9,7 +9,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.data.entity.UserChatMessages;
@@ -22,57 +21,8 @@ public abstract class UserDao {
     @Query("select * from T_User")
     public abstract LiveData<List<User>> findAll();
 
-    @Query("select * from T_User where gid = :gid")
-    public abstract LiveData<User> findByGid(String gid);
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract long insert(User user);
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Chat.class)
-    abstract long _insert(Chat chat);
-
-    @Transaction
-    public void insert(UserChat userChat) {
-        long id = insert(userChat.user);
-        Chat chat = userChat.chat;
-        if (chat != null) {
-            chat.setUserId(id);
-            _insert(chat);
-        }
-    }
-
-
     @Update(onConflict = OnConflictStrategy.IGNORE)
     public abstract void update(User user);
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    abstract void _update(Chat chat);
-
-    @Transaction
-    public void update(UserChat userChat) {
-        update(userChat.user);
-        if (userChat.chat != null) {
-            _update(userChat.chat);
-        }
-    }
-
-    @Delete(entity = Chat.class)
-    abstract void _delete(Chat chat);
-
-    @Delete(entity = User.class)
-    abstract void delete(User user);
-
-    @Transaction
-    public void delete(UserChat userChat) {
-        if (userChat.user != null ) delete(userChat.user);
-        if (userChat.chat != null ) _delete(userChat.chat);
-    }
-
-    @Query("delete from T_User where gid = :gid")
-    public abstract void deleteByGid(String gid);
-
-    @Query("delete from T_User where id = :id")
-    public abstract void deleteById(Long id);
 
     @Query("delete from T_User")
     public abstract void deleteAll();

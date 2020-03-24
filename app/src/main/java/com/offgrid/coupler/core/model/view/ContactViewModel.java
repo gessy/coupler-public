@@ -31,7 +31,6 @@ public class ContactViewModel extends AndroidViewModel {
     public enum Entity {UID, GID}
 
     private UserRepository userRepository;
-    private ChatRepository chatRepository;
     private MessageRepository messageRepository;
 
     private final MutableLiveData<Pair<Entity, Object>> liveID = new MutableLiveData();
@@ -40,7 +39,6 @@ public class ContactViewModel extends AndroidViewModel {
     public ContactViewModel(Application application) {
         super(application);
         userRepository = new UserRepository(application);
-        chatRepository = new ChatRepository(application);
         messageRepository = new MessageRepository(application);
 
         liveUserChat = Transformations.switchMap(liveID, new Function<Pair<Entity, Object>, LiveData<UserChat>>() {
@@ -76,11 +74,8 @@ public class ContactViewModel extends AndroidViewModel {
     public void delete() {
         UserChat userChat = liveUserChat.getValue();
         if (userChat != null) {
-            if (userChat.chat != null) {
-                messageRepository.deleteChatMessages(userChat.chat.getId());
-                chatRepository.deleteChat(userChat.chat.getId());
-            }
-            userRepository.delete(userChat.user.getId());
+            messageRepository.deleteChatMessages(userChat.chat.getId());
+            userRepository.delete(userChat);
         }
     }
 
