@@ -12,6 +12,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_contact_list"
+        android:scrollbars="vertical"
         tools:listitem="@layout/contact_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

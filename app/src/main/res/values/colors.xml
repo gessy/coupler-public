@@ -7,6 +7,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="blue_light">#48b3ff</color>
+    <color name="blue_gasprom">#0079C2</color>
+
     <color name="dark_grey">#424242</color>
     <color name="lighter_grey">#ededed</color>
     <color name="light_grey">#D3D3D3</color>

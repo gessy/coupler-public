@@ -6,18 +6,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.selection.SelectionTracker;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.adapter.AddGroupMembershipContactListAdapter;
 import com.offgrid.coupler.core.model.dto.GroupDto;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;
+import com.offgrid.coupler.core.provider.ContactSelectionTracker;
 import com.offgrid.coupler.data.entity.User;
 
 import java.util.List;
@@ -29,6 +36,14 @@ public class AddGroupMembershipActivity extends AppCompatActivity
     private GroupDto groupDto;
     private ContactListViewModel contactListViewModel;
     private AddGroupMembershipContactListAdapter contactListAdapter;
+
+    private SelectionTracker selectionTracker;
+    private RecyclerView recyclerView;
+
+    private FloatingActionButton fb;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +67,8 @@ public class AddGroupMembershipActivity extends AppCompatActivity
             }
         });
 
-        findViewById(R.id.fab_add_membership).setOnClickListener(this);
+        fb = findViewById(R.id.fab_add_membership);
+        fb.setOnClickListener(this);
 
         contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
         contactListViewModel.load();
@@ -60,9 +76,9 @@ public class AddGroupMembershipActivity extends AppCompatActivity
 
         contactListAdapter = new AddGroupMembershipContactListAdapter(this);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
-        recyclerView.setAdapter(contactListAdapter);
+        recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(contactListAdapter);
 
     }
 
@@ -88,14 +104,29 @@ public class AddGroupMembershipActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab_add_membership) {
-            Toast.makeText(this,"new", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "new", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onChanged(List<User> users) {
         contactListAdapter.setUsers(users);
-    }
 
+        selectionTracker = new ContactSelectionTracker().get(recyclerView, users);
+        contactListAdapter.setSelectionTracker(selectionTracker);
+
+        selectionTracker.addObserver(new SelectionTracker.SelectionObserver() {
+            @Override
+            public void onSelectionChanged() {
+                super.onSelectionChanged();
+                if (selectionTracker.hasSelection()) {
+                    fb.show();
+                } else {
+                    fb.hide();
+                }
+            }
+        });
+
+    }
 
 }
