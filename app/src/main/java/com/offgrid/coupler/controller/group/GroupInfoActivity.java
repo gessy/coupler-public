@@ -15,7 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.GroupDto;
@@ -53,8 +52,8 @@ public class GroupInfoActivity extends AppCompatActivity
         switcher = findViewById(R.id.notification_status_switcher);
         switcher.setOnCheckedChangeListener(this);
 
-        FloatingActionButton fab = findViewById(R.id.fb_start_chat);
-        fab.setOnClickListener(this);
+        findViewById(R.id.fb_start_chat).setOnClickListener(this);
+        findViewById(R.id.action_add_member).setOnClickListener(this);
     }
 
     private void initViewModels() {
@@ -110,15 +109,18 @@ public class GroupInfoActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+        Group group = groupViewModel.getGroup();
         if (view.getId() == R.id.fb_start_chat) {
-            Group group = groupViewModel.getGroup();
-            if (group != null) {
-                Intent intent = new Intent(GroupInfoActivity.this, ChatActivity.class);
-                intent.putExtras(DtoChatWrapper.convertAndWrap(group));
-                startActivityForResult(intent, 1);
-            }
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtras(DtoChatWrapper.convertAndWrap(group));
+            startActivity(intent);
             finish();
             overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
+        } else if (view.getId() == R.id.action_add_member) {
+            Intent intent = new Intent(this, AddGroupMembershipActivity.class);
+            intent.putExtras(DtoGroupWrapper.convertAndWrap(group));
+            startActivity(intent);
+            overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         }
     }
 

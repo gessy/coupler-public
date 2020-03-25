@@ -60,8 +60,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
         recyclerView.setAdapter(contactListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatingActionButton fab = findViewById(R.id.fab_new_contact);
-        fab.setOnClickListener(ContactListActivity.this);
+        findViewById(R.id.fab_new_contact).setOnClickListener(ContactListActivity.this);
     }
 
 
