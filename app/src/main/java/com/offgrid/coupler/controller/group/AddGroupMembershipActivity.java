@@ -31,7 +31,7 @@ public class AddGroupMembershipActivity extends AppCompatActivity
 
     private GroupDto groupDto;
     private ContactListViewModel contactListViewModel;
-    private MembershipContactListAdapter contactListAdapter;
+    private MembershipContactListAdapter membershipAdapter;
 
     private SelectionTracker selectionTracker;
     private RecyclerView recyclerView;
@@ -67,12 +67,11 @@ public class AddGroupMembershipActivity extends AppCompatActivity
         contactListViewModel.load();
         contactListViewModel.observe(this, this);
 
-        contactListAdapter = new MembershipContactListAdapter(this);
+        membershipAdapter = new MembershipContactListAdapter(this);
 
         recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(contactListAdapter);
-
+        recyclerView.setAdapter(membershipAdapter);
     }
 
 
@@ -103,22 +102,33 @@ public class AddGroupMembershipActivity extends AppCompatActivity
 
     @Override
     public void onChanged(List<User> users) {
-        contactListAdapter.setUsers(users);
+        membershipAdapter.setUsers(users);
 
-        selectionTracker = new ContactSelectionTracker().get(recyclerView, users);
-        contactListAdapter.setSelectionTracker(selectionTracker);
-
-        selectionTracker.addObserver(new SelectionTracker.SelectionObserver() {
-            @Override
-            public void onSelectionChanged() {
-                super.onSelectionChanged();
-                if (selectionTracker.hasSelection()) {
-                    fb.show();
-                } else {
-                    fb.hide();
-                }
-            }
-        });
+        if (selectionTracker == null) {
+            selectionTracker = new ContactSelectionTracker().get(recyclerView, users);
+            selectionTracker.addObserver(new SelectionObserver());
+            selectionTracker.select(User.getEmpty());
+            membershipAdapter.setSelectionTracker(selectionTracker);
+        }
     }
+
+
+    class SelectionObserver extends SelectionTracker.SelectionObserver {
+        @Override
+        public void onSelectionChanged() {
+            super.onSelectionChanged();
+            if (selectionTracker.getSelection().size() > 1) {
+                fb.show();
+            } else {
+                fb.hide();
+            }
+        }
+
+        @Override
+        protected void onSelectionCleared() {
+            selectionTracker.select(User.getEmpty());
+        }
+    }
+
 
 }

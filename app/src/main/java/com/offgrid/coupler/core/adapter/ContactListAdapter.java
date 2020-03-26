@@ -55,6 +55,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactItemViewHold
         notifyDataSetChanged();
     }
 
+    public List<User> getUsers() {
+        return this.users;
+    }
+
+
     @Override
     public int getItemCount() {
         return users != null ? users.size() : 0;
