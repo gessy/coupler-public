@@ -14,21 +14,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
+import com.offgrid.coupler.core.adapter.GroupMembershipListAdapter;
 import com.offgrid.coupler.core.model.dto.GroupDto;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoGroupWrapper;
+import com.offgrid.coupler.core.model.view.GroupUsersViewModel;
 import com.offgrid.coupler.core.model.view.GroupViewModel;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
+import com.offgrid.coupler.data.entity.GroupUsers;
 
 
 public class GroupInfoActivity extends AppCompatActivity
         implements Observer<Object>, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private GroupViewModel groupViewModel;
+    private GroupUsersViewModel groupUsersViewModel;
+
+    private GroupMembershipListAdapter contactListAdapter;
 
     private Switch switcher;
 
@@ -49,6 +57,13 @@ public class GroupInfoActivity extends AppCompatActivity
         groupDto = GroupDto.getInstance(getIntent().getExtras());
         initViewModels();
 
+        contactListAdapter = new GroupMembershipListAdapter(this);
+        contactListAdapter.setDto(groupDto);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
+        recyclerView.setAdapter(contactListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         switcher = findViewById(R.id.notification_status_switcher);
         switcher.setOnCheckedChangeListener(this);
 
@@ -60,6 +75,10 @@ public class GroupInfoActivity extends AppCompatActivity
         groupViewModel = new ViewModelProvider(this).get(GroupViewModel.class);
         groupViewModel.loadByGroupId(groupDto.getId());
         groupViewModel.observe(this, this);
+
+        groupUsersViewModel = new ViewModelProvider(this).get(GroupUsersViewModel.class);
+        groupUsersViewModel.loadByOwnerId(groupDto.getId());
+        groupUsersViewModel.observe(this, this);
     }
 
     @Override
@@ -99,6 +118,8 @@ public class GroupInfoActivity extends AppCompatActivity
             if (switcher.isChecked() != group.isAllowNotify()) {
                 switcher.setChecked(group.isAllowNotify());
             }
+        } else if (o instanceof GroupUsers) {
+            contactListAdapter.setUsers(((GroupUsers)o).users);
         }
     }
 

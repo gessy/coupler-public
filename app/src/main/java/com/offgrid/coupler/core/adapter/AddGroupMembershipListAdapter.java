@@ -8,11 +8,11 @@ import com.offgrid.coupler.core.holder.ContactItemViewHolder;
 import com.offgrid.coupler.data.entity.User;
 
 
-public class MembershipContactListAdapter extends ContactListAdapter {
+public class AddGroupMembershipListAdapter extends ContactListAdapter {
 
     private SelectionTracker selectionTracker;
 
-    public MembershipContactListAdapter(Context context) {
+    public AddGroupMembershipListAdapter(Context context) {
         super(context);
     }
 
