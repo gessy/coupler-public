@@ -1,11 +1,9 @@
 package com.offgrid.coupler.controller.group;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.adapter.MembershipContactListAdapter;
+import com.offgrid.coupler.core.adapter.AddGroupMembershipListAdapter;
 import com.offgrid.coupler.core.model.dto.GroupDto;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;
 import com.offgrid.coupler.core.model.view.GroupUsersViewModel;
@@ -38,7 +36,7 @@ public class AddGroupMembershipActivity extends AppCompatActivity
     private ContactListViewModel contactListViewModel;
     private GroupUsersViewModel groupUsersViewModel;
 
-    private MembershipContactListAdapter membershipAdapter;
+    private AddGroupMembershipListAdapter membershipAdapter;
 
     private SelectionTracker selectionTracker;
     private RecyclerView recyclerView;
@@ -68,7 +66,7 @@ public class AddGroupMembershipActivity extends AppCompatActivity
             }
         });
 
-        membershipAdapter = new MembershipContactListAdapter(this);
+        membershipAdapter = new AddGroupMembershipListAdapter(this);
 
         recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

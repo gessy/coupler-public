@@ -14,4 +14,13 @@ public class DtoGroupWrapper {
                 .withDescription(group.getDescription())
                 .build();
     }
+
+    public static Bundle convertAndWrap(GroupDto dto) {
+        return new GroupDto
+                .BundleBuilder()
+                .withId(dto.getId())
+                .withName(dto.getName())
+                .withDescription(dto.getDescription())
+                .build();
+    }
 }
