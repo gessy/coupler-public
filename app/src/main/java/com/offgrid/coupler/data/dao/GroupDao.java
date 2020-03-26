@@ -10,6 +10,7 @@ import androidx.room.Update;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.entity.GroupChatMessages;
+import com.offgrid.coupler.data.entity.GroupUsers;
 
 import java.util.List;
 
@@ -32,5 +33,9 @@ public abstract class GroupDao {
 
     @Update(onConflict = OnConflictStrategy.IGNORE, entity = Group.class)
     public abstract void update(Group group);
+
+    @Transaction
+    @Query("select * from T_Group where id = :group_id")
+    public abstract LiveData<GroupUsers> findGroupUsersByGroupId(long group_id);
 
 }

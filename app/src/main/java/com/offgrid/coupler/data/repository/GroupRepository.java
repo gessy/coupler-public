@@ -8,20 +8,24 @@ import androidx.lifecycle.LiveData;
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.GroupChatDao;
 import com.offgrid.coupler.data.dao.GroupDao;
+import com.offgrid.coupler.data.dao.UserGroupDao;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.entity.GroupChatMessages;
+import com.offgrid.coupler.data.entity.GroupUsers;
 
 
 public class GroupRepository {
 
     private GroupDao dao;
     private GroupChatDao groupChatDao;
+    private UserGroupDao userGroupDao;
 
     public GroupRepository(Application application) {
         CouplerRoomDatabase db = CouplerRoomDatabase.getDatabase(application);
         dao = db.groupDao();
         groupChatDao = db.groupChatDao();
+        userGroupDao = db.userGroupDao();
     }
 
     public LiveData<GroupChat> getGroupChat(Long id) {
@@ -32,6 +36,18 @@ public class GroupRepository {
         return dao.findGroupChatMessagesByGroupId(groupId);
     }
 
+    public LiveData<GroupUsers> getGroupUsersByGroupId(Long groupId) {
+        return dao.findGroupUsersByGroupId(groupId);
+    }
+
+    public void upsert(final GroupUsers groupUsers) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                userGroupDao.upsert(groupUsers);
+            }
+        });
+    }
 
     public void insert(final GroupChat groupChat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
