@@ -22,6 +22,4 @@ public interface MessageDao {
     @Query("delete from T_Message where chat_id = :chat_id")
     void deleteChatMessages(long chat_id);
 
-    @Query("delete from T_Message")
-    void deleteAll();
 }

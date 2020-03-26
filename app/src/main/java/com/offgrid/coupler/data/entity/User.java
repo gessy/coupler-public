@@ -7,9 +7,13 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(tableName = "T_User")
 public class User {
+
+    private static final String ZERO_GID = "000-000-000-000";
+
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
@@ -40,8 +44,14 @@ public class User {
     }
 
     public static User getEmpty() {
-        return new User("No", "Name", "000-000-000-000");
+        return new User("No", "Name", ZERO_GID);
     }
+
+
+    public boolean isEmpty() {
+        return gid.equals(ZERO_GID);
+    }
+
 
     @Ignore
     public User(@NonNull String firstName, @NonNull String lastName, @NonNull String gid) {
@@ -112,4 +122,21 @@ public class User {
     public String fullName() {
         return firstName + " " + lastName;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(gid, user.gid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gid, firstName, lastName);
+    }
+
 }

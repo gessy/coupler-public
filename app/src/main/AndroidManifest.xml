@@ -54,6 +54,9 @@
         <activity
             android:name=".controller.group.EditGroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controller.group.AddGroupMembershipActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 

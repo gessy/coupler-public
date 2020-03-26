@@ -12,13 +12,17 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.offgrid.coupler.data.converter.ChatTypeConverter;
 import com.offgrid.coupler.data.converter.DateConverter;
 import com.offgrid.coupler.data.dao.ChatDao;
+import com.offgrid.coupler.data.dao.GroupChatDao;
 import com.offgrid.coupler.data.dao.GroupDao;
 import com.offgrid.coupler.data.dao.MessageDao;
+import com.offgrid.coupler.data.dao.UserChatDao;
 import com.offgrid.coupler.data.dao.UserDao;
+import com.offgrid.coupler.data.dao.UserGroupDao;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.entity.UserGroupRef;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +32,8 @@ import java.util.concurrent.Executors;
                 Chat.class,
                 Message.class,
                 User.class,
-                Group.class},
+                Group.class,
+                UserGroupRef.class},
         version = 1,
         exportSchema = false
 )
@@ -41,11 +46,19 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
 
+    public abstract UserChatDao userChatDao();
+
     public abstract GroupDao groupDao();
 
+    public abstract GroupChatDao groupChatDao();
 
+    public abstract UserGroupDao userGroupDao();
+
+
+    private static final String DB_NAME = "coupler_database";
     private static volatile CouplerRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
+
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public static CouplerRoomDatabase getDatabase(final Context context) {
@@ -55,7 +68,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
                     INSTANCE = Room
                             .databaseBuilder(
                                     context.getApplicationContext(),
-                                    CouplerRoomDatabase.class, "coupler_database")
+                                    CouplerRoomDatabase.class,
+                                    DB_NAME)
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }

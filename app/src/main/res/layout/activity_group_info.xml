@@ -83,84 +83,127 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:paddingEnd="8dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/description_label"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_marginStart="16dp"
-                android:textSize="20sp"
-                android:text="@string/description_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-            <TextView
-                android:id="@+id/group_description"
+            <RelativeLayout
+                android:id="@+id/group_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/description_label"
-                android:layout_marginStart="16dp"
-                android:textSize="14sp"
-                android:text="Group description"/>
+                android:paddingEnd="8dp"
+                android:background="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/description_label"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:textSize="@dimen/detail_info_text_size_medium"
+                    android:text="@string/description_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+                <TextView
+                    android:id="@+id/group_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/description_label"
+                    android:layout_marginStart="16dp"
+                    android:textSize="@dimen/detail_info_text_size_small"
+                    android:text="Group description"/>
+                <View
+                    android:id="@+id/contact_info_bottom_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/group_description"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/lighter_grey" />
+
+                <View
+                    android:id="@+id/split_right_line"
+                    android:layout_width="1dp"
+                    android:layout_height="28dp"
+                    android:layout_below="@+id/contact_info_bottom_line"
+                    android:layout_alignEnd="@+id/contact_info_bottom_line"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="62dp"
+                    android:background="@color/lighter_grey" />
+
+                <Switch
+                    android:id="@+id/notification_status_switcher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contact_info_bottom_line"
+                    android:layout_alignEnd="@+id/contact_info_bottom_line"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:checked="true"
+                    android:theme="@style/Theme.AppCompat.Light.Switcher"
+                    android:textOff="OFF"
+                    android:textOn="ON"/>
+
+                <TextView
+                    android:id="@+id/notification_label"
+                    android:layout_below="@+id/contact_info_bottom_line"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="@dimen/detail_info_text_size_medium"
+                    android:text="Notifications"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+                <TextView
+                    android:id="@+id/notification_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/notification_label"
+                    android:layout_marginStart="16dp"
+                    android:textSize="@dimen/detail_info_text_size_small"
+                    android:text="on"/>
+            </RelativeLayout>
             <View
-                android:id="@+id/contact_info_bottom_line"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/group_description"
-                android:layout_marginStart="16dp"
+                android:layout_height="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/lighter_grey" />
 
+
+            <LinearLayout
+                android:id="@+id/action_add_member"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="16dp"
+                    android:alpha="0.6"
+                    android:src="@drawable/ic_contact_add_24dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textSize="@dimen/detail_info_text_size_medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:text="Add Member"/>
+            </LinearLayout>
+
             <View
-                android:id="@+id/split_right_line"
-                android:layout_width="1dp"
-                android:layout_height="28dp"
-                android:layout_below="@+id/contact_info_bottom_line"
-                android:layout_alignEnd="@+id/contact_info_bottom_line"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="62dp"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
                 android:background="@color/lighter_grey" />
 
-            <Switch
-                android:id="@+id/notification_status_switcher"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/contact_info_bottom_line"
-                android:layout_alignEnd="@+id/contact_info_bottom_line"
-                android:layout_marginTop="14dp"
-                android:layout_marginEnd="14dp"
-                android:checked="true"
-                android:theme="@style/Theme.AppCompat.Light.Switcher"
-                android:textOff="OFF"
-                android:textOn="ON"/>
 
-            <TextView
-                android:id="@+id/notification_label"
-                android:layout_below="@+id/contact_info_bottom_line"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:textSize="20sp"
-                android:text="Notifications"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/notification_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/notification_label"
-                android:layout_marginStart="16dp"
-                android:textSize="14sp"
-                android:text="on"/>
 
-        </RelativeLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fb_start_chat"

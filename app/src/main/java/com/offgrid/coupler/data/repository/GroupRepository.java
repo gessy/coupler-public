@@ -6,20 +6,26 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
+import com.offgrid.coupler.data.dao.GroupChatDao;
 import com.offgrid.coupler.data.dao.GroupDao;
-import com.offgrid.coupler.data.entity.ChatMessages;
+import com.offgrid.coupler.data.dao.UserGroupDao;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.entity.GroupChatMessages;
+import com.offgrid.coupler.data.entity.GroupUsers;
 
 
 public class GroupRepository {
 
     private GroupDao dao;
+    private GroupChatDao groupChatDao;
+    private UserGroupDao userGroupDao;
 
     public GroupRepository(Application application) {
         CouplerRoomDatabase db = CouplerRoomDatabase.getDatabase(application);
         dao = db.groupDao();
+        groupChatDao = db.groupChatDao();
+        userGroupDao = db.userGroupDao();
     }
 
     public LiveData<GroupChat> getGroupChat(Long id) {
@@ -30,11 +36,15 @@ public class GroupRepository {
         return dao.findGroupChatMessagesByGroupId(groupId);
     }
 
-    public void insert(final Group group) {
+    public LiveData<GroupUsers> getGroupUsersByGroupId(Long groupId) {
+        return dao.findGroupUsersByGroupId(groupId);
+    }
+
+    public void upsert(final GroupUsers groupUsers) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.insert(group);
+                userGroupDao.upsert(groupUsers);
             }
         });
     }
@@ -43,7 +53,7 @@ public class GroupRepository {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.insert(groupChat);
+                groupChatDao.insert(groupChat);
             }
         });
     }
@@ -61,7 +71,7 @@ public class GroupRepository {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.update(groupChat);
+                groupChatDao.update(groupChat);
             }
         });
     }
@@ -71,29 +81,10 @@ public class GroupRepository {
             CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    dao.delete(groupChat);
+                    groupChatDao.delete(groupChat);
                 }
             });
         }
     }
 
-    public void delete(final Group group) {
-        if (group != null) {
-            CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    dao.delete(group);
-                }
-            });
-        }
-    }
-
-    public void delete(final long id) {
-        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.deleteById(id);
-            }
-        });
-    }
 }
