@@ -29,6 +29,10 @@ public class UserRepository {
         return dao.findAll();
     }
 
+    public LiveData<List<User>> getOrderedUsers() {
+        return dao.findAllOrderedByLastSeenDate();
+    }
+
 
     public LiveData<UserChat> getUserChatByUserId(Long userId) {
         return dao.findUserChatByUserId(userId);

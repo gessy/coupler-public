@@ -19,6 +19,9 @@ public abstract class UserDao {
     @Query("select * from T_User")
     public abstract LiveData<List<User>> findAll();
 
+    @Query("select * from T_User order by last_seen desc")
+    public abstract LiveData<List<User>> findAllOrderedByLastSeenDate();
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     public abstract void update(User user);
 
