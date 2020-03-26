@@ -22,9 +22,6 @@ public abstract class UserDao {
     @Update(onConflict = OnConflictStrategy.IGNORE)
     public abstract void update(User user);
 
-    @Query("delete from T_User")
-    public abstract void deleteAll();
-
     @Transaction
     @Query("select * from T_User where id = :user_id")
     public abstract LiveData<UserChat> findUserChatByUserId(long user_id);

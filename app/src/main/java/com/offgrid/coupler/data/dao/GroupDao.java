@@ -20,9 +20,6 @@ public abstract class GroupDao {
     @Query("select * from T_Group")
     public abstract LiveData<List<Group>> findAll();
 
-    @Query("delete from T_Group")
-    public abstract void deleteAll();
-
     @Transaction
     @Query("select * from T_Group where id = :group_id")
     public abstract LiveData<GroupChat> findGroupChatByGroupId(long group_id);

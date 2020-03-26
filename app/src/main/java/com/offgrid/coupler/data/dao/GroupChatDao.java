@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
@@ -45,16 +46,22 @@ public abstract class GroupChatDao {
         if (groupChat.chat != null) _update(groupChat.chat);
     }
 
-
     @Delete(entity = Group.class)
     abstract void _delete(Group group);
 
     @Delete(entity = Chat.class)
     abstract void _delete(Chat chat);
 
+    @Query("delete from T_User_Group_Ref where group_id =:group_id")
+    abstract void _deleteUserGroupRelation(long group_id);
+
     @Transaction
     public void delete(GroupChat groupChat) {
-        if (groupChat.group != null) _delete(groupChat.group);
+        if (groupChat.group != null) {
+            _deleteUserGroupRelation(groupChat.group.getId());
+            _delete(groupChat.group);
+        }
+
         if (groupChat.chat != null) _delete(groupChat.chat);
     }
 
