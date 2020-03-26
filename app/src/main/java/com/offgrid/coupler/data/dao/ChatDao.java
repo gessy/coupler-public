@@ -16,6 +16,10 @@ public interface ChatDao {
     @Query("select * from T_Chat where visible = 1")
     LiveData<List<Chat>> findAll();
 
+
+    @Query("select * from T_Chat where visible = 1 order by last_modification_date desc")
+    LiveData<List<Chat>> findAllOrdaredByModificationDate();
+
     @Update(onConflict = OnConflictStrategy.IGNORE)
     void update(Chat chat);
 }

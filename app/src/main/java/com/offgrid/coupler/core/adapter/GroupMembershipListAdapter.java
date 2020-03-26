@@ -32,7 +32,7 @@ public class GroupMembershipListAdapter extends ContactListAdapter {
                 Intent intent = new Intent(context, ContactInfoActivity.class);
                 intent.putExtras(DtoUserWrapper.convertAndWrap(current, groupDto, GROUP_INFO));
                 context.startActivity(intent);
-                ((Activity)context).finish();
+                ((Activity) context).finish();
                 ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
             }
         });

@@ -24,6 +24,10 @@ public class ChatRepository {
         return dao.findAll();
     }
 
+    public LiveData<List<Chat>> getOrdaredChats() {
+        return dao.findAllOrdaredByModificationDate();
+    }
+
     public void update(final Chat chat) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override

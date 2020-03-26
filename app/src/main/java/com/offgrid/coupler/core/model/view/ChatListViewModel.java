@@ -24,7 +24,7 @@ public class ChatListViewModel extends AndroidViewModel {
     }
 
     public void load() {
-        liveChats = chatRepository.getChats();
+        liveChats = chatRepository.getOrdaredChats();
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chat>> observer) {
