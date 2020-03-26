@@ -6,22 +6,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.selection.SelectionTracker;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.adapter.AddGroupMembershipContactListAdapter;
+import com.offgrid.coupler.core.adapter.MembershipContactListAdapter;
 import com.offgrid.coupler.core.model.dto.GroupDto;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;
 import com.offgrid.coupler.core.provider.ContactSelectionTracker;
@@ -35,7 +31,7 @@ public class AddGroupMembershipActivity extends AppCompatActivity
 
     private GroupDto groupDto;
     private ContactListViewModel contactListViewModel;
-    private AddGroupMembershipContactListAdapter contactListAdapter;
+    private MembershipContactListAdapter contactListAdapter;
 
     private SelectionTracker selectionTracker;
     private RecyclerView recyclerView;
@@ -43,14 +39,11 @@ public class AddGroupMembershipActivity extends AppCompatActivity
     private FloatingActionButton fb;
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         groupDto = GroupDto.getInstance(getIntent().getExtras());
-
 
         setContentView(R.layout.activity_add_group_membership);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -74,7 +67,7 @@ public class AddGroupMembershipActivity extends AppCompatActivity
         contactListViewModel.load();
         contactListViewModel.observe(this, this);
 
-        contactListAdapter = new AddGroupMembershipContactListAdapter(this);
+        contactListAdapter = new MembershipContactListAdapter(this);
 
         recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -126,7 +119,6 @@ public class AddGroupMembershipActivity extends AppCompatActivity
                 }
             }
         });
-
     }
 
 }

@@ -27,5 +27,4 @@ public class UserKeyProvider extends ItemKeyProvider {
         return userList.indexOf(key);
     }
 
-
 }

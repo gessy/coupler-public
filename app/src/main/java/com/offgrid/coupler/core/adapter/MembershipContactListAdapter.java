@@ -4,20 +4,20 @@ import android.content.Context;
 
 import androidx.recyclerview.selection.SelectionTracker;
 
-import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.core.holder.ContactItemViewHolder;
 import com.offgrid.coupler.data.entity.User;
 
 
-public class AddGroupMembershipContactListAdapter extends ContactListAdapter {
+public class MembershipContactListAdapter extends ContactListAdapter {
 
     private SelectionTracker selectionTracker;
 
-    public AddGroupMembershipContactListAdapter(Context context) {
+    public MembershipContactListAdapter(Context context) {
         super(context);
     }
 
     @Override
-    public void onBindViewHolder(ContactListItemViewHolder holder, int position) {
+    public void onBindViewHolder(ContactItemViewHolder holder, int position) {
         final User current = users != null ? users.get(position) : User.getEmpty();
         holder.update(current, selectionTracker.isSelected(current));
     }

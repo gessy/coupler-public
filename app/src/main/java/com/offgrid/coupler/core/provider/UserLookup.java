@@ -1,4 +1,4 @@
-package com.offgrid.coupler.core.adapter;
+package com.offgrid.coupler.core.provider;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.core.holder.ContactItemViewHolder;
 
 public class UserLookup extends ItemDetailsLookup {
 
@@ -23,10 +23,8 @@ public class UserLookup extends ItemDetailsLookup {
     public ItemDetails getItemDetails(@NonNull MotionEvent e) {
         View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
         if (view != null) {
-            RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
-            if (viewHolder instanceof ContactListItemViewHolder) {
-                return ((ContactListItemViewHolder) viewHolder).getItemDetails();
-            }
+            ContactItemViewHolder holder = (ContactItemViewHolder) recyclerView.getChildViewHolder(view);
+            if (holder != null) return holder.getLookupDetails();
         }
 
         return null;

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.data.entity.Chat;
-import com.offgrid.coupler.core.holder.ChatListItemViewHolder;
+import com.offgrid.coupler.core.holder.ChatItemViewHolder;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 
 import java.util.List;
 
-public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder> {
+public class ChatListAdapter extends RecyclerView.Adapter<ChatItemViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<Chat> chats;
@@ -30,13 +30,13 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListItemViewHolder
     }
 
     @Override
-    public ChatListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.chat_list_item, parent, false);
-        return new ChatListItemViewHolder(itemView);
+        return new ChatItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ChatListItemViewHolder holder, int position) {
+    public void onBindViewHolder(ChatItemViewHolder holder, int position) {
         final Chat current = chats != null ? chats.get(position) : Chat.getEmpty();
         holder.update(current);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
