@@ -27,14 +27,12 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.map.listener.LocationChangeCallback;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, Style.OnStyleLoaded {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
 
     private MapView mapView;
     private MapboxMap mapboxMap;
-    private LocationEngine locationEngine;
-    private LocationChangeCallback locationChangeCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,49 +63,50 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Style.O
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        locationChangeCallback = new LocationChangeCallback(getActivity(), mapboxMap);
-        mapboxMap.setStyle(Style.MAPBOX_STREETS, this);
+
+        mapboxMap.setStyle(
+                Style.MAPBOX_STREETS,
+                new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        enableLocationComponent(style);
+                    }
+                }
+        );
     }
 
-    @Override
-    public void onStyleLoaded(@NonNull Style style) {
-        enableLocationComponent(style);
-    }
 
-    @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+    @SuppressWarnings({"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style style) {
         // Get an instance of the component
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
 
-        // Set the LocationComponent activation options
-        LocationComponentActivationOptions locationComponentActivationOptions =
-                LocationComponentActivationOptions.builder(getActivity(), loadedMapStyle)
-                        .useDefaultLocationEngine(false)
-                        .build();
-
         // Activate with the LocationComponentActivationOptions object
-        locationComponent.activateLocationComponent(locationComponentActivationOptions);
+        locationComponent.activateLocationComponent(LocationComponentActivationOptions
+                .builder(getActivity(), style)
+                .useDefaultLocationEngine(false)
+                .build());
 
         // Enable to make component visible
         locationComponent.setLocationComponentEnabled(true);
 
         // Set the component's camera mode
-        locationComponent.setCameraMode(CameraMode.TRACKING);
+        locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
 
         // Set the component's render mode
         locationComponent.setRenderMode(RenderMode.COMPASS);
 
-        locationEngine = LocationEngineProvider.getBestLocationEngine(getActivity());
-
-        LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+        LocationEngineRequest request = new LocationEngineRequest
+                .Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                 .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
                 .build();
 
-        locationEngine.requestLocationUpdates(request, locationChangeCallback, getActivity().getMainLooper());
-        locationEngine.getLastLocation(locationChangeCallback);
-    }
+        LocationChangeCallback callback = new LocationChangeCallback(getActivity(), mapboxMap);
 
+        LocationEngine locationEngine = LocationEngineProvider.getBestLocationEngine(getActivity());
+        locationEngine.requestLocationUpdates(request, callback, getActivity().getMainLooper());
+        locationEngine.getLastLocation(callback);
+    }
 
 
     @Override
