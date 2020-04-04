@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.core.holder.ContactItemViewHolder;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 
@@ -19,7 +19,7 @@ public class NewMessageContactListAdapter extends ContactListAdapter {
     }
 
     @Override
-    public void onBindViewHolder(ContactListItemViewHolder holder, int position) {
+    public void onBindViewHolder(ContactItemViewHolder holder, int position) {
         final User current = users != null ? users.get(position) : User.getEmpty();
         holder.update(current);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

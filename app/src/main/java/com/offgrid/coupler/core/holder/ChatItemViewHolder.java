@@ -10,14 +10,14 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Chat;
 import com.offgrid.coupler.util.DateUtil;
 
-public class ChatListItemViewHolder extends RecyclerView.ViewHolder {
+public class ChatItemViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView title;
     private final TextView message;
     private final TextView messageDate;
     private final ImageView messageStatus;
 
-    public ChatListItemViewHolder(View itemView) {
+    public ChatItemViewHolder(View itemView) {
         super(itemView);
         title = itemView.findViewById(R.id.chat_list_title);
         message = itemView.findViewById(R.id.chat_list_message);

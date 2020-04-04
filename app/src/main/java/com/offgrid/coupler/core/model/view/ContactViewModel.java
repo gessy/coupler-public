@@ -15,7 +15,6 @@ import androidx.lifecycle.Transformations;
 
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
-import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 import com.offgrid.coupler.data.repository.UserRepository;
 
@@ -24,14 +23,12 @@ import java.util.Date;
 import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.GID;
 import static com.offgrid.coupler.core.model.view.ContactViewModel.Entity.UID;
 import static com.offgrid.coupler.data.entity.Chat.personalChat;
-import static java.lang.System.currentTimeMillis;
 
 
 public class ContactViewModel extends AndroidViewModel {
     public enum Entity {UID, GID}
 
     private UserRepository userRepository;
-    private ChatRepository chatRepository;
     private MessageRepository messageRepository;
 
     private final MutableLiveData<Pair<Entity, Object>> liveID = new MutableLiveData();
@@ -40,7 +37,6 @@ public class ContactViewModel extends AndroidViewModel {
     public ContactViewModel(Application application) {
         super(application);
         userRepository = new UserRepository(application);
-        chatRepository = new ChatRepository(application);
         messageRepository = new MessageRepository(application);
 
         liveUserChat = Transformations.switchMap(liveID, new Function<Pair<Entity, Object>, LiveData<UserChat>>() {
@@ -78,9 +74,8 @@ public class ContactViewModel extends AndroidViewModel {
         if (userChat != null) {
             if (userChat.chat != null) {
                 messageRepository.deleteChatMessages(userChat.chat.getId());
-                chatRepository.deleteChat(userChat.chat.getId());
             }
-            userRepository.delete(userChat.user.getId());
+            userRepository.delete(userChat);
         }
     }
 

@@ -17,6 +17,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.group.GroupInfoActivity;
+import com.offgrid.coupler.core.model.SourceActivity;
+import com.offgrid.coupler.core.model.dto.GroupDto;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoGroupWrapper;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
 import com.offgrid.coupler.core.model.dto.UserDto;
@@ -128,6 +132,11 @@ public class ContactInfoActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        if (SourceActivity.GROUP_INFO.equals(userDto.getSourceActivity())) {
+            Intent intent = new Intent(ContactInfoActivity.this, GroupInfoActivity.class);
+            intent.putExtras(DtoGroupWrapper.convertAndWrap(userDto.getSourceDto(GroupDto.class)));
+            startActivity(intent);
+        }
         finish();
         overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }

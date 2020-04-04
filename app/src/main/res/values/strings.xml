@@ -24,9 +24,13 @@
     <string name="menu_delete_leave_group">Delete and leave group</string>
 
 
+
+
     <string name="gid">234-325-456-243</string>
     <string name="notification_status_on">On</string>
     <string name="notification_status_off">Off</string>
+
+    <string name="description_label">Description</string>
 
     <string name="new_group_label">New Group</string>
     <string name="new_contact_label">New Contact</string>

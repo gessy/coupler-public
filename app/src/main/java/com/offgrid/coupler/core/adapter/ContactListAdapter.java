@@ -13,11 +13,11 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.data.entity.User;
-import com.offgrid.coupler.core.holder.ContactListItemViewHolder;
+import com.offgrid.coupler.core.holder.ContactItemViewHolder;
 
 import java.util.List;
 
-public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemViewHolder> {
+public class ContactListAdapter extends RecyclerView.Adapter<ContactItemViewHolder> {
 
     private final LayoutInflater mInflater;
     protected List<User> users;
@@ -29,13 +29,13 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemView
     }
 
     @Override
-    public ContactListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ContactItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.contact_list_item, parent, false);
-        return new ContactListItemViewHolder(itemView);
+        return new ContactItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ContactListItemViewHolder holder, int position) {
+    public void onBindViewHolder(ContactItemViewHolder holder, int position) {
         final User current = users != null ? users.get(position) : User.getEmpty();
         holder.update(current);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +54,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListItemView
         this.users = users;
         notifyDataSetChanged();
     }
+
+    public List<User> getUsers() {
+        return this.users;
+    }
+
 
     @Override
     public int getItemCount() {

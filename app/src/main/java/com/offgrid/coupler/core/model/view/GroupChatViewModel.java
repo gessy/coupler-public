@@ -25,7 +25,6 @@ import com.offgrid.coupler.data.repository.MessageRepository;
 import java.util.Date;
 import java.util.List;
 
-import static com.offgrid.coupler.data.entity.Message.myMessage;
 import static com.offgrid.coupler.data.model.ChatType.PERSONAL;
 
 

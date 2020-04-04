@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginStart="16dp"
-                android:textSize="20sp"
+                android:textSize="@dimen/detail_info_text_size_medium"
                 android:text="@string/gid"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_gid"
                 android:layout_marginStart="16dp"
-                android:textSize="14sp"
+                android:textSize="@dimen/detail_info_text_size_small"
                 android:text="GID"/>
             <View
                 android:id="@+id/contact_info_bottom_line"
@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:textSize="20sp"
+                android:textSize="@dimen/detail_info_text_size_medium"
                 android:text="Notifications"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
@@ -158,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/notification_label"
                 android:layout_marginStart="16dp"
-                android:textSize="14sp"
+                android:textSize="@dimen/detail_info_text_size_small"
                 android:text="on"/>
 
         </RelativeLayout>

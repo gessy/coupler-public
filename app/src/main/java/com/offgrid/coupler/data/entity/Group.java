@@ -21,6 +21,11 @@ public class Group {
     @ColumnInfo(name = "description")
     private String description;
 
+    @NonNull
+    @ColumnInfo(name = "allow_notify")
+    private boolean allowNotify;
+
+
     public Group() {
     }
 
@@ -28,6 +33,7 @@ public class Group {
     public Group(@NonNull String name, @NonNull String description) {
         this.name = name;
         this.description = description;
+        this.allowNotify = true;
     }
 
     @NonNull
@@ -55,5 +61,13 @@ public class Group {
 
     public void setDescription(@NonNull String description) {
         this.description = description;
+    }
+
+    public boolean isAllowNotify() {
+        return allowNotify;
+    }
+
+    public void setAllowNotify(boolean allowNotify) {
+        this.allowNotify = allowNotify;
     }
 }

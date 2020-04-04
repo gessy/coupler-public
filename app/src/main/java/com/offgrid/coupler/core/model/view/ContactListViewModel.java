@@ -24,11 +24,10 @@ public class ContactListViewModel extends AndroidViewModel {
     }
 
     public void load() {
-        liveUsers = userRepository.getUsers();
+        liveUsers = userRepository.getOrderedUsers();
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<User>> observer) {
         liveUsers.observe(owner, observer);
     }
-
 }
