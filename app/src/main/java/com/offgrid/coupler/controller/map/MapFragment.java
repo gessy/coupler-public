@@ -12,15 +12,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.map.configurator.LocationComponentConfigurator;
 
-public class MapFragment extends Fragment {
 
+public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+
+    private View rootView;
     private MapView mapView;
+    private MapboxMap mapboxMap;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,28 +38,46 @@ public class MapFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         Mapbox.getInstance(getActivity(), getString(R.string.map_access_token));
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
+        rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mapView = root.findViewById(R.id.mapView);
+        mapView = rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                    }
-                });
-            }
-        });
+        mapView.getMapAsync(this);
 
-        return root;
+        return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_map, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public void onMapReady(@NonNull MapboxMap mapboxMap) {
+        this.mapboxMap = mapboxMap;
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                new LocationComponentConfigurator()
+                        .withContext(getActivity())
+                        .withMapbox(MapFragment.this.mapboxMap)
+                        .configure();
+            }
+        });
+
+        rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.back_to_camera_tracking_mode) {
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
+            locationComponent.zoomWhileTracking(16f);
+        }
     }
 
     @Override
