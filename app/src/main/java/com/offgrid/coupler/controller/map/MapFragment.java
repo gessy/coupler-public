@@ -11,26 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.mapbox.android.core.location.LocationEngine;
-import com.mapbox.android.core.location.LocationEngineProvider;
-import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.controller.map.listener.LocationChangeCallback;
+import com.offgrid.coupler.controller.map.configurator.LocationComponentConfigurator;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
-    private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
-    private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
+    private View rootView;
     private MapView mapView;
     private MapboxMap mapboxMap;
 
@@ -44,13 +38,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                              ViewGroup container, Bundle savedInstanceState) {
 
         Mapbox.getInstance(getActivity(), getString(R.string.map_access_token));
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
+        rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mapView = root.findViewById(R.id.mapView);
+        mapView = rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        return root;
+        return rootView;
     }
 
     @Override
@@ -63,51 +57,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                new LocationComponentConfigurator()
+                        .withContext(getActivity())
+                        .withMapbox(MapFragment.this.mapboxMap)
+                        .configure();
+            }
+        });
 
-        mapboxMap.setStyle(
-                Style.MAPBOX_STREETS,
-                new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        enableLocationComponent(style);
-                    }
-                }
-        );
+        rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
 
 
-    @SuppressWarnings({"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style style) {
-        // Get an instance of the component
-        LocationComponent locationComponent = mapboxMap.getLocationComponent();
-
-        // Activate with the LocationComponentActivationOptions object
-        locationComponent.activateLocationComponent(LocationComponentActivationOptions
-                .builder(getActivity(), style)
-                .useDefaultLocationEngine(false)
-                .build());
-
-        // Enable to make component visible
-        locationComponent.setLocationComponentEnabled(true);
-
-        // Set the component's camera mode
-        locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
-
-        // Set the component's render mode
-        locationComponent.setRenderMode(RenderMode.COMPASS);
-
-        LocationEngineRequest request = new LocationEngineRequest
-                .Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-                .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
-                .build();
-
-        LocationChangeCallback callback = new LocationChangeCallback(getActivity(), mapboxMap);
-
-        LocationEngine locationEngine = LocationEngineProvider.getBestLocationEngine(getActivity());
-        locationEngine.requestLocationUpdates(request, callback, getActivity().getMainLooper());
-        locationEngine.getLastLocation(callback);
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.back_to_camera_tracking_mode) {
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
+            locationComponent.zoomWhileTracking(16f);
+        }
     }
-
 
     @Override
     public void onStart() {
