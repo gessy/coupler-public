@@ -10,23 +10,41 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.controller.map.configurator.LocationComponentConfigurator;
+import com.offgrid.coupler.controller.map.configurator.ContactLocationConfigurator;
+import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurator;
+import com.offgrid.coupler.controller.map.listener.HighlightMarkerContactLocationListener;
+import com.offgrid.coupler.core.model.view.ContactListViewModel;
+import com.offgrid.coupler.data.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.offgrid.coupler.controller.map.MapConstants.*;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, Observer<List<User>> {
 
     private View rootView;
     private MapView mapView;
     private MapboxMap mapboxMap;
+
+    private ContactListViewModel contactListViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +62,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        //0,031917
+        contactListViewModel = new ViewModelProvider(this).get(ContactListViewModel.class);
+        contactListViewModel.observe(this, this);
 
         return rootView;
     }
@@ -55,23 +74,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
-                new LocationComponentConfigurator()
+                new DeviceLocationConfigurator()
                         .withContext(getActivity())
                         .withMapbox(MapFragment.this.mapboxMap)
                         .configure();
+
+                new ContactLocationConfigurator()
+                        .withContext(getActivity())
+                        .withMapbox(MapFragment.this.mapboxMap)
+                        .configure();
+
+                contactListViewModel.load();
             }
         });
 
+        mapboxMap.addOnMapClickListener(new HighlightMarkerContactLocationListener(mapboxMap));
+
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -79,6 +105,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
             locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
             locationComponent.zoomWhileTracking(16f);
+        }
+    }
+
+    @Override
+    public void onChanged(List<User> users) {
+        if (!users.isEmpty()) {
+            final List<Feature> featureList = new ArrayList<>();
+            for (User user : users) {
+                LatLng loc = user.getLocation();
+                featureList.add(Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude())));
+            }
+
+            mapboxMap.getStyle(new Style.OnStyleLoaded() {
+                @Override
+                public void onStyleLoaded(@NonNull Style style) {
+                    GeoJsonSource resultSource = style.getSourceAs(USER_LOCATION_GEOJSON_ID);
+                    resultSource.setGeoJson(FeatureCollection.fromFeatures(featureList));
+                }
+            });
         }
     }
 

@@ -12,7 +12,7 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.offgrid.coupler.controller.map.listener.LocationChangeCallback;
 
-public class LocationComponentConfigurator {
+public class DeviceLocationConfigurator {
 
     private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
@@ -23,17 +23,17 @@ public class LocationComponentConfigurator {
     private long maxWaitTime;
     private long interval;
 
-    public LocationComponentConfigurator() {
+    public DeviceLocationConfigurator() {
         maxWaitTime = DEFAULT_MAX_WAIT_TIME;
         interval = DEFAULT_INTERVAL_IN_MILLISECONDS;
     }
 
-    public LocationComponentConfigurator withContext(Context context) {
+    public DeviceLocationConfigurator withContext(Context context) {
         this.context = context;
         return this;
     }
 
-    public LocationComponentConfigurator withMapbox(MapboxMap mapboxMap) {
+    public DeviceLocationConfigurator withMapbox(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         return this;
     }

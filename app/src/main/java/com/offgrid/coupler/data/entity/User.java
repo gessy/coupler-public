@@ -7,7 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.offgrid.coupler.util.RandomGps;
+import com.offgrid.coupler.util.RandomLocation;
 
 import java.util.Date;
 import java.util.Objects;
@@ -69,7 +69,7 @@ public class User {
         this.gid = gid;
         this.allowNotify = true;
         this.lastSeen = new Date();
-        setLocation(RandomGps.getRandLocation());
+        setLocation(RandomLocation.get());
     }
 
     @NonNull
