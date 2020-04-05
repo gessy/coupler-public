@@ -21,21 +21,33 @@ import static com.offgrid.coupler.controller.map.MapConstants.*;
 public class HighlightMarkerContactLocationListener implements MapboxMap.OnMapClickListener {
 
     private MapboxMap mapboxMap;
-    private boolean markerSelected = false;
-
     private ValueAnimator markerAnimator;
+
+    private boolean markerSelected = false;
 
 
     public HighlightMarkerContactLocationListener(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+        initAnimator();
     }
+
+    private void initAnimator() {
+        markerAnimator = new ValueAnimator();
+        markerAnimator.setDuration(300);
+        markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                SymbolLayer layer = (SymbolLayer) mapboxMap.getStyle().getLayer(SELECTED_USER_LOCATION_LAYER_ID);
+                layer.setProperties(PropertyFactory.iconSize((float) animator.getAnimatedValue()));
+            }
+        });
+    }
+
 
     @Override
     public boolean onMapClick(@NonNull LatLng point) {
         Style style = mapboxMap.getStyle();
         if (style != null) {
-            final SymbolLayer selectedMarkerSymbolLayer = (SymbolLayer) style.getLayer(SELECTED_USER_LOCATION_LAYER_ID);
-
             final PointF pixel = mapboxMap.getProjection().toScreenLocation(point);
             List<Feature> features = mapboxMap.queryRenderedFeatures(pixel, USER_LOCATION_LAYER_ID);
             List<Feature> selectedFeature = mapboxMap.queryRenderedFeatures(pixel, SELECTED_USER_LOCATION_LAYER_ID);
@@ -45,9 +57,7 @@ public class HighlightMarkerContactLocationListener implements MapboxMap.OnMapCl
             }
 
             if (features.isEmpty()) {
-                if (markerSelected) {
-                    deselectMarker(selectedMarkerSymbolLayer);
-                }
+                if (markerSelected) deselectMarker();
                 return false;
             }
 
@@ -58,44 +68,26 @@ public class HighlightMarkerContactLocationListener implements MapboxMap.OnMapCl
             }
 
             if (markerSelected) {
-                deselectMarker(selectedMarkerSymbolLayer);
+                deselectMarker();
             }
             if (features.size() > 0) {
-                selectMarker(selectedMarkerSymbolLayer);
+                selectMarker();
             }
         }
 
         return true;
     }
 
-
-    private void selectMarker(final SymbolLayer iconLayer) {
-        markerAnimator = new ValueAnimator();
+    private void selectMarker() {
         markerAnimator.setObjectValues(1f, 2f);
-        markerAnimator.setDuration(300);
-        markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                iconLayer.setProperties(PropertyFactory.iconSize((float) animator.getAnimatedValue()));
-            }
-        });
         markerAnimator.start();
         markerSelected = true;
     }
 
-
-    private void deselectMarker(final SymbolLayer iconLayer) {
+    private void deselectMarker() {
         markerAnimator.setObjectValues(2f, 1f);
-        markerAnimator.setDuration(300);
-        markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                iconLayer.setProperties(PropertyFactory.iconSize((float) animator.getAnimatedValue()));
-            }
-        });
         markerAnimator.start();
         markerSelected = false;
     }
-
 
 }

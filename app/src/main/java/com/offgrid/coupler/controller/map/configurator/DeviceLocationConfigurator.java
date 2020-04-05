@@ -41,19 +41,13 @@ public class DeviceLocationConfigurator {
     public void configure() {
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
 
-        // Activate with the LocationComponentActivationOptions object
         locationComponent.activateLocationComponent(LocationComponentActivationOptions
                 .builder(context, mapboxMap.getStyle())
                 .useDefaultLocationEngine(false)
                 .build());
 
-        // Enable to make component visible
         locationComponent.setLocationComponentEnabled(true);
-
-        // Set the component's camera mode
         locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
-
-        // Set the component's render mode
         locationComponent.setRenderMode(RenderMode.COMPASS);
 
         LocationEngineRequest request = new LocationEngineRequest

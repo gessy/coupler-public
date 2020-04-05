@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class RandomLocation {
 
-    private static double RADIUS = 0.031917d;
-    private static int BOUND = 360;
+    private static final double RADIUS = 0.031917d;
+    private static final int BOUND = 360;
 
     private static LatLng defaultLatLng = new LatLng(57.737733d, 41.012231d);
 
