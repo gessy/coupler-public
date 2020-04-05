@@ -10,7 +10,7 @@ import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.offgrid.coupler.controller.map.listener.LocationChangeCallback;
+import com.offgrid.coupler.controller.map.listener.DeviceLocationChangeCallback;
 
 public class DeviceLocationConfigurator {
 
@@ -55,7 +55,7 @@ public class DeviceLocationConfigurator {
                 .setMaxWaitTime(maxWaitTime)
                 .build();
 
-        LocationChangeCallback callback = new LocationChangeCallback(context, mapboxMap);
+        DeviceLocationChangeCallback callback = new DeviceLocationChangeCallback(context, mapboxMap);
 
         LocationEngine locationEngine = LocationEngineProvider.getBestLocationEngine(context);
         locationEngine.requestLocationUpdates(request, callback, context.getMainLooper());

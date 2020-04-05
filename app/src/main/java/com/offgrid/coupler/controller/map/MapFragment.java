@@ -1,6 +1,8 @@
 package com.offgrid.coupler.controller.map;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,10 +11,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
@@ -28,7 +32,7 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.map.configurator.ContactLocationConfigurator;
 import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurator;
-import com.offgrid.coupler.controller.map.listener.HighlightMarkerContactLocationListener;
+import com.offgrid.coupler.controller.map.listener.OnClickContactLocationListener;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;
 import com.offgrid.coupler.data.entity.User;
 
@@ -38,13 +42,15 @@ import java.util.List;
 import static com.offgrid.coupler.controller.map.MapConstants.*;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, Observer<List<User>> {
+public class MapFragment extends Fragment
+        implements OnMapReadyCallback, View.OnClickListener, Observer<List<User>> {
 
     private View rootView;
     private MapView mapView;
     private MapboxMap mapboxMap;
 
     private ContactListViewModel contactListViewModel;
+    private BottomSheetBehavior contactDetailsSheet;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +63,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
         Mapbox.getInstance(getActivity(), getString(R.string.map_access_token));
         rootView = inflater.inflate(R.layout.fragment_map, container, false);
+
+        contactDetailsSheet = BottomSheetBehavior.from(rootView.findViewById(R.id.contact_details_bottom_sheet));
+        contactDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         mapView = rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -94,7 +103,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             }
         });
 
-        mapboxMap.addOnMapClickListener(new HighlightMarkerContactLocationListener(mapboxMap));
+
+        rootView.findViewById(R.id.close_contact_details).setOnClickListener(this);
+
+        mapboxMap.addOnMapClickListener(new OnClickContactLocationListener()
+                .withMapbox(mapboxMap)
+                .withBottomSheet(contactDetailsSheet));
 
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
@@ -105,6 +119,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
             locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
             locationComponent.zoomWhileTracking(16f);
+        } else if (view.getId() == R.id.close_contact_details) {
+            contactDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 
@@ -114,7 +130,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             final List<Feature> featureList = new ArrayList<>();
             for (User user : users) {
                 LatLng loc = user.getLocation();
-                featureList.add(Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude())));
+                Feature feature = Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude()));
+                feature.addNumberProperty(MapConstants.PROPERTY_CONTACT_ID, user.getId());
+                feature.addStringProperty(MapConstants.PROPERTY_CONTACT_FULLNAME, user.fullName());
+                featureList.add(feature);
             }
 
             mapboxMap.getStyle(new Style.OnStyleLoaded() {

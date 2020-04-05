@@ -10,4 +10,5 @@
 
     <dimen name="detail_info_text_size_medium">16sp</dimen>
     <dimen name="detail_info_text_size_small">12sp</dimen>
+
 </resources>
