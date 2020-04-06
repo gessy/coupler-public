@@ -12,6 +12,7 @@ public class DtoUserWrapper {
         return new UserDto
                 .BundleBuilder()
                 .withId(user.getId())
+                .withFullName(user.fullName())
                 .withFirstName(user.getFirstName())
                 .withLastName(user.getLastName())
                 .withGid(user.getGid())
@@ -24,6 +25,7 @@ public class DtoUserWrapper {
         return new UserDto
                 .BundleBuilder()
                 .withId(user.getId())
+                .withFullName(user.fullName())
                 .withFirstName(user.getFirstName())
                 .withLastName(user.getLastName())
                 .withGid(user.getGid())

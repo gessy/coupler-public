@@ -8,7 +8,4 @@ public class MapConstants {
     public static final String USER_LOCATION_LAYER_ID = "user-location-layer-id";
     public static final String SELECTED_USER_LOCATION_LAYER_ID = "selected_user-location-layer-id";
 
-    public static final String PROPERTY_CONTACT_ID = "property-contact-id";
-    public static final String PROPERTY_CONTACT_FULLNAME = "property-contact-fullname";
-
 }

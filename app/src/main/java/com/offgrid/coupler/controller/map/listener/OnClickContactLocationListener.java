@@ -15,6 +15,9 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.offgrid.coupler.controller.map.MapConstants;
+import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
+import com.offgrid.coupler.core.model.dto.UserDto;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
 
     private MapboxMap mapboxMap;
     private BottomSheetBehavior bottomSheet;
+    private ContactDetailsViewHolder viewHolder;
     private ValueAnimator markerAnimator;
     private boolean markerSelected = false;
 
@@ -39,6 +43,11 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
     public OnClickContactLocationListener withBottomSheet(BottomSheetBehavior bottomSheet) {
         this.bottomSheet = bottomSheet;
         this.bottomSheet.addBottomSheetCallback(new BottomSheetCallback());
+        return this;
+    }
+
+    public OnClickContactLocationListener withViewHolder(ContactDetailsViewHolder viewHolder) {
+        this.viewHolder = viewHolder;
         return this;
     }
 
@@ -75,12 +84,12 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
     }
 
     private void showContact(Feature feature) {
+        viewHolder.update(UserDto.getInstance(feature));
         selectMarker();
         if (bottomSheet != null) {
             bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
     }
-
 
     private void selectMarker() {
         markerAnimator.setObjectValues(1f, 2f);

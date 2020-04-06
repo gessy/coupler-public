@@ -1,8 +1,6 @@
 package com.offgrid.coupler.controller.map;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,17 +9,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -33,10 +26,11 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.map.configurator.ContactLocationConfigurator;
 import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurator;
 import com.offgrid.coupler.controller.map.listener.OnClickContactLocationListener;
+import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
+import com.offgrid.coupler.core.model.converter.FeatureConverter;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;
 import com.offgrid.coupler.data.entity.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.offgrid.coupler.controller.map.MapConstants.*;
@@ -108,7 +102,8 @@ public class MapFragment extends Fragment
 
         mapboxMap.addOnMapClickListener(new OnClickContactLocationListener()
                 .withMapbox(mapboxMap)
-                .withBottomSheet(contactDetailsSheet));
+                .withBottomSheet(contactDetailsSheet)
+                .withViewHolder(new ContactDetailsViewHolder(rootView)));
 
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
@@ -125,22 +120,13 @@ public class MapFragment extends Fragment
     }
 
     @Override
-    public void onChanged(List<User> users) {
+    public void onChanged(final List<User> users) {
         if (!users.isEmpty()) {
-            final List<Feature> featureList = new ArrayList<>();
-            for (User user : users) {
-                LatLng loc = user.getLocation();
-                Feature feature = Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude()));
-                feature.addNumberProperty(MapConstants.PROPERTY_CONTACT_ID, user.getId());
-                feature.addStringProperty(MapConstants.PROPERTY_CONTACT_FULLNAME, user.fullName());
-                featureList.add(feature);
-            }
-
             mapboxMap.getStyle(new Style.OnStyleLoaded() {
                 @Override
                 public void onStyleLoaded(@NonNull Style style) {
                     GeoJsonSource resultSource = style.getSourceAs(USER_LOCATION_GEOJSON_ID);
-                    resultSource.setGeoJson(FeatureCollection.fromFeatures(featureList));
+                    resultSource.setGeoJson(FeatureConverter.convert(users));
                 }
             });
         }
