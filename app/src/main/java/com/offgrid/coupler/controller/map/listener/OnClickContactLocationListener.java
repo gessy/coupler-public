@@ -84,7 +84,7 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
     }
 
     private void showContact(Feature feature) {
-        viewHolder.update(UserDto.getInstance(feature));
+        viewHolder.update(feature);
         selectMarker();
         if (bottomSheet != null) {
             bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -127,11 +127,14 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
             switch (newState) {
                 case BottomSheetBehavior.STATE_HIDDEN:
                     if (markerSelected) deselectMarker();
+                    viewHolder.gidVisibility(View.VISIBLE);
                     break;
                 case BottomSheetBehavior.STATE_EXPANDED:
                     if (!markerSelected) selectMarker();
+                    viewHolder.gidVisibility(View.VISIBLE);
                     break;
                 case BottomSheetBehavior.STATE_COLLAPSED:
+                    viewHolder.gidVisibility(View.INVISIBLE);
                 case BottomSheetBehavior.STATE_DRAGGING:
                 case BottomSheetBehavior.STATE_HALF_EXPANDED:
                 case BottomSheetBehavior.STATE_SETTLING:

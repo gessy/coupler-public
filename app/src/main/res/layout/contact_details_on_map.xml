@@ -5,10 +5,10 @@
     android:id="@+id/contact_details_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:background="#fff"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_weight="1"
     app:behavior_hideable="true"
     app:behavior_peekHeight="56dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -16,71 +16,175 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/contact_full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Robert Erman"
-            android:textColor="#444"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:background="@android:color/transparent"
+            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        <TextView
+            android:id="@+id/contact_gid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contact_full_name"
+            android:text="GID: 234-213-234-542"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/medium_grey"
+            android:textSize="14sp"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/close_contact_details"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentEnd="true"
+            android:background="@color/white"
             android:elevation="20dp"
             android:innerRadius="0dp"
-            android:background="@color/white"
             android:shape="ring"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_vertical"
-            app:cardCornerRadius="9dp">
+            app:cardCornerRadius="10dp">
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:alpha="1.0"
                 android:src="@drawable/ic_cancel_grey_24dp" />
         </androidx.cardview.widget.CardView>
-
     </RelativeLayout>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chicken Fried Rice 1x1" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Paneer Tikka 1x2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Delivery Address"
-        android:textColor="#444"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Flat No 404, Skyline Apartments, Vizag - 500576" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout
         android:layout_marginTop="30dp"
-        android:background="#000"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="PROCEED PAYMENT"
-        android:textColor="#fff" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/location_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:src="@drawable/ic_location_on_24dp" />
+        <TextView
+            android:id="@+id/contact_location"
+            android:layout_toRightOf="@+id/location_icon"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/medium_grey"
+            android:textSize="14sp"
+            android:text="57.737733 41.012231" />
+
+        <ImageView
+            android:id="@+id/distance_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/contact_location"
+            android:layout_gravity="center"
+            android:alpha="0.5"
+            android:src="@drawable/ic_directions_walk_24dp" />
+        <TextView
+            android:id="@+id/walk_time"
+            android:layout_toRightOf="@+id/distance_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/medium_grey"
+            android:textSize="14sp"
+            android:text="20 min" />
+        <TextView
+            android:id="@+id/time_distance_separator"
+            android:layout_toRightOf="@+id/walk_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/medium_grey"
+            android:textSize="14sp"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/walk_distance"
+            android:layout_toRightOf="@+id/time_distance_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/medium_grey"
+            android:textSize="14sp"
+            android:text="3.4 km" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <RelativeLayout
+            android:id="@+id/btn_contact_route"
+            android:background="@color/blue_light"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="7dp"
+            android:layout_height="34dp">
+            <ImageView
+                android:id="@+id/contact_route"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:alpha="1.0"
+                android:src="@drawable/ic_route_white_24dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:layout_toRightOf="@+id/contact_route"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Route" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_contact_chat"
+            android:background="@color/super_lighter_grey"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="7dp"
+            android:layout_height="34dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:alpha="1.0"
+                android:src="@drawable/ic_chat_blue_24dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_contact_info"
+            android:background="@color/super_lighter_grey"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="7dp"
+            android:layout_height="34dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:alpha="1.0"
+                android:src="@drawable/ic_contact_blue_24dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -16,6 +16,8 @@ import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_FULL_NAME;
 import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_GID;
 import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_ID;
 import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_LAST_NAME;
+import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_LATITUDE;
+import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_LONGITUDE;
 
 public class FeatureConverter {
 
@@ -23,6 +25,9 @@ public class FeatureConverter {
         LatLng latLng = user.getLocation();
 
         Feature feature = fromGeometry(fromLngLat(latLng.getLongitude(), latLng.getLatitude()));
+
+        feature.addNumberProperty(KEY_CONTACT_LATITUDE, latLng.getLatitude());
+        feature.addNumberProperty(KEY_CONTACT_LONGITUDE, latLng.getLongitude());
         feature.addNumberProperty(KEY_CONTACT_ID, user.getId());
         feature.addStringProperty(KEY_CONTACT_FULL_NAME, user.fullName());
         feature.addStringProperty(KEY_CONTACT_FIRST_NAME, user.getFirstName());

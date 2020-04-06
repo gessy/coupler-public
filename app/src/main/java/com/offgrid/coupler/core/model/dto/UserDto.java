@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.mapbox.geojson.Feature;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.offgrid.coupler.core.model.SourceActivity;
 
 import static com.offgrid.coupler.core.model.Constants.*;
@@ -14,6 +15,7 @@ public class UserDto {
     private String firstName;
     private String fullName;
     private String lastName;
+    private LatLng location;
     private String gid;
     private SourceActivity sourceActivity;
     private String sourceDto;
@@ -37,6 +39,10 @@ public class UserDto {
         return fullName;
     }
 
+    public LatLng getLocation() {
+        return location;
+    }
+
     public String getGid() {
         return gid;
     }
@@ -56,6 +62,10 @@ public class UserDto {
         dto.firstName = bundle.getString(KEY_CONTACT_FIRST_NAME);
         dto.lastName = bundle.getString(KEY_CONTACT_LAST_NAME);
         dto.gid = bundle.getString(KEY_CONTACT_GID);
+
+        if (bundle.containsKey(KEY_CONTACT_LATITUDE) && bundle.containsKey(KEY_CONTACT_LONGITUDE)) {
+            dto.location = new LatLng(bundle.getDouble(KEY_CONTACT_LATITUDE), bundle.getDouble(KEY_CONTACT_LONGITUDE));
+        }
 
         dto.sourceActivity = bundle.containsKey(KEY_CONTACT_SOURCE_ACTIVITY)
                 ? SourceActivity.valueOf(bundle.getString(KEY_CONTACT_SOURCE_ACTIVITY))
@@ -78,6 +88,11 @@ public class UserDto {
         dto.lastName = feature.getStringProperty(KEY_CONTACT_LAST_NAME);
         dto.gid = feature.getStringProperty(KEY_CONTACT_GID);
 
+        dto.location = new LatLng(
+                feature.getNumberProperty(KEY_CONTACT_LATITUDE).doubleValue(),
+                feature.getNumberProperty(KEY_CONTACT_LONGITUDE).doubleValue()
+        );
+
         return dto;
     }
 
@@ -88,6 +103,7 @@ public class UserDto {
         private String firstName = "";
         private String lastName = "";
         private String gid = "";
+        private LatLng location = null;
         private SourceActivity sourceActivity = SourceActivity.NOT_DEFINED;
         private String sourceDto = null;
 
@@ -130,6 +146,12 @@ public class UserDto {
         }
 
 
+        public UserDto.BundleBuilder withLocation(LatLng location) {
+            this.location = location;
+            return this;
+        }
+
+
         public Bundle build() {
             Bundle bundle = new Bundle();
             bundle.putLong(KEY_CONTACT_ID, id);
@@ -137,6 +159,11 @@ public class UserDto {
             bundle.putString(KEY_CONTACT_FIRST_NAME, firstName);
             bundle.putString(KEY_CONTACT_LAST_NAME, lastName);
             bundle.putString(KEY_CONTACT_GID, gid);
+
+            if (location != null) {
+                bundle.putDouble(KEY_CONTACT_LATITUDE, location.getLatitude());
+                bundle.putDouble(KEY_CONTACT_LONGITUDE, location.getLongitude());
+            }
 
             if (!SourceActivity.NOT_DEFINED.equals(sourceActivity)) {
                 bundle.putString(KEY_CONTACT_SOURCE_ACTIVITY, sourceActivity.toString());

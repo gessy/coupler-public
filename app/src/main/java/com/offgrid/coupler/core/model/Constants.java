@@ -8,4 +8,7 @@ public class Constants {
     public static final String KEY_CONTACT_LAST_NAME = "key-contact-last-name";
     public static final String KEY_CONTACT_SOURCE_ACTIVITY = "key-contact-source-activity";
     public static final String KEY_CONTACT_SOURCE_DTO = "key-contact-source-dto";
+
+    public static final String KEY_CONTACT_LATITUDE = "key-contact-latitude";
+    public static final String KEY_CONTACT_LONGITUDE = "key-contact-longitude";
 }
