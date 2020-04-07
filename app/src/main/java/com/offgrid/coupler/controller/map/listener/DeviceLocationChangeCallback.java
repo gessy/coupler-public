@@ -11,16 +11,15 @@ import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 
-public class LocationChangeCallback implements LocationEngineCallback<LocationEngineResult> {
+public class DeviceLocationChangeCallback implements LocationEngineCallback<LocationEngineResult> {
 
     private MapboxMap mapboxMap;
     private Context context;
 
-    public LocationChangeCallback(Context context, MapboxMap mapboxMap) {
+    public DeviceLocationChangeCallback(Context context, MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         this.context = context;
     }
-
 
     /**
      * The LocationEngineCallback interface's method which fires when the device's location has changed.
@@ -35,7 +34,6 @@ public class LocationChangeCallback implements LocationEngineCallback<LocationEn
             return;
         }
 
-        // Pass the new location to the Maps SDK's LocationComponent
         if (mapboxMap != null && result.getLastLocation() != null) {
             mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
         }

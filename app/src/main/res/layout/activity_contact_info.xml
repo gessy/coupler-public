@@ -65,8 +65,8 @@
                     android:layout_marginStart="25dp"
                     android:background="@android:color/transparent"
                     android:textSize="20sp"
-                    android:text="Full Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:text="Full Name"
                     android:importantForAutofill="no" />
 
                 <TextView

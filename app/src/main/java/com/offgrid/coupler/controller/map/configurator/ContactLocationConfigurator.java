@@ -23,6 +23,7 @@ public class ContactLocationConfigurator {
     private MapboxMap mapboxMap;
 
     private static final int DRAWABLE_RES = R.drawable.ic_location_on_blue_24dp;
+//    private static final int DRAWABLE_RES = R.drawable.ic_contact_blue_24dp;
 
     public ContactLocationConfigurator() {
     }
