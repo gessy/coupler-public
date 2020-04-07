@@ -127,41 +127,38 @@ public class MainActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.nav_contact_list) {
-            Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle(resources.getString(R.string.menu_contact_list))
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else if (item.getItemId() == R.id.nav_group) {
-            Intent intent = new Intent(MainActivity.this, NewGroupActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle(resources.getString(R.string.menu_group))
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else if (item.getItemId() == R.id.nav_places_lists) {
-            Intent intent = new Intent(MainActivity.this, PlacesListsActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle(resources.getString(R.string.menu_my_places))
-                            .withText("This is My places activity")
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else {
-            Intent intent = new Intent(MainActivity.this, MockActivity.class);
-            intent.putExtras(EntityHelper.createBundle(item.getItemId()));
-            startActivityForResult(intent, 1);
+        switch (item.getItemId()) {
+            case R.id.nav_contact_list:
+                return jumpToActivity(
+                        new Info.BundleBuilder()
+                                .withTitle(resources.getString(R.string.menu_contact_list)).build(),
+                        ContactListActivity.class);
+            case R.id.nav_group:
+                return jumpToActivity(
+                        new Info.BundleBuilder()
+                                .withTitle(resources.getString(R.string.menu_group)).build(),
+                        NewGroupActivity.class);
+            case R.id.nav_places_lists:
+                return jumpToActivity(
+                        new Info.BundleBuilder()
+                                .withTitle(resources.getString(R.string.menu_my_places))
+                                .withText("This is My places activity").build(),
+                        PlacesListsActivity.class);
         }
+
+        return jumpToActivity(EntityHelper.createBundle(item.getItemId()), MockActivity.class);
+    }
+
+    private boolean jumpToActivity(Bundle extras, Class<? extends AppCompatActivity> clazz) {
+        Intent intent = new Intent(MainActivity.this, clazz);
+        intent.putExtras(extras);
+        startActivityForResult(intent, 1);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+
         return true;
     }
 }
