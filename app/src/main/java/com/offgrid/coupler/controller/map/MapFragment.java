@@ -104,25 +104,19 @@ public class MapFragment extends Fragment
                 .withViewHolder(new ContactDetailsViewHolder(rootView));
 
         mapboxMap.addOnMapClickListener(contactLocationListener);
-
         rootView.findViewById(R.id.btn_contact_info).setOnClickListener(contactLocationListener);
         rootView.findViewById(R.id.btn_contact_chat).setOnClickListener(contactLocationListener);
-        rootView.findViewById(R.id.close_contact_details).setOnClickListener(this);
+        rootView.findViewById(R.id.close_contact_details).setOnClickListener(contactLocationListener);
 
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.back_to_camera_tracking_mode:
-                LocationComponent locationComponent = mapboxMap.getLocationComponent();
-                locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
-                locationComponent.zoomWhileTracking(16f);
-                break;
-            case R.id.close_contact_details:
-                contactDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
-                break;
+        if (view.getId() == R.id.back_to_camera_tracking_mode) {
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
+            locationComponent.zoomWhileTracking(16f);
         }
     }
 

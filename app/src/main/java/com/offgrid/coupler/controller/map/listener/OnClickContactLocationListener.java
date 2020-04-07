@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.mapbox.geojson.Feature;
@@ -90,13 +92,13 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
 
         if (features.size() > 0) {
             user = UserDto.getInstance(features.get(0));
-            showContact();
+            displayContact();
         }
 
         return true;
     }
 
-    private void showContact() {
+    private void displayContact() {
         viewHolder.update(user);
         selectMarker();
         if (bottomSheet != null) {
@@ -136,22 +138,23 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
 
     @Override
     public void onClick(View view) {
-        Intent intent;
         switch (view.getId()) {
             case R.id.btn_contact_chat:
-                intent = new Intent(context, ChatActivity.class);
-                intent.putExtras(DtoChatWrapper.convertAndWrap(user));
-                context.startActivity(intent);
-                ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+                jumpToActivity(DtoChatWrapper.convertAndWrap(user), ChatActivity.class);
                 break;
             case R.id.btn_contact_info:
-                intent = new Intent(context, ContactInfoActivity.class);
-                intent.putExtras(DtoUserWrapper.wrap(user));
-                context.startActivity(intent);
-                ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+                jumpToActivity(DtoUserWrapper.wrap(user), ContactInfoActivity.class);
                 break;
         }
+
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    private void jumpToActivity(Bundle extras, Class<? extends AppCompatActivity> clazz) {
+        Intent intent = new Intent(context, clazz);
+        intent.putExtras(extras);
+        context.startActivity(intent);
+        ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
     }
 
     class BottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
@@ -179,5 +182,4 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
     }
-
 }
