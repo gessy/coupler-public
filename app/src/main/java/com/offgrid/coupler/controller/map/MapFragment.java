@@ -98,24 +98,31 @@ public class MapFragment extends Fragment
         });
 
 
-        rootView.findViewById(R.id.close_contact_details).setOnClickListener(this);
-
-        mapboxMap.addOnMapClickListener(new OnClickContactLocationListener()
+        OnClickContactLocationListener contactLocationListener = new OnClickContactLocationListener(getActivity())
                 .withMapbox(mapboxMap)
                 .withBottomSheet(contactDetailsSheet)
-                .withViewHolder(new ContactDetailsViewHolder(rootView)));
+                .withViewHolder(new ContactDetailsViewHolder(rootView));
+
+        mapboxMap.addOnMapClickListener(contactLocationListener);
+
+        rootView.findViewById(R.id.btn_contact_info).setOnClickListener(contactLocationListener);
+        rootView.findViewById(R.id.btn_contact_chat).setOnClickListener(contactLocationListener);
+        rootView.findViewById(R.id.close_contact_details).setOnClickListener(this);
 
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.back_to_camera_tracking_mode) {
-            LocationComponent locationComponent = mapboxMap.getLocationComponent();
-            locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
-            locationComponent.zoomWhileTracking(16f);
-        } else if (view.getId() == R.id.close_contact_details) {
-            contactDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+        switch (view.getId()) {
+            case R.id.back_to_camera_tracking_mode:
+                LocationComponent locationComponent = mapboxMap.getLocationComponent();
+                locationComponent.setCameraMode(CameraMode.TRACKING_COMPASS);
+                locationComponent.zoomWhileTracking(16f);
+                break;
+            case R.id.close_contact_details:
+                contactDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+                break;
         }
     }
 
