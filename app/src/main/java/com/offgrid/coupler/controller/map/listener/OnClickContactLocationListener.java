@@ -1,6 +1,9 @@
 package com.offgrid.coupler.controller.map.listener;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.PointF;
 import android.view.View;
 
@@ -15,15 +18,19 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.offgrid.coupler.controller.map.MapConstants;
+import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.chat.ChatActivity;
+import com.offgrid.coupler.controller.contact.ContactInfoActivity;
 import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
 import com.offgrid.coupler.core.model.dto.UserDto;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 
 import java.util.List;
 
 import static com.offgrid.coupler.controller.map.MapConstants.*;
 
-public class OnClickContactLocationListener implements MapboxMap.OnMapClickListener {
+public class OnClickContactLocationListener implements MapboxMap.OnMapClickListener, View.OnClickListener {
 
     private MapboxMap mapboxMap;
     private BottomSheetBehavior bottomSheet;
@@ -31,7 +38,12 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
     private ValueAnimator markerAnimator;
     private boolean markerSelected = false;
 
-    public OnClickContactLocationListener() {
+    private UserDto user;
+
+    private Context context;
+
+    public OnClickContactLocationListener(Context context) {
+        this.context = context;
     }
 
     public OnClickContactLocationListener withMapbox(MapboxMap mapboxMap) {
@@ -77,14 +89,15 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
         }
 
         if (features.size() > 0) {
-            showContact(features.get(0));
+            user = UserDto.getInstance(features.get(0));
+            showContact();
         }
 
         return true;
     }
 
-    private void showContact(Feature feature) {
-        viewHolder.update(feature);
+    private void showContact() {
+        viewHolder.update(user);
         selectMarker();
         if (bottomSheet != null) {
             bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -119,6 +132,26 @@ public class OnClickContactLocationListener implements MapboxMap.OnMapClickListe
         });
 
         return markerAnimator;
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.btn_contact_chat:
+                intent = new Intent(context, ChatActivity.class);
+                intent.putExtras(DtoChatWrapper.convertAndWrap(user));
+                context.startActivity(intent);
+                ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+                break;
+            case R.id.btn_contact_info:
+                intent = new Intent(context, ContactInfoActivity.class);
+                intent.putExtras(DtoUserWrapper.wrap(user));
+                context.startActivity(intent);
+                ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+                break;
+        }
+        bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     class BottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {

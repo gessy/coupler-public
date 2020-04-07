@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/contact_details_bottom_sheet"
     android:layout_width="match_parent"
@@ -23,11 +22,12 @@
             android:id="@+id/contact_full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Robert Erman"
-            android:textSize="18sp"
             android:background="@android:color/transparent"
+            android:text="Robert Erman"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/contact_gid"
             android:layout_width="wrap_content"
@@ -36,19 +36,20 @@
             android:text="GID: 234-213-234-542"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/medium_grey"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/close_contact_details"
-            android:layout_marginTop="5dp"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:elevation="20dp"
             android:innerRadius="0dp"
             android:shape="ring"
             app:cardCornerRadius="9dp">
+
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -65,9 +66,10 @@
         android:background="@color/super_lighter_grey" />
 
     <RelativeLayout
-        android:layout_marginTop="22dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp">
+
         <ImageView
             android:id="@+id/location_icon"
             android:layout_width="18dp"
@@ -75,122 +77,113 @@
             android:layout_gravity="center"
             android:alpha="0.5"
             android:src="@drawable/ic_location_on_24dp" />
+
         <TextView
             android:id="@+id/contact_location"
-            android:layout_toRightOf="@+id/location_icon"
             android:layout_width="wrap_content"
-            android:layout_marginStart="2dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_toRightOf="@+id/location_icon"
+            android:text="57.737733 41.012231"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/medium_grey"
-            android:textSize="14sp"
-            android:text="57.737733 41.012231" />
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/distance_icon"
             android:layout_width="18dp"
             android:layout_height="18dp"
+            android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_toRightOf="@+id/contact_location"
-            android:layout_gravity="center"
             android:alpha="0.5"
             android:src="@drawable/ic_directions_walk_24dp" />
+
         <TextView
             android:id="@+id/walk_time"
-            android:layout_toRightOf="@+id/distance_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:layout_toRightOf="@+id/distance_icon"
+            android:text="20 min"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/medium_grey"
-            android:textSize="14sp"
-            android:text="20 min" />
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/time_distance_separator"
-            android:layout_toRightOf="@+id/walk_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:layout_toRightOf="@+id/walk_time"
+            android:text="/"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/medium_grey"
-            android:textSize="14sp"
-            android:text="/" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/walk_distance"
-            android:layout_toRightOf="@+id/time_distance_separator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:layout_toRightOf="@+id/time_distance_separator"
+            android:text="3.4 km"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/medium_grey"
-            android:textSize="14sp"
-            android:text="3.4 km" />
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
-
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
         <RelativeLayout
             android:id="@+id/btn_contact_route"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:background="@color/blue_light"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_width="wrap_content"
-            android:paddingHorizontal="11dp"
-            android:layout_height="40dp">
+            android:paddingHorizontal="11dp">
             <ImageView
                 android:id="@+id/contact_route"
                 android:layout_width="24dp"
-                android:layout_centerVertical="true"
                 android:layout_height="24dp"
+                android:layout_centerVertical="true"
                 android:alpha="1.0"
                 android:src="@drawable/ic_route_white_24dp" />
             <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="5dp"
                 android:layout_toRightOf="@+id/contact_route"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 android:background="@android:color/transparent"
+                android:text="Route"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:text="Route" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <ImageButton
             android:id="@+id/btn_contact_info"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:alpha="1.0"
             android:background="@color/super_lighter_grey"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_width="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_height="40dp">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerInParent="true"
-                android:alpha="1.0"
-                android:src="@drawable/ic_contact_blue_24dp" />
-        </RelativeLayout>
+            android:src="@drawable/ic_contact_blue_24dp" />
 
-        <RelativeLayout
+        <ImageButton
             android:id="@+id/btn_contact_chat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:alpha="1.0"
             android:background="@color/super_lighter_grey"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_width="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_height="40dp">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerInParent="true"
-                android:alpha="1.0"
-                android:src="@drawable/ic_chat_blue_24dp" />
-        </RelativeLayout>
-
+            android:src="@drawable/ic_chat_blue_24dp" />
 
     </LinearLayout>
 

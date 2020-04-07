@@ -8,6 +8,18 @@ import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.core.model.dto.UserDto;
 
 public class DtoUserWrapper {
+
+    public static Bundle wrap(UserDto dto) {
+        return new UserDto
+                .BundleBuilder()
+                .withId(dto.getId())
+                .withFullName(dto.getFullName())
+                .withFirstName(dto.getFirstName())
+                .withLastName(dto.getLastName())
+                .withGid(dto.getGid())
+                .build();
+    }
+
     public static Bundle convertAndWrap(User user) {
         return new UserDto
                 .BundleBuilder()
