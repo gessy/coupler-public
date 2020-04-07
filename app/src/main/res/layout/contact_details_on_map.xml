@@ -24,9 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Robert Erman"
+            android:textSize="18sp"
             android:background="@android:color/transparent"
-            android:textSize="20sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold"/>
         <TextView
             android:id="@+id/contact_gid"
             android:layout_width="wrap_content"
@@ -47,7 +48,7 @@
             android:elevation="20dp"
             android:innerRadius="0dp"
             android:shape="ring"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="9dp">
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -57,8 +58,14 @@
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/super_lighter_grey" />
+
     <RelativeLayout
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="22dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
@@ -132,12 +139,12 @@
             android:background="@color/blue_light"
             android:foreground="?attr/selectableItemBackground"
             android:layout_width="wrap_content"
-            android:paddingVertical="5dp"
-            android:paddingHorizontal="7dp"
-            android:layout_height="34dp">
+            android:paddingHorizontal="11dp"
+            android:layout_height="40dp">
             <ImageView
                 android:id="@+id/contact_route"
                 android:layout_width="24dp"
+                android:layout_centerVertical="true"
                 android:layout_height="24dp"
                 android:alpha="1.0"
                 android:src="@drawable/ic_route_white_24dp" />
@@ -148,42 +155,42 @@
                 android:layout_toRightOf="@+id/contact_route"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:textStyle="bold"
+                android:background="@android:color/transparent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:text="Route" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/btn_contact_chat"
-            android:background="@color/super_lighter_grey"
-            android:foreground="?attr/selectableItemBackground"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="10dp"
-            android:paddingVertical="5dp"
-            android:paddingHorizontal="7dp"
-            android:layout_height="34dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerInParent="true"
-                android:alpha="1.0"
-                android:src="@drawable/ic_chat_blue_24dp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/btn_contact_info"
             android:background="@color/super_lighter_grey"
             android:foreground="?attr/selectableItemBackground"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_marginStart="10dp"
-            android:paddingVertical="5dp"
-            android:paddingHorizontal="7dp"
-            android:layout_height="34dp">
+            android:layout_height="40dp">
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerInParent="true"
                 android:alpha="1.0"
                 android:src="@drawable/ic_contact_blue_24dp" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_contact_chat"
+            android:background="@color/super_lighter_grey"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_width="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="40dp">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:alpha="1.0"
+                android:src="@drawable/ic_chat_blue_24dp" />
+        </RelativeLayout>
+
 
     </LinearLayout>
 
