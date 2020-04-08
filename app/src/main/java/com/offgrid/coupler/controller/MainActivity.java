@@ -140,9 +140,7 @@ public class MainActivity
                         NewGroupActivity.class);
             case R.id.nav_places_lists:
                 return jumpToActivity(
-                        new Info.BundleBuilder()
-                                .withTitle(resources.getString(R.string.menu_my_places))
-                                .withText("This is My places activity").build(),
+                        new Info.BundleBuilder().withTitle(resources.getString(R.string.menu_my_places)).build(),
                         PlacesListsActivity.class);
         }
 
