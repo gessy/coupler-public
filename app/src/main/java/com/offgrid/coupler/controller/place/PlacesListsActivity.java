@@ -13,10 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.core.adapter.PlacesListsAdapter;
 import com.offgrid.coupler.core.model.Info;
+
+import java.util.Arrays;
 
 
 public class PlacesListsActivity extends AppCompatActivity {
+
+    private PlacesListsAdapter placesListsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,10 +44,12 @@ public class PlacesListsActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_places_lists);
-//        recyclerView.setAdapter(contactListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        placesListsAdapter = new PlacesListsAdapter(this);
+        placesListsAdapter.setPlacesLists(Arrays.asList("Camping", "Forest", "Tree"));
 
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_places_lists);
+        recyclerView.setAdapter(placesListsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
