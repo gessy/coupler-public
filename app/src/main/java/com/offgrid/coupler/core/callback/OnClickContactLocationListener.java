@@ -1,4 +1,4 @@
-package com.offgrid.coupler.controller.map.listener;
+package com.offgrid.coupler.core.callback;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;

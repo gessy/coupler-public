@@ -15,7 +15,7 @@ public class PlacesListsItemViewHolder extends RecyclerView.ViewHolder {
 
     public PlacesListsItemViewHolder(View itemView) {
         super(itemView);
-        listName = itemView.findViewById(R.id.places_list_name);
+        listName = itemView.findViewById(R.id.placelist_name);
         placesCount = itemView.findViewById(R.id.places_count);
     }
 

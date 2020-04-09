@@ -19,14 +19,12 @@ import java.util.List;
 public class PlacelistViewModel extends AndroidViewModel {
 
     private PlacelistRepository placelistRepository;
-
     private final MutableLiveData<Boolean> load = new MutableLiveData();
     private LiveData<List<Placelist>> livePlacelist;
 
     public PlacelistViewModel(Application application) {
         super(application);
         placelistRepository = new PlacelistRepository(application);
-
         livePlacelist = Transformations.switchMap(load, new Function<Boolean, LiveData<List<Placelist>>>() {
             @Override
             public LiveData<List<Placelist>> apply(Boolean load) {
@@ -37,6 +35,10 @@ public class PlacelistViewModel extends AndroidViewModel {
 
     public void insert(String listName) {
         placelistRepository.insert(new Placelist(listName));
+    }
+
+    public void remove(Placelist placelist) {
+        placelistRepository.delete(placelist.getId());
     }
 
     public void load() {

@@ -19,7 +19,7 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
-import com.offgrid.coupler.controller.place.PlacesListsActivity;
+import com.offgrid.coupler.controller.place.PlacelistActivity;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
@@ -141,7 +141,7 @@ public class MainActivity
             case R.id.nav_places_lists:
                 return jumpToActivity(
                         new Info.BundleBuilder().withTitle(resources.getString(R.string.menu_my_places)).build(),
-                        PlacesListsActivity.class);
+                        PlacelistActivity.class);
         }
 
         return jumpToActivity(EntityHelper.createBundle(item.getItemId()), MockActivity.class);

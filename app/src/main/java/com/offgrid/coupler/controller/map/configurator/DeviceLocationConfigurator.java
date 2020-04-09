@@ -10,7 +10,7 @@ import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.offgrid.coupler.controller.map.listener.DeviceLocationChangeCallback;
+import com.offgrid.coupler.core.callback.DeviceLocationChangeCallback;
 
 public class DeviceLocationConfigurator {
 

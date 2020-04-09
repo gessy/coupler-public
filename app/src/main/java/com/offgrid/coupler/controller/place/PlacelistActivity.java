@@ -7,16 +7,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.adapter.PlacesListsAdapter;
+import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Placelist;
@@ -26,7 +29,7 @@ import androidx.lifecycle.Observer;
 import java.util.List;
 
 
-public class PlacesListsActivity extends AppCompatActivity
+public class PlacelistActivity extends AppCompatActivity
         implements View.OnClickListener, Observer<List<Placelist>> {
 
     private PlacesListsAdapter placesListsAdapter;
@@ -38,7 +41,7 @@ public class PlacesListsActivity extends AppCompatActivity
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_places_lists);
+        setContentView(R.layout.activity_placelist);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -59,17 +62,27 @@ public class PlacesListsActivity extends AppCompatActivity
         recyclerView.setAdapter(placesListsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                placeListViewModel.remove(placesListsAdapter.getItem(viewHolder.getAdapterPosition()));
+            }
+        });
+
+        touchHelper.attachToRecyclerView(recyclerView);
+
         findViewById(R.id.btn_create_list).setOnClickListener(this);
 
         placeListViewModel = new ViewModelProvider(this).get(PlacelistViewModel.class);
-        placeListViewModel.observe(this, PlacesListsActivity.this);
+        placeListViewModel.observe(this, PlacelistActivity.this);
         placeListViewModel.load();
     }
 
 
     private void showNewListDialog() {
         final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_list, null, false);
-        final AlertDialog dialog = new AlertDialog.Builder(PlacesListsActivity.this)
+        final AlertDialog dialog = new AlertDialog.Builder(PlacelistActivity.this)
                 .setTitle("New List")
                 .setView(dialogView)
                 .create();

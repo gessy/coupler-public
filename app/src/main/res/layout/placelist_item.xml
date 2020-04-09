@@ -13,7 +13,7 @@
         android:background="@color/super_lighter_grey" />
 
     <TextView
-        android:id="@+id/places_list_name"
+        android:id="@+id/placelist_name"
         android:layout_below="@+id/split_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

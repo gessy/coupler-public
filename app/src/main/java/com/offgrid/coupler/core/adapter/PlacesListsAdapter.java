@@ -24,7 +24,7 @@ public class PlacesListsAdapter extends RecyclerView.Adapter<PlacesListsItemView
 
     @Override
     public PlacesListsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.places_lists_item, parent, false);
+        View itemView = mInflater.inflate(R.layout.placelist_item, parent, false);
         return new PlacesListsItemViewHolder(itemView);
     }
 
@@ -37,6 +37,11 @@ public class PlacesListsAdapter extends RecyclerView.Adapter<PlacesListsItemView
     public void setPlacesLists(List<Placelist> lists) {
         this.lists = lists;
         notifyDataSetChanged();
+    }
+
+
+    public Placelist getItem(int position) {
+        return lists.get(position);
     }
 
     @Override
