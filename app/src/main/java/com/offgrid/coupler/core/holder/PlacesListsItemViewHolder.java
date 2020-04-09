@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.data.entity.Placelist;
 
 public class PlacesListsItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -14,13 +15,13 @@ public class PlacesListsItemViewHolder extends RecyclerView.ViewHolder {
 
     public PlacesListsItemViewHolder(View itemView) {
         super(itemView);
-        listName = itemView.findViewById(R.id.places_list_name);
+        listName = itemView.findViewById(R.id.placelist_name);
         placesCount = itemView.findViewById(R.id.places_count);
     }
 
-    public void update(String listName, Integer placesCount) {
-        this.listName.setText(listName);
-        this.placesCount.setText(placesCount.toString());
+    public void update(Placelist placelist) {
+        this.listName.setText(placelist.getName());
+        this.placesCount.setText("3");
     }
 
 }

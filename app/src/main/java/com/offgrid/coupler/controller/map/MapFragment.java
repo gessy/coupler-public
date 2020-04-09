@@ -25,7 +25,7 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.map.configurator.ContactLocationConfigurator;
 import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurator;
-import com.offgrid.coupler.controller.map.listener.OnClickContactLocationListener;
+import com.offgrid.coupler.core.callback.OnClickContactLocationListener;
 import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
 import com.offgrid.coupler.core.model.converter.FeatureConverter;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;

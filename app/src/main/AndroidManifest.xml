@@ -60,7 +60,7 @@
 
 <!--        Places  Activities-->
         <activity
-            android:name=".controller.place.PlacesListsActivity"
+            android:name=".controller.place.PlacelistActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>

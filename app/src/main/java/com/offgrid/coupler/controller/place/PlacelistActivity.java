@@ -7,28 +7,33 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.adapter.PlacesListsAdapter;
+import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
+import com.offgrid.coupler.core.model.view.PlacelistViewModel;
+import com.offgrid.coupler.data.entity.Placelist;
 
-import java.util.Arrays;
+import androidx.lifecycle.Observer;
+
+import java.util.List;
 
 
-public class PlacesListsActivity extends AppCompatActivity implements View.OnClickListener {
+public class PlacelistActivity extends AppCompatActivity
+        implements View.OnClickListener, Observer<List<Placelist>> {
 
     private PlacesListsAdapter placesListsAdapter;
-
-    private AlertDialog dialog;
-    private View dialogView;
-    private EditText listNameInput;
-
+    private PlacelistViewModel placeListViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class PlacesListsActivity extends AppCompatActivity implements View.OnCli
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_places_lists);
+        setContentView(R.layout.activity_placelist);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -52,43 +57,66 @@ public class PlacesListsActivity extends AppCompatActivity implements View.OnCli
         });
 
         placesListsAdapter = new PlacesListsAdapter(this);
-        placesListsAdapter.setPlacesLists(Arrays.asList("Camping", "Forest", "Tree"));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_places_lists);
         recyclerView.setAdapter(placesListsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                placeListViewModel.remove(placesListsAdapter.getItem(viewHolder.getAdapterPosition()));
+            }
+        });
+
+        touchHelper.attachToRecyclerView(recyclerView);
+
         findViewById(R.id.btn_create_list).setOnClickListener(this);
 
-        createNewListDialog();
+        placeListViewModel = new ViewModelProvider(this).get(PlacelistViewModel.class);
+        placeListViewModel.observe(this, PlacelistActivity.this);
+        placeListViewModel.load();
     }
 
 
-    private void createNewListDialog() {
-        dialogView = getLayoutInflater().inflate(R.layout.dialog_new_list, null, false);
-
-        listNameInput = dialogView.findViewById(R.id.new_places_list_name);
-        dialogView.findViewById(R.id.save_list).setOnClickListener(this);
-        dialogView.findViewById(R.id.cancel_list).setOnClickListener(this);
-
-        dialog = new AlertDialog.Builder(PlacesListsActivity.this)
+    private void showNewListDialog() {
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_list, null, false);
+        final AlertDialog dialog = new AlertDialog.Builder(PlacelistActivity.this)
                 .setTitle("New List")
                 .setView(dialogView)
                 .create();
+
+        dialogView.findViewById(R.id.save_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText input = dialogView.findViewById(R.id.new_places_list_name);
+                placeListViewModel.insert(input.getText().toString());
+                dialog.dismiss();
+            }
+        });
+        dialogView.findViewById(R.id.cancel_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
     }
+
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_create_list) {
-            dialog.show();
-        } else if (view.getId() == R.id.cancel_list) {
-            dialog.cancel();
-        } else if (view.getId() == R.id.save_list) {
-            Toast.makeText(PlacesListsActivity.this, "name: " + listNameInput.getText(), Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            showNewListDialog();
         }
     }
 
+    @Override
+    public void onChanged(List<Placelist> placelists) {
+        placesListsAdapter.setPlacesLists(placelists);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
