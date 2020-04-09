@@ -47,19 +47,18 @@
                 android:paddingEnd="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:text="CREATE LIST"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="5dp"
                 android:id="@+id/recyclerview_places_lists"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_below="@+id/btn_create_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:layout_marginBottom="16dp"/>
+                android:background="@android:color/white"/>
         </RelativeLayout>
 
     </LinearLayout>

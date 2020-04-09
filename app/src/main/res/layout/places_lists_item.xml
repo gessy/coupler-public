@@ -10,7 +10,6 @@
         android:id="@+id/split_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
         android:background="@color/super_lighter_grey" />
 
     <TextView
@@ -19,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         tools:text="Camping"
@@ -29,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_below="@+id/split_line"

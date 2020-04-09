@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.holder.PlacesListsItemViewHolder;
+import com.offgrid.coupler.data.entity.Placelist;
 
 import java.util.List;
 
 public class PlacesListsAdapter extends RecyclerView.Adapter<PlacesListsItemViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<String> lists;
+    private List<Placelist> lists;
 
     public PlacesListsAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -29,11 +30,11 @@ public class PlacesListsAdapter extends RecyclerView.Adapter<PlacesListsItemView
 
     @Override
     public void onBindViewHolder(PlacesListsItemViewHolder holder, int position) {
-        final String current = lists != null ? lists.get(position) : "";
-        holder.update(current, 3);
+        final Placelist current = lists != null ? lists.get(position) : Placelist.empty();
+        holder.update(current);
     }
 
-    public void setPlacesLists(List<String> lists) {
+    public void setPlacesLists(List<Placelist> lists) {
         this.lists = lists;
         notifyDataSetChanged();
     }
