@@ -87,13 +87,7 @@ public class ContactListActivity extends AppCompatActivity implements Observer<L
     public void onClick(View view) {
         if (view.getId() == R.id.fab_new_contact) {
             Intent intent = new Intent(ContactListActivity.this, NewContactActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle("Add Contact")
-                            .withText("This is new contact activity")
-                            .withAction(Info.Action.add_contact)
-                            .build()
-            );
+            intent.putExtras(new Info.BundleBuilder().withTitle("Add Contact").build());
             startActivityForResult(intent, 1);
             overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         }

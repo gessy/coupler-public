@@ -1,28 +1,25 @@
 package com.offgrid.coupler.controller;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.mapboxsdk.maps.Style;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
+import com.offgrid.coupler.controller.place.PlacesListsActivity;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
@@ -39,9 +36,13 @@ public class MainActivity
     private FragmentController fragmentController;
     private PermissionsManager permissionsManager;
 
+    private Resources resources;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        resources = getResources();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -126,36 +127,36 @@ public class MainActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.nav_contact_list) {
-            Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle("Contacts")
-                            .withText("This is Contact list activity")
-                            .withAction(Info.Action.contact_list)
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else if (item.getItemId() == R.id.nav_group) {
-            Intent intent = new Intent(MainActivity.this, NewGroupActivity.class);
-            intent.putExtras(
-                    new Info.BundleBuilder()
-                            .withTitle("Add Group")
-                            .withText("This is new group activity")
-                            .withAction(Info.Action.add_group)
-                            .build()
-            );
-            startActivityForResult(intent, 1);
-        } else {
-            Intent intent = new Intent(MainActivity.this, MockActivity.class);
-            intent.putExtras(EntityHelper.createBundle(item.getItemId()));
-            startActivityForResult(intent, 1);
+        switch (item.getItemId()) {
+            case R.id.nav_contact_list:
+                return jumpToActivity(
+                        new Info.BundleBuilder()
+                                .withTitle(resources.getString(R.string.menu_contact_list)).build(),
+                        ContactListActivity.class);
+            case R.id.nav_group:
+                return jumpToActivity(
+                        new Info.BundleBuilder()
+                                .withTitle(resources.getString(R.string.menu_group)).build(),
+                        NewGroupActivity.class);
+            case R.id.nav_places_lists:
+                return jumpToActivity(
+                        new Info.BundleBuilder().withTitle(resources.getString(R.string.menu_my_places)).build(),
+                        PlacesListsActivity.class);
         }
+
+        return jumpToActivity(EntityHelper.createBundle(item.getItemId()), MockActivity.class);
+    }
+
+    private boolean jumpToActivity(Bundle extras, Class<? extends AppCompatActivity> clazz) {
+        Intent intent = new Intent(MainActivity.this, clazz);
+        intent.putExtras(extras);
+        startActivityForResult(intent, 1);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+
         return true;
     }
 }
