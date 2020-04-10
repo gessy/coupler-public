@@ -38,7 +38,7 @@ public class PlacelistViewModel extends AndroidViewModel {
     }
 
     public void remove(Placelist placelist) {
-        placelistRepository.delete(placelist.getId());
+        placelistRepository.delete(placelist);
     }
 
     public void load() {

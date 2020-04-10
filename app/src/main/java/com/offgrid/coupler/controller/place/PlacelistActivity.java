@@ -1,11 +1,11 @@
 package com.offgrid.coupler.controller.place;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.adapter.PlacesListsAdapter;
+import com.offgrid.coupler.core.adapter.PlacelistAdapter;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.PlacelistViewModel;
@@ -32,8 +32,8 @@ import java.util.List;
 public class PlacelistActivity extends AppCompatActivity
         implements View.OnClickListener, Observer<List<Placelist>> {
 
-    private PlacesListsAdapter placesListsAdapter;
-    private PlacelistViewModel placeListViewModel;
+    private PlacelistAdapter placelistAdapter;
+    private PlacelistViewModel placelistViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,17 +56,17 @@ public class PlacelistActivity extends AppCompatActivity
             }
         });
 
-        placesListsAdapter = new PlacesListsAdapter(this);
+        placelistAdapter = new PlacelistAdapter(this);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_places_lists);
-        recyclerView.setAdapter(placesListsAdapter);
+        recyclerView.setAdapter(placelistAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                placeListViewModel.remove(placesListsAdapter.getItem(viewHolder.getAdapterPosition()));
+                placelistViewModel.remove(placelistAdapter.getItem(viewHolder.getAdapterPosition()));
             }
         });
 
@@ -74,9 +74,9 @@ public class PlacelistActivity extends AppCompatActivity
 
         findViewById(R.id.btn_create_list).setOnClickListener(this);
 
-        placeListViewModel = new ViewModelProvider(this).get(PlacelistViewModel.class);
-        placeListViewModel.observe(this, PlacelistActivity.this);
-        placeListViewModel.load();
+        placelistViewModel = new ViewModelProvider(this).get(PlacelistViewModel.class);
+        placelistViewModel.observe(this, PlacelistActivity.this);
+        placelistViewModel.load();
     }
 
 
@@ -91,7 +91,7 @@ public class PlacelistActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 EditText input = dialogView.findViewById(R.id.new_places_list_name);
-                placeListViewModel.insert(input.getText().toString());
+                placelistViewModel.insert(input.getText().toString());
                 dialog.dismiss();
             }
         });
@@ -115,22 +115,16 @@ public class PlacelistActivity extends AppCompatActivity
 
     @Override
     public void onChanged(List<Placelist> placelists) {
-        placesListsAdapter.setPlacesLists(placelists);
+        placelistAdapter.setPlacesLists(placelists);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.nav_edit) {
-            Toast.makeText(this, "Edit list", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

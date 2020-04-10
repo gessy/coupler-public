@@ -17,10 +17,13 @@ public class Placelist {
     @ColumnInfo(name = "name")
     private String name;
 
+    @NonNull
+    @ColumnInfo(name = "show_on_map")
+    private Boolean showOnMap;
+
 
     public Placelist() {
     }
-
 
     public static Placelist empty() {
         return new Placelist("");
@@ -29,6 +32,13 @@ public class Placelist {
     @Ignore
     public Placelist(@NonNull String name) {
         this.name = name;
+        this.showOnMap = true;
+    }
+
+    @Ignore
+    public Placelist(@NonNull String name, @NonNull Boolean showOnMap) {
+        this.name = name;
+        this.showOnMap = showOnMap;
     }
 
     @NonNull
@@ -49,4 +59,12 @@ public class Placelist {
         this.name = name;
     }
 
+    @NonNull
+    public Boolean getShowOnMap() {
+        return showOnMap;
+    }
+
+    public void setShowOnMap(@NonNull Boolean showOnMap) {
+        this.showOnMap = showOnMap;
+    }
 }
