@@ -1,5 +1,6 @@
 package com.offgrid.coupler.controller.place;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,28 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.adapter.PlacelistAdapter;
+import com.offgrid.coupler.core.adapter.PlaceAdapter;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
-import com.offgrid.coupler.core.model.view.PlacelistViewModel;
-import com.offgrid.coupler.data.entity.Placelist;
+import com.offgrid.coupler.data.entity.Place;
 
-import androidx.lifecycle.Observer;
-
-import java.util.List;
+import java.util.Arrays;
 
 
-public class PlacelistActivity extends AppCompatActivity
-        implements View.OnClickListener, Observer<List<Placelist>> {
+public class PlacesActivity extends AppCompatActivity {
 
-    private PlacelistAdapter placelistAdapter;
-    private PlacelistViewModel placelistViewModel;
+    private PlaceAdapter placeAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +33,7 @@ public class PlacelistActivity extends AppCompatActivity
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_placelist);
+        setContentView(R.layout.activity_places);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -53,61 +48,48 @@ public class PlacelistActivity extends AppCompatActivity
             }
         });
 
-        placelistAdapter = new PlacelistAdapter(this);
-        placelistAdapter.setPlacelistDialog(placelistDialog());
+        placeAdapter = new PlaceAdapter(this);
+        placeAdapter.setPlaces(Arrays.asList(
+                new Place("Tree", "This is a Tree"),
+                new Place("Forest", "This is a forest"),
+                new Place("comparatoe", "This is a comparator"),
+                new Place("Compas", "Camping sdfsdfdfsdf sfsdfdsfsd sddfgf sdfsfsd sdfsdf dgfdfgdf dfgfdgrte dfgdfg dfgdf g")
+        ));
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_placelist);
-        recyclerView.setAdapter(placelistAdapter);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_place);
+        recyclerView.setAdapter(placeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                placelistViewModel.remove(placelistAdapter.getItem(viewHolder.getAdapterPosition()));
+                placeAdapter.removeAt(viewHolder.getAdapterPosition());
             }
         });
         touchHelper.attachToRecyclerView(recyclerView);
 
-        findViewById(R.id.btn_create_list).setOnClickListener(this);
-
-        placelistViewModel = new ViewModelProvider(this).get(PlacelistViewModel.class);
-        placelistViewModel.observe(this, PlacelistActivity.this);
-        placelistViewModel.load();
     }
 
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_create_list) {
-            placelistDialog().show();
-        }
-    }
-
-    private PlacelistDialog placelistDialog() {
-        return new PlacelistDialog(this)
-                .withAction(new PlacelistDialog.UpsertAction() {
-                    @Override
-                    public void apply(Placelist placelist) {
-                        placelistViewModel.upsert(placelist);
-                    }
-                });
-    }
-
-
-    @Override
-    public void onChanged(List<Placelist> placelists) {
-        placelistAdapter.setPlacelists(placelists);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.nav_edit) {
+            setResult(RESULT_OK, new Intent());
+            finish();
+            overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onBackPressed() {

@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Placelist;
 
-public class PlacesListsItemViewHolder extends RecyclerView.ViewHolder {
+public class PlacelistItemViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView listName;
     private final TextView placesCount;
 
-    public PlacesListsItemViewHolder(View itemView) {
+    public PlacelistItemViewHolder(View itemView) {
         super(itemView);
         listName = itemView.findViewById(R.id.placelist_name);
         placesCount = itemView.findViewById(R.id.places_count);

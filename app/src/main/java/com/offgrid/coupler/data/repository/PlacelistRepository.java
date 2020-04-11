@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.PlacelistDao;
+import com.offgrid.coupler.data.entity.ListPlaces;
 import com.offgrid.coupler.data.entity.Placelist;
 
 import java.util.List;
@@ -23,12 +24,15 @@ public class PlacelistRepository {
         return dao.findAll();
     }
 
+    public LiveData<ListPlaces> getListPlaces(Long listId) {
+        return dao.findListPlacesById(listId);
+    }
 
-    public void delete(final long list_id) {
+    public void delete(final Placelist list) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.delete(list_id);
+                dao.delete(list);
             }
         });
     }
