@@ -4,10 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -56,11 +54,11 @@ public class PlacelistActivity extends AppCompatActivity
         });
 
         placelistAdapter = new PlacelistAdapter(this);
+        placelistAdapter.setPlacelistDialog(placelistDialog());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_placelist);
         recyclerView.setAdapter(placelistAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
             @Override
@@ -78,38 +76,23 @@ public class PlacelistActivity extends AppCompatActivity
     }
 
 
-    private void showNewListDialog() {
-        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_new_list, null, false);
-        final AlertDialog dialog = new AlertDialog.Builder(PlacelistActivity.this)
-                .setTitle("New List")
-                .setView(dialogView)
-                .create();
-
-        dialogView.findViewById(R.id.save_list).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText input = dialogView.findViewById(R.id.new_places_list_name);
-                placelistViewModel.insert(input.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        dialogView.findViewById(R.id.cancel_list).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }
-
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_create_list) {
-            showNewListDialog();
+            placelistDialog().show();
         }
     }
+
+    private PlacelistDialog placelistDialog() {
+        return new PlacelistDialog(this)
+                .withAction(new PlacelistDialog.UpsertAction() {
+                    @Override
+                    public void apply(Placelist placelist) {
+                        placelistViewModel.upsert(placelist);
+                    }
+                });
+    }
+
 
     @Override
     public void onChanged(List<Placelist> placelists) {

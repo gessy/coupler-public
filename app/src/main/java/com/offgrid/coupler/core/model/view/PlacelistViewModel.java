@@ -33,8 +33,12 @@ public class PlacelistViewModel extends AndroidViewModel {
         });
     }
 
-    public void insert(String listName) {
-        placelistRepository.insert(new Placelist(listName));
+    public void upsert(Placelist placelist) {
+        if (placelist.getId() == null) {
+            placelistRepository.insert(new Placelist(placelist.getName()));
+        } else {
+            placelistRepository.update(placelist);
+        }
     }
 
     public void remove(Placelist placelist) {

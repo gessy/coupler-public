@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.place.PlacelistDialog;
 import com.offgrid.coupler.controller.place.PlacesActivity;
 import com.offgrid.coupler.core.holder.PlacelistItemViewHolder;
 import com.offgrid.coupler.core.model.Info;
@@ -23,6 +24,8 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
     private final LayoutInflater mInflater;
     private List<Placelist> lists;
     private Context context;
+
+    private PlacelistDialog placelistDialog;
 
     public PlacelistAdapter(Context context) {
         this.context = context;
@@ -40,19 +43,9 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
         final Placelist current = lists != null ? lists.get(position) : Placelist.empty();
         holder.update(current);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PlacesActivity.class);
-                intent.putExtras(new Info.BundleBuilder()
-                        .withTitle(current.getName())
-                        .withText("This is places activity")
-                        .build());
-                context.startActivity(intent);
-//                ((Activity) context).finish();
-                ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
-            }
-        });
+        ClickListener listener = new ClickListener(current);
+        holder.itemView.setOnClickListener(listener);
+        holder.itemView.setOnLongClickListener(listener);
     }
 
     public void setPlacelists(List<Placelist> lists) {
@@ -60,6 +53,10 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
         notifyDataSetChanged();
     }
 
+
+    public void setPlacelistDialog(PlacelistDialog placelistDialog) {
+        this.placelistDialog = placelistDialog;
+    }
 
     public Placelist getItem(int position) {
         return lists.get(position);
@@ -69,4 +66,33 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
     public int getItemCount() {
         return lists != null ? lists.size() : 0;
     }
+
+
+    private class ClickListener implements View.OnClickListener, View.OnLongClickListener {
+        Placelist current;
+
+        public ClickListener(Placelist current) {
+            this.current = current;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, PlacesActivity.class);
+            intent.putExtras(new Info.BundleBuilder()
+                    .withTitle(current.getName())
+                    .withText("This is places activity")
+                    .build());
+            context.startActivity(intent);
+//                ((Activity) context).finish();
+            ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            placelistDialog.show(current);
+            return true;
+        }
+
+    }
+
 }
