@@ -68,7 +68,6 @@ public class PlacelistActivity extends AppCompatActivity
                 placelistViewModel.remove(placelistAdapter.getItem(viewHolder.getAdapterPosition()));
             }
         });
-
         touchHelper.attachToRecyclerView(recyclerView);
 
         findViewById(R.id.btn_create_list).setOnClickListener(this);

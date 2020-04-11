@@ -5,16 +5,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.adapter.PlaceAdapter;
+import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.data.entity.Place;
 
@@ -49,12 +51,22 @@ public class PlacesActivity extends AppCompatActivity {
         placeAdapter = new PlaceAdapter(this);
         placeAdapter.setPlaces(Arrays.asList(
                 new Place("Tree", "This is a Tree"),
+                new Place("Forest", "This is a forest"),
+                new Place("comparatoe", "This is a comparator"),
                 new Place("Compas", "Camping sdfsdfdfsdf sfsdfdsfsd sddfgf sdfsfsd sdfsdf dgfdfgdf dfgfdgrte dfgdfg dfgdf g")
         ));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_place);
         recyclerView.setAdapter(placeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                placeAdapter.removeAt(viewHolder.getAdapterPosition());
+            }
+        });
+        touchHelper.attachToRecyclerView(recyclerView);
 
     }
 
