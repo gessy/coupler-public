@@ -29,6 +29,10 @@ public class Placelist {
         return new Placelist("");
     }
 
+    public boolean isNew() {
+        return id == null;
+    }
+
     @Ignore
     public Placelist(@NonNull String name) {
         this.name = name;

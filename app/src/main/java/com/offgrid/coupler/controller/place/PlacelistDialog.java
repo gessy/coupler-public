@@ -28,7 +28,7 @@ public class PlacelistDialog {
         this.action = action;
         return this;
     }
-    
+
     public void show() {
         show(null);
     }
@@ -48,7 +48,7 @@ public class PlacelistDialog {
         view.findViewById(R.id.save_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Placelist current = placelist != null ? placelist : new Placelist();
+                Placelist current = placelist != null ? placelist : Placelist.empty();
                 current.setName(placelistName.getText().toString());
                 action.apply(current);
                 dialog.dismiss();

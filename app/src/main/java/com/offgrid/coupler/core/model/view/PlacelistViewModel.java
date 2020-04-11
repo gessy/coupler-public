@@ -34,7 +34,7 @@ public class PlacelistViewModel extends AndroidViewModel {
     }
 
     public void upsert(Placelist placelist) {
-        if (placelist.getId() == null) {
+        if (placelist.isNew()) {
             placelistRepository.insert(new Placelist(placelist.getName()));
         } else {
             placelistRepository.update(placelist);

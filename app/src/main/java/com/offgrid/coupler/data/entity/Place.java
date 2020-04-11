@@ -35,7 +35,6 @@ public class Place {
     public Place() {
     }
 
-
     public Place(@NonNull String name, @NonNull String info) {
         this.name = name;
         this.info = info;

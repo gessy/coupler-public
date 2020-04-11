@@ -71,7 +71,7 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
     private class ClickListener implements View.OnClickListener, View.OnLongClickListener {
         Placelist current;
 
-        public ClickListener(Placelist current) {
+        private ClickListener(Placelist current) {
             this.current = current;
         }
 
