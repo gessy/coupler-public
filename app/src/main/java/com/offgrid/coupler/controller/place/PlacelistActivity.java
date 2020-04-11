@@ -1,6 +1,5 @@
 package com.offgrid.coupler.controller.place;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,7 +57,7 @@ public class PlacelistActivity extends AppCompatActivity
 
         placelistAdapter = new PlacelistAdapter(this);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_places_lists);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_placelist);
         recyclerView.setAdapter(placelistAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -115,7 +114,7 @@ public class PlacelistActivity extends AppCompatActivity
 
     @Override
     public void onChanged(List<Placelist> placelists) {
-        placelistAdapter.setPlacesLists(placelists);
+        placelistAdapter.setPlacelists(placelists);
     }
 
     @Override

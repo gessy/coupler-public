@@ -53,7 +53,7 @@
                 android:text="CREATE LIST"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_places_lists"
+                android:id="@+id/recyclerview_placelist"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_below="@+id/btn_create_list"
                 android:layout_width="match_parent"

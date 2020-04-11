@@ -10,12 +10,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.core.adapter.PlaceAdapter;
 import com.offgrid.coupler.core.model.Info;
+import com.offgrid.coupler.data.entity.Place;
+
+import java.util.Arrays;
 
 
 public class PlacesActivity extends AppCompatActivity {
+
+    private PlaceAdapter placeAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +46,16 @@ public class PlacesActivity extends AppCompatActivity {
             }
         });
 
-        final TextView textView = findViewById(R.id.text);
-        textView.setText(info.getText());
+        placeAdapter = new PlaceAdapter(this);
+        placeAdapter.setPlaces(Arrays.asList(
+                new Place("Tree", "This is a Tree"),
+                new Place("Compas", "Camping sdfsdfdfsdf sfsdfdsfsd sddfgf sdfsfsd sdfsdf dgfdfgdf dfgfdgrte dfgdfg dfgdf g")
+        ));
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_place);
+        recyclerView.setAdapter(placeAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
 

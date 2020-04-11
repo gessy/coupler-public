@@ -36,6 +36,11 @@ public class Place {
     }
 
 
+    public Place(@NonNull String name, @NonNull String info) {
+        this.name = name;
+        this.info = info;
+    }
+
     public static Place empty() {
         return new Place("");
     }
