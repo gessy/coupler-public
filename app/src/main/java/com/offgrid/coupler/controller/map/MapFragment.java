@@ -12,22 +12,33 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.map.configurator.ContactLocationConfigurator;
 import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurator;
+import com.offgrid.coupler.controller.map.configurator.PlaceLocationConfigurator;
 import com.offgrid.coupler.core.callback.OnClickContactLocationListener;
 import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
 
+import java.util.Arrays;
+
+import static com.mapbox.geojson.Feature.fromGeometry;
+import static com.mapbox.geojson.Point.fromLngLat;
+import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_GEOJSON_ID;
+
 
 public class MapFragment extends Fragment
-        implements OnMapReadyCallback, View.OnClickListener {
+        implements OnMapReadyCallback, View.OnClickListener, MapboxMap.OnMapLongClickListener {
 
     private View rootView;
     private MapView mapView;
@@ -78,6 +89,11 @@ public class MapFragment extends Fragment
                         .withContext(getActivity())
                         .withMapbox(MapFragment.this.mapboxMap)
                         .configure();
+
+                new PlaceLocationConfigurator()
+                        .withContext(getActivity())
+                        .withMapbox(MapFragment.this.mapboxMap)
+                        .configure();
             }
         });
 
@@ -87,12 +103,28 @@ public class MapFragment extends Fragment
                 .withViewHolder(new ContactDetailsViewHolder(rootView));
 
         mapboxMap.addOnMapClickListener(contactLocationListener);
+        mapboxMap.addOnMapLongClickListener(this);
 
         rootView.findViewById(R.id.btn_contact_info).setOnClickListener(contactLocationListener);
         rootView.findViewById(R.id.btn_contact_chat).setOnClickListener(contactLocationListener);
         rootView.findViewById(R.id.close_contact_details).setOnClickListener(contactLocationListener);
 
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
+
+
+    }
+
+    @Override
+    public boolean onMapLongClick(@NonNull LatLng point) {
+        Style style = mapboxMap.getStyle();
+
+        GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
+        if (source != null) {
+            Feature feature = fromGeometry(fromLngLat(point.getLongitude(), point.getLatitude()));
+            source.setGeoJson(FeatureCollection.fromFeatures(Arrays.asList(feature)));
+        }
+
+        return true;
     }
 
     @Override
