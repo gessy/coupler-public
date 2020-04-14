@@ -16,7 +16,8 @@
         mapbox:mapbox_cameraZoom="@integer/default_camera_zoom"
         mapbox:mapbox_cameraZoomMin="@integer/default_camera_zoom_min"/>
 
-    <include layout="@layout/contact_details_on_map" />
+    <include layout="@layout/map_bottomsheet_contact_details" />
+    <include layout="@layout/map_bottomsheet_place_details" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -24,7 +25,7 @@
         android:layout_width="5dp"
         android:layout_height="70dp"
         android:layout_marginEnd="@dimen/fab_margin"
-        app:layout_anchor="@id/contact_details_bottom_sheet"
+        app:layout_anchor="@id/bottom_sheet_contact_details"
         app:layout_anchorGravity="top|right|end"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

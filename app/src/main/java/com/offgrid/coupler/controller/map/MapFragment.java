@@ -12,39 +12,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.map.configurator.ContactLocationConfigurator;
 import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurator;
 import com.offgrid.coupler.controller.map.configurator.PlaceLocationConfigurator;
 import com.offgrid.coupler.core.callback.OnClickContactLocationListener;
+import com.offgrid.coupler.core.callback.OnClickPlaceLocationListener;
 import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
-
-import java.util.Arrays;
-
-import static com.mapbox.geojson.Feature.fromGeometry;
-import static com.mapbox.geojson.Point.fromLngLat;
-import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_GEOJSON_ID;
+import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 
 
-public class MapFragment extends Fragment
-        implements OnMapReadyCallback, View.OnClickListener, MapboxMap.OnMapLongClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
     private View rootView;
     private MapView mapView;
     private MapboxMap mapboxMap;
 
     private BottomSheetBehavior contactDetailsSheet;
+    private BottomSheetBehavior placeDetailsSheet;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +50,10 @@ public class MapFragment extends Fragment
         Mapbox.getInstance(getActivity(), getString(R.string.map_access_token));
         rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        contactDetailsSheet = BottomSheetBehavior.from(rootView.findViewById(R.id.contact_details_bottom_sheet));
+        placeDetailsSheet = BottomSheetBehavior.from(rootView.findViewById(R.id.bottom_sheet_place_details));
+        placeDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        contactDetailsSheet = BottomSheetBehavior.from(rootView.findViewById(R.id.bottom_sheet_contact_details));
         contactDetailsSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         mapView = rootView.findViewById(R.id.mapView);
@@ -97,35 +92,29 @@ public class MapFragment extends Fragment
             }
         });
 
+
         OnClickContactLocationListener contactLocationListener = new OnClickContactLocationListener(getActivity())
                 .withMapbox(mapboxMap)
                 .withBottomSheet(contactDetailsSheet)
                 .withViewHolder(new ContactDetailsViewHolder(rootView));
 
+        OnClickPlaceLocationListener placeLocationListener = new OnClickPlaceLocationListener(getActivity())
+                .withMapbox(mapboxMap)
+                .withBottomSheet(placeDetailsSheet)
+                .withViewHolder(new PlaceDetailsViewHolder(rootView));
+
         mapboxMap.addOnMapClickListener(contactLocationListener);
-        mapboxMap.addOnMapLongClickListener(this);
+        mapboxMap.addOnMapLongClickListener(placeLocationListener);
 
         rootView.findViewById(R.id.btn_contact_info).setOnClickListener(contactLocationListener);
         rootView.findViewById(R.id.btn_contact_chat).setOnClickListener(contactLocationListener);
         rootView.findViewById(R.id.close_contact_details).setOnClickListener(contactLocationListener);
 
+        rootView.findViewById(R.id.close_place_details).setOnClickListener(placeLocationListener);
+
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
-
-
     }
 
-    @Override
-    public boolean onMapLongClick(@NonNull LatLng point) {
-        Style style = mapboxMap.getStyle();
-
-        GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
-        if (source != null) {
-            Feature feature = fromGeometry(fromLngLat(point.getLongitude(), point.getLatitude()));
-            source.setGeoJson(FeatureCollection.fromFeatures(Arrays.asList(feature)));
-        }
-
-        return true;
-    }
 
     @Override
     public void onClick(View view) {
