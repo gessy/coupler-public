@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -26,7 +27,6 @@ import com.offgrid.coupler.controller.map.configurator.PlaceLocationConfigurator
 import com.offgrid.coupler.core.callback.OnClickContactLocationListener;
 import com.offgrid.coupler.core.callback.OnClickPlaceLocationListener;
 import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
-import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
@@ -98,10 +98,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 .withBottomSheet(contactDetailsSheet)
                 .withViewHolder(new ContactDetailsViewHolder(rootView));
 
-        OnClickPlaceLocationListener placeLocationListener = new OnClickPlaceLocationListener(getActivity())
+
+        OnClickPlaceLocationListener placeLocationListener = new OnClickPlaceLocationListener(this)
                 .withMapbox(mapboxMap)
                 .withBottomSheet(placeDetailsSheet)
-                .withViewHolder(new PlaceDetailsViewHolder(rootView));
+                .withRootView(rootView)
+                .withViewModel()
+                .withDialog();
 
         mapboxMap.addOnMapClickListener(contactLocationListener);
         mapboxMap.addOnMapLongClickListener(placeLocationListener);
@@ -110,9 +113,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         rootView.findViewById(R.id.btn_contact_chat).setOnClickListener(contactLocationListener);
         rootView.findViewById(R.id.close_contact_details).setOnClickListener(contactLocationListener);
 
-        rootView.findViewById(R.id.close_place_details).setOnClickListener(placeLocationListener);
-
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
+
     }
 
 

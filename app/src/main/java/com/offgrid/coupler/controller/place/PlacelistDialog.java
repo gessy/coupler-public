@@ -35,9 +35,9 @@ public class PlacelistDialog {
 
     public void show(final Placelist placelist) {
         View view = ((Activity) context).getLayoutInflater()
-                .inflate(R.layout.dialog_placelist, null, false);
+                .inflate(R.layout.dialog_entity_name, null, false);
 
-        final EditText placelistName = view.findViewById(R.id.placelist_name);
+        final EditText placelistName = view.findViewById(R.id.entity_name);
         placelistName.setText(placelist != null ? placelist.getName() : "");
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
@@ -45,7 +45,7 @@ public class PlacelistDialog {
                 .setView(view)
                 .create();
 
-        view.findViewById(R.id.save_list).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.save_entity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Placelist current = placelist != null ? placelist : Placelist.empty();
@@ -55,7 +55,7 @@ public class PlacelistDialog {
             }
         });
 
-        view.findViewById(R.id.cancel_list).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.cancel_entity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
