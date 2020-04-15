@@ -21,6 +21,7 @@ import com.offgrid.coupler.controller.map.MapPlacelistDialog;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 import com.offgrid.coupler.core.model.view.Operation;
 import com.offgrid.coupler.core.model.view.PlaceViewModel;
+import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
 
@@ -39,6 +40,7 @@ public class OnClickPlaceLocationListener
     private PlaceDetailsViewHolder placeViewHolder;
 
     private PlaceViewModel placeViewModel;
+    private PlacelistViewModel placelistViewModel;
 
     private MapPlacelistDialog placelistDialog;
     private MapPlaceDialog placeDialog;
@@ -73,6 +75,9 @@ public class OnClickPlaceLocationListener
     public OnClickPlaceLocationListener withViewModel() {
         placeViewModel = new ViewModelProvider(fragment).get(PlaceViewModel.class);
         placeViewModel.observeOperation(fragment, this);
+
+        placelistViewModel = new ViewModelProvider(fragment).get(PlacelistViewModel.class);
+
         return this;
     }
 

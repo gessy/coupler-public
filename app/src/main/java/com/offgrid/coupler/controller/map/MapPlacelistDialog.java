@@ -15,6 +15,7 @@ import com.offgrid.coupler.core.callback.PlacelistCallback;
 import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Placelist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -23,10 +24,14 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
 
     private Fragment fragment;
     private MapPlacelistAdapter placelistAdapter;
+    private PlacelistViewModel placelistViewModel;
     private AlertDialog dialog;
     private String title;
 
     private PlacelistCallback callback;
+
+    private boolean addedPlacelist = false;
+    private List<Placelist> placelists = new ArrayList<>();
 
 
     public MapPlacelistDialog(Fragment fragment) {
@@ -55,7 +60,7 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
         recyclerView.setAdapter(placelistAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(fragment.getContext()));
 
-        PlacelistViewModel placelistViewModel = new ViewModelProvider(fragment).get(PlacelistViewModel.class);
+        placelistViewModel = new ViewModelProvider(fragment).get(PlacelistViewModel.class);
         placelistViewModel.observe(fragment, this);
         placelistViewModel.load();
 
@@ -90,6 +95,7 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.create_list) {
+            addedPlacelist = true;
             dialog.dismiss();
         }
 
@@ -100,6 +106,12 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
 
     @Override
     public void onChanged(List<Placelist> placelists) {
-        placelistAdapter.setPlacelists(placelists);
+        if (addedPlacelist) {
+            List<Placelist> copyList = new ArrayList<>(placelists);
+            copyList.removeAll(this.placelists);
+        } else {
+            placelistAdapter.setPlacelists(placelists);
+            this.placelists = placelists;
+        }
     }
 }
