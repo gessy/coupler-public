@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.View;
 
 
+import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.AbstractSimpleDialog;
 import com.offgrid.coupler.core.callback.PlacelistCallback;
 import com.offgrid.coupler.data.entity.Placelist;
 
 public class PlacelistDialog extends AbstractSimpleDialog {
 
-    private String title;
     private PlacelistCallback callback;
     private Placelist placelist;
 
@@ -24,7 +24,7 @@ public class PlacelistDialog extends AbstractSimpleDialog {
     }
 
     public PlacelistDialog create() {
-        super.createDialog(title);
+        super.createDialog();
         return this;
     }
 
@@ -32,14 +32,14 @@ public class PlacelistDialog extends AbstractSimpleDialog {
     public void show() {
         this.placelist = null;
         this.getInputName().setText("");
-        this.title = "New List";
+        super.setTitle(getString(R.string.dialog_create_list));
         super.show();
     }
 
     public void show(Placelist placelist) {
         this.placelist = placelist;
         this.getInputName().setText(placelist.getName());
-        this.title = "Edit List";
+        super.setTitle(getString(R.string.dialog_edit_list));
         super.show();
     }
 

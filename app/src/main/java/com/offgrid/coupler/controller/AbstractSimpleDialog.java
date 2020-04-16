@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
 import com.offgrid.coupler.R;
@@ -21,14 +22,17 @@ public abstract class AbstractSimpleDialog implements View.OnClickListener {
         this.context = context;
     }
 
-    protected void createDialog(String title) {
+    protected void createDialog() {
         dialog = new AlertDialog
                 .Builder(context)
-                .setTitle(title)
+                .setTitle("")
                 .setView(createView())
                 .create();
     }
 
+    protected void setTitle(String title) {
+        dialog.setTitle(title);
+    }
 
     private View createView() {
         View view = ((Activity) context).getLayoutInflater()
@@ -43,6 +47,11 @@ public abstract class AbstractSimpleDialog implements View.OnClickListener {
         return view;
     }
 
+
+    protected String getString(@StringRes int resId) {
+        return context.getResources().getString(resId);
+    }
+
     protected EditText getInputName() {
         return inputName;
     }
@@ -51,18 +60,15 @@ public abstract class AbstractSimpleDialog implements View.OnClickListener {
 
     protected abstract void onCancel(View view);
 
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.save_entity) {
             onSave(view);
         }
-
         if (view.getId() == R.id.cancel_entity) {
             onCancel(view);
         }
     }
-
 
     public void show() {
         dialog.show();

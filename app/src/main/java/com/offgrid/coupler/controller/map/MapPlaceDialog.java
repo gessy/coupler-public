@@ -3,7 +3,7 @@ package com.offgrid.coupler.controller.map;
 import android.content.Context;
 import android.view.View;
 
-
+import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.AbstractSimpleDialog;
 import com.offgrid.coupler.core.callback.PlaceCallback;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
@@ -12,20 +12,11 @@ import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 public class MapPlaceDialog extends AbstractSimpleDialog {
 
     private PlaceDetailsViewHolder placeViewHolder;
-    private String title;
     private PlaceCallback callback;
-
 
     public MapPlaceDialog(Context context) {
         super(context);
     }
-
-
-    public MapPlaceDialog withTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
 
     public MapPlaceDialog withPlaceHolder(PlaceDetailsViewHolder viewHolder) {
         this.placeViewHolder = viewHolder;
@@ -38,7 +29,8 @@ public class MapPlaceDialog extends AbstractSimpleDialog {
     }
 
     public MapPlaceDialog create() {
-        super.createDialog(title);
+        super.createDialog();
+        super.setTitle(getString(R.string.dialog_place));
         return this;
     }
 

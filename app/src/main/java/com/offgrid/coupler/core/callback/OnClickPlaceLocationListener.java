@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +22,6 @@ import com.offgrid.coupler.controller.map.MapPlacelistDialog;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 import com.offgrid.coupler.core.model.view.Operation;
 import com.offgrid.coupler.core.model.view.PlaceViewModel;
-import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
 
@@ -40,7 +40,6 @@ public class OnClickPlaceLocationListener
     private PlaceDetailsViewHolder placeViewHolder;
 
     private PlaceViewModel placeViewModel;
-    private PlacelistViewModel placelistViewModel;
 
     private MapPlacelistDialog placelistDialog;
     private MapPlaceDialog placeDialog;
@@ -75,9 +74,6 @@ public class OnClickPlaceLocationListener
     public OnClickPlaceLocationListener withViewModel() {
         placeViewModel = new ViewModelProvider(fragment).get(PlaceViewModel.class);
         placeViewModel.observeOperation(fragment, this);
-
-        placelistViewModel = new ViewModelProvider(fragment).get(PlacelistViewModel.class);
-
         return this;
     }
 
@@ -85,11 +81,10 @@ public class OnClickPlaceLocationListener
     public OnClickPlaceLocationListener withDialog() {
         placelistDialog = new MapPlacelistDialog(fragment)
                 .withOnClickListener(new PlacelistOnClickListener())
-                .withTitle("Add place to list")
+                .withTitle(getString(R.string.dialog_add_place_to_list))
                 .create();
 
         placeDialog = new MapPlaceDialog(fragment.getContext())
-                .withTitle("Place")
                 .withPlaceHolder(placeViewHolder)
                 .withOnClickListener(new PlaceOnClickListener())
                 .create();
@@ -171,6 +166,11 @@ public class OnClickPlaceLocationListener
         public void call(Place place) {
             placeViewModel.insert(place);
         }
+    }
+
+
+    private String getString(@StringRes int resId) {
+        return fragment.getContext().getResources().getString(resId);
     }
 
 }
