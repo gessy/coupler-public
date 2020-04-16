@@ -1,4 +1,4 @@
-package com.offgrid.coupler.controller.map;
+package com.offgrid.coupler.controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,14 +10,14 @@ import androidx.appcompat.app.AlertDialog;
 import com.offgrid.coupler.R;
 
 
-abstract class MapSimpleDialog implements View.OnClickListener {
+public abstract class AbstractSimpleDialog implements View.OnClickListener {
 
     private Context context;
     private EditText inputName;
     private AlertDialog dialog;
 
 
-    public MapSimpleDialog(Context context) {
+    public AbstractSimpleDialog(Context context) {
         this.context = context;
     }
 

@@ -25,14 +25,6 @@ public class Placelist {
     public Placelist() {
     }
 
-    public static Placelist empty() {
-        return new Placelist("");
-    }
-
-    public boolean isNew() {
-        return id == null;
-    }
-
     @Ignore
     public Placelist(@NonNull String name) {
         this.name = name;
@@ -44,6 +36,15 @@ public class Placelist {
         this.name = name;
         this.showOnMap = showOnMap;
     }
+
+    public static Placelist empty() {
+        return new Placelist("");
+    }
+
+    public boolean isNew() {
+        return id == null;
+    }
+
 
     @NonNull
     public Long getId() {

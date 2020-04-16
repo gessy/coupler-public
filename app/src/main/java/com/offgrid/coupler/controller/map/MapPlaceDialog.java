@@ -4,11 +4,12 @@ import android.content.Context;
 import android.view.View;
 
 
+import com.offgrid.coupler.controller.AbstractSimpleDialog;
 import com.offgrid.coupler.core.callback.PlaceCallback;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 
 
-public class MapPlaceDialog extends MapSimpleDialog {
+public class MapPlaceDialog extends AbstractSimpleDialog {
 
     private PlaceDetailsViewHolder placeViewHolder;
     private String title;
