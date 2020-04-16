@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.controller.place.PlacelistDialog;
+import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.controller.place.PlacesActivity;
 import com.offgrid.coupler.core.holder.PlacelistItemViewHolder;
 import com.offgrid.coupler.core.model.Info;

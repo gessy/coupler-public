@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,11 +16,13 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.controller.map.MapPlaceDialog;
-import com.offgrid.coupler.controller.map.MapPlacelistDialog;
+import com.offgrid.coupler.controller.place.dialog.PlaceDialog;
+import com.offgrid.coupler.controller.place.dialog.PlaceWorkflowDialog;
+import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 import com.offgrid.coupler.core.model.view.Operation;
 import com.offgrid.coupler.core.model.view.PlaceViewModel;
+import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
 
@@ -36,15 +37,16 @@ public class OnClickPlaceLocationListener
         implements View.OnClickListener, MapboxMap.OnMapLongClickListener, Observer<Object> {
 
     private MapboxMap mapboxMap;
+    private Fragment fragment;
+
+    private PlaceWorkflowDialog workflowDialog;
+    private PlaceDialog placeDialog;
+    private PlacelistDialog placelistDialog;
+
     private BottomSheetBehavior bottomSheet;
     private PlaceDetailsViewHolder placeViewHolder;
 
     private PlaceViewModel placeViewModel;
-
-    private MapPlacelistDialog placelistDialog;
-    private MapPlaceDialog placeDialog;
-
-    private Fragment fragment;
 
 
     public OnClickPlaceLocationListener(Fragment fragment) {
@@ -70,23 +72,52 @@ public class OnClickPlaceLocationListener
         return this;
     }
 
-
     public OnClickPlaceLocationListener withViewModel() {
         placeViewModel = new ViewModelProvider(fragment).get(PlaceViewModel.class);
         placeViewModel.observeOperation(fragment, this);
         return this;
     }
 
-
     public OnClickPlaceLocationListener withDialog() {
-        placelistDialog = new MapPlacelistDialog(fragment)
-                .withOnClickListener(new PlacelistOnClickListener())
-                .withTitle(getString(R.string.dialog_add_place_to_list))
+        workflowDialog = new PlaceWorkflowDialog(fragment)
+                .withOnItemClickListener(new PlacelistCallback() {
+                    @Override
+                    public void call(Placelist placelist) {
+                        workflowDialog.dismiss();
+                        placeViewHolder.setPlacelist(placelist);
+                        placeDialog.show();
+                    }
+                })
+                .withOnCreateListener(new PlacelistCallback() {
+                    @Override
+                    public void call(Placelist placelist) {
+                        workflowDialog.dismiss();
+                        placelistDialog.show();
+                    }
+                })
                 .create();
 
-        placeDialog = new MapPlaceDialog(fragment.getContext())
+        placeDialog = new PlaceDialog(fragment.getContext())
                 .withPlaceHolder(placeViewHolder)
-                .withOnClickListener(new PlaceOnClickListener())
+                .withOnCreateListener(new PlaceCallback() {
+                    @Override
+                    public void call(Place place) {
+                        placeViewModel.insert(place);
+                        placeDialog.dismiss();
+                    }
+                })
+                .create();
+
+        placelistDialog = new PlacelistDialog(fragment.getContext())
+                .withOnCreateListener(new PlacelistCallback() {
+                    @Override
+                    public void call(Placelist placelist) {
+                        new ViewModelProvider(fragment)
+                                .get(PlacelistViewModel.class)
+                                .insert(placelist);
+                        placelistDialog.dismiss();
+                    }
+                })
                 .create();
 
         return this;
@@ -122,7 +153,7 @@ public class OnClickPlaceLocationListener
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save_place) {
-            placelistDialog.show();
+            workflowDialog.show();
             return;
         }
 
@@ -149,28 +180,6 @@ public class OnClickPlaceLocationListener
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
-    }
-
-
-    public class PlacelistOnClickListener implements PlacelistCallback {
-        @Override
-        public void call(Placelist placelist) {
-            placelistDialog.dismiss();
-            placeViewHolder.setPlacelist(placelist);
-            placeDialog.show();
-        }
-    }
-
-    public class PlaceOnClickListener implements PlaceCallback {
-        @Override
-        public void call(Place place) {
-            placeViewModel.insert(place);
-        }
-    }
-
-
-    private String getString(@StringRes int resId) {
-        return fragment.getContext().getResources().getString(resId);
     }
 
 }

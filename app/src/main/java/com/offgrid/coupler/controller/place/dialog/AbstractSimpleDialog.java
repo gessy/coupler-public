@@ -1,4 +1,4 @@
-package com.offgrid.coupler.controller;
+package com.offgrid.coupler.controller.place.dialog;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,12 +17,11 @@ public abstract class AbstractSimpleDialog implements View.OnClickListener {
     private EditText inputName;
     private AlertDialog dialog;
 
-
-    public AbstractSimpleDialog(Context context) {
+    AbstractSimpleDialog(Context context) {
         this.context = context;
     }
 
-    protected void createDialog() {
+    void createDialog() {
         dialog = new AlertDialog
                 .Builder(context)
                 .setTitle("")
@@ -30,7 +29,7 @@ public abstract class AbstractSimpleDialog implements View.OnClickListener {
                 .create();
     }
 
-    protected void setTitle(String title) {
+    void setTitle(String title) {
         dialog.setTitle(title);
     }
 
@@ -47,18 +46,17 @@ public abstract class AbstractSimpleDialog implements View.OnClickListener {
         return view;
     }
 
-
     protected String getString(@StringRes int resId) {
         return context.getResources().getString(resId);
     }
 
-    protected EditText getInputName() {
+    EditText getInputName() {
         return inputName;
     }
 
-    protected abstract void onSave(View view);
+    abstract void onSave(View view);
 
-    protected abstract void onCancel(View view);
+    abstract void onCancel(View view);
 
     @Override
     public void onClick(View view) {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.core.adapter.PlacelistAdapter;
 import com.offgrid.coupler.core.callback.PlacelistCallback;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
@@ -90,7 +91,7 @@ public class PlacelistActivity extends AppCompatActivity
 
     private PlacelistDialog createPlacelistDialog() {
         return new PlacelistDialog(this)
-                .withOnClickListener(new PlacelistCallback() {
+                .withOnCreateListener(new PlacelistCallback() {
                     @Override
                     public void call(Placelist placelist) {
                         placelistViewModel.upsert(placelist);

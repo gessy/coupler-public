@@ -1,7 +1,8 @@
-package com.offgrid.coupler.controller.map;
+package com.offgrid.coupler.controller.place.dialog;
 
 import android.view.View;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -20,32 +21,32 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnClickListener {
+public class PlaceWorkflowDialog implements Observer<List<Placelist>>, View.OnClickListener {
 
     private Fragment fragment;
+    private AlertDialog dialog;
+
     private MapPlacelistAdapter placelistAdapter;
     private PlacelistViewModel placelistViewModel;
-    private AlertDialog dialog;
-    private String title;
 
-    private PlacelistCallback callback;
+    private PlacelistCallback itemClickCallback;
+    private PlacelistCallback createCallback;
 
-    private boolean addedPlacelist = false;
     private List<Placelist> placelists = new ArrayList<>();
+    private boolean addItem = false;
 
 
-    public MapPlacelistDialog(Fragment fragment) {
+    public PlaceWorkflowDialog(Fragment fragment) {
         this.fragment = fragment;
     }
 
-
-    public MapPlacelistDialog withOnClickListener(PlacelistCallback callback) {
-        this.callback = callback;
+    public PlaceWorkflowDialog withOnItemClickListener(PlacelistCallback callback) {
+        this.itemClickCallback = callback;
         return this;
     }
 
-    public MapPlacelistDialog withTitle(String title) {
-        this.title = title;
+    public PlaceWorkflowDialog withOnCreateListener(PlacelistCallback callback) {
+        this.createCallback = callback;
         return this;
     }
 
@@ -54,7 +55,7 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
         View view = fragment.getLayoutInflater().inflate(R.layout.dialog_placelist, null, false);
 
         placelistAdapter = new MapPlacelistAdapter(fragment.getContext());
-        placelistAdapter.setOnClickListener(callback);
+        placelistAdapter.setOnClickListener(itemClickCallback);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_placelist);
         recyclerView.setAdapter(placelistAdapter);
@@ -70,11 +71,10 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
         return view;
     }
 
-
-    public MapPlacelistDialog create() {
+    public PlaceWorkflowDialog create() {
         dialog = new AlertDialog
                 .Builder(requireNonNull(fragment.getContext()))
-                .setTitle(title)
+                .setTitle(getString(R.string.dialog_add_place_to_list))
                 .setView(createView())
                 .create();
         return this;
@@ -95,23 +95,38 @@ public class MapPlacelistDialog implements Observer<List<Placelist>>, View.OnCli
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.create_list) {
-            addedPlacelist = true;
-            dialog.dismiss();
+            addItem = true;
+            createCallback.call(null);
         }
 
         if (v.getId() == R.id.cancel_list) {
-            dialog.cancel();
+            addItem = false;
+            cancel();
         }
     }
 
     @Override
     public void onChanged(List<Placelist> placelists) {
-        if (addedPlacelist) {
-            List<Placelist> copyList = new ArrayList<>(placelists);
-            copyList.removeAll(this.placelists);
-        } else {
-            placelistAdapter.setPlacelists(placelists);
-            this.placelists = placelists;
+        placelistAdapter.setPlacelists(placelists);
+        if (addItem) {
+            itemClickCallback.call(getLastAdded(placelists));
         }
+
+        setPlacelists(placelists);
+    }
+
+    private Placelist getLastAdded(List<Placelist> placelists) {
+        List<Placelist> copy = new ArrayList<>(placelists);
+        copy.removeAll(this.placelists);
+        return copy.get(0);
+    }
+
+    private void setPlacelists(List<Placelist> placelists) {
+        this.placelists.clear();
+        this.placelists.addAll(placelists);
+    }
+
+    private String getString(@StringRes int resId) {
+        return fragment.getContext().getResources().getString(resId);
     }
 }

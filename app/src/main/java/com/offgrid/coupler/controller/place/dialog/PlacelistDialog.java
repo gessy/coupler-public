@@ -1,11 +1,10 @@
-package com.offgrid.coupler.controller.place;
+package com.offgrid.coupler.controller.place.dialog;
 
 import android.content.Context;
 import android.view.View;
 
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.controller.AbstractSimpleDialog;
 import com.offgrid.coupler.core.callback.PlacelistCallback;
 import com.offgrid.coupler.data.entity.Placelist;
 
@@ -18,7 +17,7 @@ public class PlacelistDialog extends AbstractSimpleDialog {
         super(context);
     }
 
-    public PlacelistDialog withOnClickListener(PlacelistCallback callback) {
+    public PlacelistDialog withOnCreateListener(PlacelistCallback callback) {
         this.callback = callback;
         return this;
     }

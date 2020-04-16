@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity(tableName = "T_Placelist")
 public class Placelist {
     @PrimaryKey(autoGenerate = true)
@@ -72,4 +74,22 @@ public class Placelist {
     public void setShowOnMap(@NonNull Boolean showOnMap) {
         this.showOnMap = showOnMap;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Placelist placelist = (Placelist) o;
+        return Objects.equals(id, placelist.id) &&
+                Objects.equals(name, placelist.name) &&
+                Objects.equals(showOnMap, placelist.showOnMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, showOnMap);
+    }
+
+
+
 }
