@@ -29,6 +29,7 @@ import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.mapbox.geojson.Feature.fromGeometry;
@@ -172,6 +173,12 @@ public class OnClickPlaceLocationListener
                 workflowDialog.show();
             }
             return;
+        }
+
+        if (view.getId() == R.id.close_place_details) {
+            Style style = mapboxMap.getStyle();
+            GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
+            source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
         }
 
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
