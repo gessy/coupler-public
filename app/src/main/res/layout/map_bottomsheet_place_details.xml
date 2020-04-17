@@ -173,9 +173,9 @@
             android:layout_marginStart="10dp"
             android:elevation="1dp"
             android:alpha="1.0"
-            android:background="@color/super_lighter_grey"
+            android:background="@color/super_light_colorPrimary"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/ic_bookmark_border_blue_24dp" />
+            android:src="@drawable/selector_place_bookmark" />
 
     </LinearLayout>
 

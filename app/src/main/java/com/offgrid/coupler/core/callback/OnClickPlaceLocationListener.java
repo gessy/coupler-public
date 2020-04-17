@@ -1,6 +1,8 @@
 package com.offgrid.coupler.core.callback;
 
+import android.media.VolumeShaper;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +50,8 @@ public class OnClickPlaceLocationListener
 
     private PlaceViewModel placeViewModel;
 
+    private ImageButton savePlace;
+
 
     public OnClickPlaceLocationListener(Fragment fragment) {
         this.fragment = fragment;
@@ -62,7 +66,9 @@ public class OnClickPlaceLocationListener
         this.placeViewHolder = new PlaceDetailsViewHolder(rootView);
 
         rootView.findViewById(R.id.close_place_details).setOnClickListener(this);
-        rootView.findViewById(R.id.btn_save_place).setOnClickListener(this);
+
+        savePlace = rootView.findViewById(R.id.btn_save_place);
+        savePlace.setOnClickListener(this);
         return this;
     }
 
@@ -123,12 +129,21 @@ public class OnClickPlaceLocationListener
         return this;
     }
 
+    private void cleanUp() {
+        placeViewHolder.cleanUp();
+        savePlace.setActivated(false);
+    }
 
     @Override
     public void onChanged(Object o) {
         if (o instanceof Operation) {
             Operation operation = (Operation) o;
-            Toast.makeText(fragment.getContext(), operation.name(), Toast.LENGTH_SHORT).show();
+            if (Operation.INSERT.equals(operation)) {
+                savePlace.setActivated(true);
+            }
+            if (Operation.DELETE.equals(operation)) {
+                savePlace.setActivated(false);
+            }
         }
     }
 
@@ -136,7 +151,8 @@ public class OnClickPlaceLocationListener
     public boolean onMapLongClick(@NonNull LatLng point) {
         Style style = mapboxMap.getStyle();
 
-        placeViewHolder.cleanUp();
+        cleanUp();
+
         placeViewHolder.setPlaceLocation(point);
 
         GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
@@ -149,17 +165,17 @@ public class OnClickPlaceLocationListener
         return true;
     }
 
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save_place) {
-            workflowDialog.show();
+            if (!savePlace.isActivated()) {
+                workflowDialog.show();
+            }
             return;
         }
 
         bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
-
 
     class BottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
         @Override
