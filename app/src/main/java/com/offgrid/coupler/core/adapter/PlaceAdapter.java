@@ -11,7 +11,6 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.holder.PlaceItemViewHolder;
 import com.offgrid.coupler.data.entity.Place;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,8 +38,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceItemViewHolder> {
     }
 
     public void setPlaces(List<Place> places) {
-        this.places = new ArrayList<>(places);
-//        this.places = places;
+        this.places = places;
         notifyDataSetChanged();
     }
 

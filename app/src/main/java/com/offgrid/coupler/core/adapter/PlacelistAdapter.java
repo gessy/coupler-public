@@ -14,6 +14,7 @@ import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.controller.place.PlacesActivity;
 import com.offgrid.coupler.core.holder.PlacelistItemViewHolder;
 import com.offgrid.coupler.core.model.Info;
+import com.offgrid.coupler.core.model.dto.wrapper.DtoPlacelistWrapper;
 import com.offgrid.coupler.data.entity.Placelist;
 
 import java.util.List;
@@ -78,10 +79,7 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, PlacesActivity.class);
-            intent.putExtras(new Info.BundleBuilder()
-                    .withTitle(current.getName())
-                    .withText("This is places activity")
-                    .build());
+            intent.putExtras(DtoPlacelistWrapper.convertAndWrap(current));
             context.startActivity(intent);
 //                ((Activity) context).finish();
             ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);

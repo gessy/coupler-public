@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,21 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.adapter.PlaceAdapter;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
-import com.offgrid.coupler.core.model.Info;
-import com.offgrid.coupler.data.entity.Place;
+import com.offgrid.coupler.core.model.dto.PlacelistDto;
+import com.offgrid.coupler.core.model.view.ListPlacesViewModel;
+import com.offgrid.coupler.data.entity.ListPlaces;
 
-import java.util.Arrays;
 
-
-public class PlacesActivity extends AppCompatActivity {
+public class PlacesActivity extends AppCompatActivity implements Observer<ListPlaces> {
 
     private PlaceAdapter placeAdapter;
+    private ListPlacesViewModel listPlacesViewModel;
+    private PlacelistDto placelistDto;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Info info = Info.getInstance(getIntent().getExtras());
+        placelistDto = PlacelistDto.getInstance(getIntent().getExtras());
 
         setContentView(R.layout.activity_places);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -39,7 +42,7 @@ public class PlacesActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(info.getTitle());
+        getSupportActionBar().setTitle(placelistDto.getName());
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,12 +52,6 @@ public class PlacesActivity extends AppCompatActivity {
         });
 
         placeAdapter = new PlaceAdapter(this);
-        placeAdapter.setPlaces(Arrays.asList(
-                new Place("Tree", "This is a Tree"),
-                new Place("Forest", "This is a forest"),
-                new Place("comparatoe", "This is a comparator"),
-                new Place("Compas", "Camping sdfsdfdfsdf sfsdfdsfsd sddfgf sdfsfsd sdfsdf dgfdfgdf dfgfdgrte dfgdfg dfgdf g")
-        ));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_place);
         recyclerView.setAdapter(placeAdapter);
@@ -63,20 +60,30 @@ public class PlacesActivity extends AppCompatActivity {
         ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                placeAdapter.removeAt(viewHolder.getAdapterPosition());
+                listPlacesViewModel.removePlace(placeAdapter.getItem(viewHolder.getAdapterPosition()));
             }
         });
         touchHelper.attachToRecyclerView(recyclerView);
 
+        initViewModels();
     }
 
+    public void initViewModels() {
+        listPlacesViewModel = new ViewModelProvider(this).get(ListPlacesViewModel.class);
+        listPlacesViewModel.load(placelistDto.getId());
+        listPlacesViewModel.observe(this, this);
+    }
+
+    @Override
+    public void onChanged(ListPlaces listPlaces) {
+        placeAdapter.setPlaces(listPlaces.place);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
