@@ -52,5 +52,6 @@
     <string name="dialog_create_list">New list</string>
     <string name="dialog_add_place_to_list">Add place to list</string>
     <string name="dialog_place">Place</string>
+    <string name="dialog_edit_place">Edit place</string>
 
 </resources>

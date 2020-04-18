@@ -1,6 +1,5 @@
 package com.offgrid.coupler.controller.place;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.place.dialog.PlaceDialog;
 import com.offgrid.coupler.core.adapter.PlaceAdapter;
+import com.offgrid.coupler.core.callback.PlaceCallback;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.dto.PlacelistDto;
 import com.offgrid.coupler.core.model.view.ListPlacesViewModel;
 import com.offgrid.coupler.data.entity.ListPlaces;
+import com.offgrid.coupler.data.entity.Place;
 
 
 public class PlacesActivity extends AppCompatActivity
@@ -59,6 +61,7 @@ public class PlacesActivity extends AppCompatActivity
         });
 
         placeAdapter = new PlaceAdapter(this);
+        placeAdapter.setPlaceDialog(createPlaceDialog());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_place);
         recyclerView.setAdapter(placeAdapter);
@@ -85,6 +88,17 @@ public class PlacesActivity extends AppCompatActivity
         listPlacesViewModel.observe(this, this);
     }
 
+    private PlaceDialog createPlaceDialog() {
+        return new PlaceDialog(this)
+                .withOnCreateListener(new PlaceCallback() {
+                    @Override
+                    public void call(Place place) {
+                        listPlacesViewModel.updatePlace(place);
+                    }
+                }).create();
+    }
+
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.layout_visibility_status) {
@@ -109,19 +123,11 @@ public class PlacesActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.nav_edit) {
-            setResult(RESULT_OK, new Intent());
-            finish();
-            overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

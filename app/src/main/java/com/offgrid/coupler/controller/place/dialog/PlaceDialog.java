@@ -6,19 +6,22 @@ import android.view.View;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.callback.PlaceCallback;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
+import com.offgrid.coupler.data.entity.Place;
 
 
 public class PlaceDialog extends AbstractSimpleDialog {
 
-    private PlaceDetailsViewHolder placeViewHolder;
+    private PlaceDetailsViewHolder viewHolder;
     private PlaceCallback callback;
+
+    private Place place;
 
     public PlaceDialog(Context context) {
         super(context);
     }
 
     public PlaceDialog withPlaceHolder(PlaceDetailsViewHolder viewHolder) {
-        this.placeViewHolder = viewHolder;
+        this.viewHolder = viewHolder;
         return this;
     }
 
@@ -29,15 +32,44 @@ public class PlaceDialog extends AbstractSimpleDialog {
 
     public PlaceDialog create() {
         super.createDialog();
-        super.setTitle(getString(R.string.dialog_place));
         return this;
+    }
+
+    private Place place() {
+        Place result = null;
+        if (viewHolder != null) {
+            viewHolder.setPlaceName(getInputName().getText().toString());
+            result = viewHolder.get();
+        }
+
+        if (result == null) {
+            result = place;
+            result.setName(getInputName().getText().toString());
+        }
+
+        return result;
+    }
+
+
+    @Override
+    public void show() {
+        this.place = null;
+        this.getInputName().setText("");
+        super.setTitle(getString(R.string.dialog_place));
+        super.show();
+    }
+
+    public void show(Place place) {
+        this.place = place;
+        this.getInputName().setText(place.getName());
+        super.setTitle(getString(R.string.dialog_edit_place));
+        super.show();
     }
 
 
     @Override
     protected void onSave(View view) {
-        placeViewHolder.setPlaceName(getInputName().getText().toString());
-        callback.call(placeViewHolder.get());
+        callback.call(place());
         dismiss();
     }
 

@@ -13,7 +13,6 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.controller.place.PlacesActivity;
 import com.offgrid.coupler.core.holder.PlacelistItemViewHolder;
-import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoPlacelistWrapper;
 import com.offgrid.coupler.data.entity.Placelist;
 
@@ -90,7 +89,6 @@ public class PlacelistAdapter extends RecyclerView.Adapter<PlacelistItemViewHold
             placelistDialog.show(current);
             return true;
         }
-
     }
 
 }
