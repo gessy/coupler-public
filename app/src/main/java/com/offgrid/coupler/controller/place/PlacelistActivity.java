@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.core.adapter.PlacelistAdapter;
+import com.offgrid.coupler.core.callback.PlacelistCallback;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.PlacelistViewModel;
@@ -31,6 +33,8 @@ public class PlacelistActivity extends AppCompatActivity
 
     private PlacelistAdapter placelistAdapter;
     private PlacelistViewModel placelistViewModel;
+
+    private PlacelistDialog placelistDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,10 @@ public class PlacelistActivity extends AppCompatActivity
             }
         });
 
+        placelistDialog = createPlacelistDialog();
+
         placelistAdapter = new PlacelistAdapter(this);
-        placelistAdapter.setPlacelistDialog(placelistDialog());
+        placelistAdapter.setPlacelistDialog(placelistDialog);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_placelist);
         recyclerView.setAdapter(placelistAdapter);
@@ -79,18 +85,18 @@ public class PlacelistActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_create_list) {
-            placelistDialog().show();
+            placelistDialog.show();
         }
     }
 
-    private PlacelistDialog placelistDialog() {
+    private PlacelistDialog createPlacelistDialog() {
         return new PlacelistDialog(this)
-                .withAction(new PlacelistDialog.UpsertAction() {
+                .withOnCreateListener(new PlacelistCallback() {
                     @Override
-                    public void apply(Placelist placelist) {
+                    public void call(Placelist placelist) {
                         placelistViewModel.upsert(placelist);
                     }
-                });
+                }).create();
     }
 
 
@@ -114,4 +120,5 @@ public class PlacelistActivity extends AppCompatActivity
         finish();
         overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
+
 }

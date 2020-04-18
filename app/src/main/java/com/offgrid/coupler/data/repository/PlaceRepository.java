@@ -25,6 +25,9 @@ public class PlaceRepository {
         return dao.findAll();
     }
 
+    public LiveData<Place> getPlace(Long id) {
+        return dao.findById(id);
+    }
 
     public void delete(final long id) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {

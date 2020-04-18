@@ -9,7 +9,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.Place;
-import com.offgrid.coupler.data.entity.Placelist;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public interface PlaceDao {
     @Query("select * from T_Place where id = :id")
     LiveData<Place> findById(Long id);
 
-    @Query("delete from T_Placelist where id = :id")
+    @Query("delete from T_Place where id = :id")
     void delete(Long id);
 
     @Delete

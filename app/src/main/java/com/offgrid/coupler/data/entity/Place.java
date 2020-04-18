@@ -35,13 +35,35 @@ public class Place {
     public Place() {
     }
 
+    @Ignore
     public Place(@NonNull String name, @NonNull String info) {
         this.name = name;
         this.info = info;
     }
 
+    @Ignore
+    public Place(@NonNull String name,
+                 @NonNull String info,
+                 double latitude,
+                 double longitude,
+                 @NonNull Long placelistId) {
+        this.name = name;
+        this.info = info;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.placelistId = placelistId;
+    }
+
     public static Place empty() {
         return new Place("");
+    }
+
+    public void updateWith(Place that) {
+        this.name = that.name;
+        this.info = that.info;
+        this.placelistId = that.placelistId;
+        this.latitude = that.latitude;
+        this.longitude = that.longitude;
     }
 
     @Ignore

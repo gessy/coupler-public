@@ -26,8 +26,6 @@
     <string name="menu_delete_leave_group">Delete and leave group</string>
 
 
-
-
     <string name="gid">234-325-456-243</string>
     <string name="notification_status_on">On</string>
     <string name="notification_status_off">Off</string>
@@ -48,5 +46,11 @@
 
     <string name="gid_label">GID</string>
     <string name="gid_pattern">___ ___ ___ ___</string>
+
+
+    <string name="dialog_edit_list">Edit list</string>
+    <string name="dialog_create_list">New list</string>
+    <string name="dialog_add_place_to_list">Add place to list</string>
+    <string name="dialog_place">Place</string>
 
 </resources>
