@@ -99,7 +99,6 @@ public class PlacelistActivity extends AppCompatActivity
                 }).create();
     }
 
-
     @Override
     public void onChanged(List<Placelist> placelists) {
         placelistAdapter.setPlacelists(placelists);
