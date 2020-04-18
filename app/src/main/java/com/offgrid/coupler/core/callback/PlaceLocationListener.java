@@ -1,9 +1,8 @@
 package com.offgrid.coupler.core.callback;
 
-import android.media.VolumeShaper;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -11,10 +10,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetBehavior.State;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.MapboxMap.OnMapClickListener;
+import com.mapbox.mapboxsdk.maps.MapboxMap.OnMapLongClickListener;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
@@ -36,8 +38,8 @@ import static com.mapbox.geojson.Feature.fromGeometry;
 import static com.mapbox.geojson.Point.fromLngLat;
 import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_GEOJSON_ID;
 
-public class OnClickPlaceLocationListener
-        implements View.OnClickListener, MapboxMap.OnMapLongClickListener, Observer<Object> {
+public class PlaceLocationListener
+        implements OnClickListener, OnMapClickListener, OnMapLongClickListener, Observer<Object> {
 
     private MapboxMap mapboxMap;
     private Fragment fragment;
@@ -52,40 +54,31 @@ public class OnClickPlaceLocationListener
     private PlaceViewModel placeViewModel;
 
     private ImageButton savePlace;
+    private View rootView;
 
 
-    public OnClickPlaceLocationListener(Fragment fragment) {
+    public PlaceLocationListener(Fragment fragment) {
         this.fragment = fragment;
     }
 
-    public OnClickPlaceLocationListener withMapbox(MapboxMap mapboxMap) {
+    public PlaceLocationListener withMapbox(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         return this;
     }
 
-    public OnClickPlaceLocationListener withRootView(View rootView) {
+    public PlaceLocationListener withRootView(View rootView) {
+        this.rootView = rootView;
         this.placeViewHolder = new PlaceDetailsViewHolder(rootView);
-
-        rootView.findViewById(R.id.close_place_details).setOnClickListener(this);
-
-        savePlace = rootView.findViewById(R.id.btn_save_place);
-        savePlace.setOnClickListener(this);
         return this;
     }
 
-    public OnClickPlaceLocationListener withBottomSheet(BottomSheetBehavior bottomSheet) {
-        this.bottomSheet = bottomSheet;
-        this.bottomSheet.addBottomSheetCallback(new BottomSheetCallback());
-        return this;
-    }
-
-    public OnClickPlaceLocationListener withViewModel() {
+    public PlaceLocationListener withViewModel() {
         placeViewModel = new ViewModelProvider(fragment).get(PlaceViewModel.class);
         placeViewModel.observeOperation(fragment, this);
         return this;
     }
 
-    public OnClickPlaceLocationListener withDialog() {
+    public PlaceLocationListener withDialog() {
         workflowDialog = new PlaceWorkflowDialog(fragment)
                 .withOnItemClickListener(new PlacelistCallback() {
                     @Override
@@ -130,10 +123,33 @@ public class OnClickPlaceLocationListener
         return this;
     }
 
+    public void attach() {
+        rootView.findViewById(R.id.close_place_details).setOnClickListener(this);
+
+        savePlace = rootView.findViewById(R.id.btn_save_place);
+        savePlace.setOnClickListener(this);
+        mapboxMap.addOnMapLongClickListener(this);
+        mapboxMap.addOnMapClickListener(this);
+    }
+
     private void cleanUp() {
         placeViewHolder.cleanUp();
         savePlace.setActivated(false);
     }
+
+
+    private void bottomSheet(@State int state) {
+        if (state == BottomSheetBehavior.STATE_HIDDEN && bottomSheet != null) {
+            bottomSheet.setState(state);
+        } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
+            if (bottomSheet == null) {
+                bottomSheet = BottomSheetBehavior.from(rootView.findViewById(R.id.bottom_sheet_place_details));
+                bottomSheet.addBottomSheetCallback(new BottomSheetCallback());
+            }
+            bottomSheet.setState(state);
+        }
+    }
+
 
     @Override
     public void onChanged(Object o) {
@@ -146,6 +162,13 @@ public class OnClickPlaceLocationListener
                 savePlace.setActivated(false);
             }
         }
+    }
+
+
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+        bottomSheet(BottomSheetBehavior.STATE_HIDDEN);
+        return false;
     }
 
     @Override
@@ -162,8 +185,9 @@ public class OnClickPlaceLocationListener
             source.setGeoJson(FeatureCollection.fromFeatures(Arrays.asList(feature)));
         }
 
-        bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
-        return true;
+        bottomSheet(BottomSheetBehavior.STATE_EXPANDED);
+
+        return false;
     }
 
     @Override
@@ -175,13 +199,8 @@ public class OnClickPlaceLocationListener
             return;
         }
 
-        if (view.getId() == R.id.close_place_details) {
-            Style style = mapboxMap.getStyle();
-            GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
-            source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
-        }
+        bottomSheet(BottomSheetBehavior.STATE_HIDDEN);
 
-        bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     class BottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
@@ -189,6 +208,9 @@ public class OnClickPlaceLocationListener
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             switch (newState) {
                 case BottomSheetBehavior.STATE_HIDDEN:
+                    Style style = mapboxMap.getStyle();
+                    GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
+                    source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
                     break;
                 case BottomSheetBehavior.STATE_EXPANDED:
                     break;
