@@ -7,19 +7,14 @@ import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetBehavior.State;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.MapboxMap.OnMapClickListener;
-import com.mapbox.mapboxsdk.maps.MapboxMap.OnMapLongClickListener;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
@@ -38,22 +33,19 @@ import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 import static com.offgrid.coupler.controller.map.MapConstants.*;
 
-public class ContactLocationListener
-        implements OnMapClickListener, OnMapLongClickListener, OnClickListener {
+public class ContactLocationListener extends AbstractLocationListener  {
 
     private MapboxMap mapboxMap;
-    private BottomSheetBehavior bottomSheet;
     private ContactDetailsViewHolder viewHolder;
     private ValueAnimator markerAnimator;
     private boolean markerSelected = false;
-
-    private View rootView;
 
     private UserDto user;
 
     private Context context;
 
     public ContactLocationListener(Context context) {
+        super(R.id.bottom_sheet_contact_details);
         this.context = context;
     }
 
@@ -73,6 +65,8 @@ public class ContactLocationListener
 
 
     public void attach() {
+        bottomSheet(new BottomSheetCallback());
+
         rootView.findViewById(R.id.close_place_details).setOnClickListener(this);
         rootView.findViewById(R.id.btn_contact_info).setOnClickListener(this);
         rootView.findViewById(R.id.btn_contact_chat).setOnClickListener(this);
@@ -80,19 +74,6 @@ public class ContactLocationListener
 
         mapboxMap.addOnMapClickListener(this);
         mapboxMap.addOnMapLongClickListener(this);
-    }
-
-
-    private void bottomSheet(@State int state) {
-        if (state == STATE_HIDDEN && bottomSheet != null) {
-            bottomSheet.setState(state);
-        } else if (state == STATE_EXPANDED) {
-            if (bottomSheet == null) {
-                bottomSheet = BottomSheetBehavior.from(rootView.findViewById(R.id.bottom_sheet_contact_details));
-                bottomSheet.addBottomSheetCallback(new BottomSheetCallback());
-            }
-            bottomSheet.setState(state);
-        }
     }
 
 
@@ -194,29 +175,26 @@ public class ContactLocationListener
         ((Activity) context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
     }
 
-    class BottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
+
+    class BottomSheetCallback extends BaseBottomSheetCallback {
         @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            switch (newState) {
-                case STATE_HIDDEN:
-                    if (markerSelected) deselectMarker();
-                    viewHolder.gidVisibility(View.VISIBLE);
-                    break;
-                case STATE_EXPANDED:
-                    if (!markerSelected) selectMarker();
-                    viewHolder.gidVisibility(View.VISIBLE);
-                    break;
-                case BottomSheetBehavior.STATE_COLLAPSED:
-                    viewHolder.gidVisibility(View.INVISIBLE);
-                case BottomSheetBehavior.STATE_DRAGGING:
-                case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                case BottomSheetBehavior.STATE_SETTLING:
-                    break;
-            }
+        protected void onStateHidden(@NonNull View bottomSheet) {
+            super.onStateHidden(bottomSheet);
+            if (markerSelected) deselectMarker();
+            viewHolder.gidVisibility(View.VISIBLE);
         }
 
         @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        protected void onStateExpanded(@NonNull View bottomSheet) {
+            super.onStateExpanded(bottomSheet);
+            if (!markerSelected) selectMarker();
+            viewHolder.gidVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onStateCollapsed(@NonNull View bottomSheet) {
+            super.onStateCollapsed(bottomSheet);
+            viewHolder.gidVisibility(View.INVISIBLE);
         }
     }
 }

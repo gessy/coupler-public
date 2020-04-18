@@ -94,7 +94,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 .withDialog();
         placeLocationListener.attach();
 
-
         rootView.findViewById(R.id.back_to_camera_tracking_mode).setOnClickListener(this);
     }
 
