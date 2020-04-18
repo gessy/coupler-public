@@ -43,7 +43,7 @@ public class ListPlacesViewModel extends AndroidViewModel {
         if (listPlaces != null && listPlaces.placelist != null) {
             Placelist placelist = listPlaces.placelist;
             placelist.setShowOnMap(state);
-            placelistRepository.delete(placelist);
+            placelistRepository.update(placelist);
         }
     }
 

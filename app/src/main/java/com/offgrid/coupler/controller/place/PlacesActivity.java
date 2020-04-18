@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +28,14 @@ import com.offgrid.coupler.core.model.view.ListPlacesViewModel;
 import com.offgrid.coupler.data.entity.ListPlaces;
 
 
-public class PlacesActivity extends AppCompatActivity implements Observer<ListPlaces> {
+public class PlacesActivity extends AppCompatActivity
+        implements OnClickListener, OnCheckedChangeListener, Observer<ListPlaces> {
 
     private PlaceAdapter placeAdapter;
     private ListPlacesViewModel listPlacesViewModel;
     private PlacelistDto placelistDto;
+
+    private Switch switcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,7 @@ public class PlacesActivity extends AppCompatActivity implements Observer<ListPl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(placelistDto.getName());
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -65,6 +72,10 @@ public class PlacesActivity extends AppCompatActivity implements Observer<ListPl
         });
         touchHelper.attachToRecyclerView(recyclerView);
 
+        findViewById(R.id.layout_visibility_status).setOnClickListener(this);
+        switcher = findViewById(R.id.placelist_visibility_status);
+        switcher.setOnCheckedChangeListener(this);
+
         initViewModels();
     }
 
@@ -75,8 +86,25 @@ public class PlacesActivity extends AppCompatActivity implements Observer<ListPl
     }
 
     @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.layout_visibility_status) {
+            switcher.setChecked(!switcher.isChecked());
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean state) {
+        listPlacesViewModel.visibility(state);
+    }
+
+    @Override
     public void onChanged(ListPlaces listPlaces) {
-        placeAdapter.setPlaces(listPlaces.place);
+        if (listPlaces != null) {
+            placeAdapter.setPlaces(listPlaces.place);
+            if (switcher.isChecked() != listPlaces.placelist.getShowOnMap()) {
+                switcher.setChecked(listPlaces.placelist.getShowOnMap());
+            }
+        }
     }
 
     @Override
@@ -96,7 +124,6 @@ public class PlacesActivity extends AppCompatActivity implements Observer<ListPl
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onBackPressed() {
