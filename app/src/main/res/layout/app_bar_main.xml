@@ -23,21 +23,4 @@
 
     <include layout="@layout/content_main" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/fab_layout"
-        android:layout_width="5dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_gravity="bottom|end"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_new_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/fab_layout"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="?attr/colorPrimary"
-        app:srcCompat="@drawable/ic_pencil_white_24dp" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

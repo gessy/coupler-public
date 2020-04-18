@@ -19,15 +19,6 @@
     <include layout="@layout/map_bottomsheet_contact_details" />
     <include layout="@layout/map_bottomsheet_place_details" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/fab_layout"
-        android:layout_width="5dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="@dimen/fab_margin"
-        app:layout_anchor="@id/bottom_sheet_contact_details"
-        app:layout_anchorGravity="top|right|end"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/back_to_camera_tracking_mode"
         android:layout_width="wrap_content"
@@ -35,6 +26,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="?attr/colorPrimary"
         app:srcCompat="@drawable/ic_my_location_white_24dp"
-        app:layout_anchor="@id/fab_layout"/>
+        android:layout_gravity="bottom|end"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

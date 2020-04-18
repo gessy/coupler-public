@@ -1,16 +1,13 @@
 package com.offgrid.coupler.core.callback;
 
-import android.media.VolumeShaper;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -28,16 +25,16 @@ import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 import static com.mapbox.geojson.Feature.fromGeometry;
 import static com.mapbox.geojson.Point.fromLngLat;
 import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_GEOJSON_ID;
 
-public class OnClickPlaceLocationListener
-        implements View.OnClickListener, MapboxMap.OnMapLongClickListener, Observer<Object> {
+public class PlaceLocationListener extends AbstractLocationListener implements Observer<Object> {
 
     private MapboxMap mapboxMap;
     private Fragment fragment;
@@ -46,7 +43,6 @@ public class OnClickPlaceLocationListener
     private PlaceDialog placeDialog;
     private PlacelistDialog placelistDialog;
 
-    private BottomSheetBehavior bottomSheet;
     private PlaceDetailsViewHolder placeViewHolder;
 
     private PlaceViewModel placeViewModel;
@@ -54,38 +50,29 @@ public class OnClickPlaceLocationListener
     private ImageButton savePlace;
 
 
-    public OnClickPlaceLocationListener(Fragment fragment) {
+    public PlaceLocationListener(Fragment fragment) {
+        super(R.id.bottom_sheet_place_details);
         this.fragment = fragment;
     }
 
-    public OnClickPlaceLocationListener withMapbox(MapboxMap mapboxMap) {
+    public PlaceLocationListener withMapbox(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         return this;
     }
 
-    public OnClickPlaceLocationListener withRootView(View rootView) {
+    public PlaceLocationListener withRootView(View rootView) {
+        super.rootView = rootView;
         this.placeViewHolder = new PlaceDetailsViewHolder(rootView);
-
-        rootView.findViewById(R.id.close_place_details).setOnClickListener(this);
-
-        savePlace = rootView.findViewById(R.id.btn_save_place);
-        savePlace.setOnClickListener(this);
         return this;
     }
 
-    public OnClickPlaceLocationListener withBottomSheet(BottomSheetBehavior bottomSheet) {
-        this.bottomSheet = bottomSheet;
-        this.bottomSheet.addBottomSheetCallback(new BottomSheetCallback());
-        return this;
-    }
-
-    public OnClickPlaceLocationListener withViewModel() {
+    public PlaceLocationListener withViewModel() {
         placeViewModel = new ViewModelProvider(fragment).get(PlaceViewModel.class);
         placeViewModel.observeOperation(fragment, this);
         return this;
     }
 
-    public OnClickPlaceLocationListener withDialog() {
+    public PlaceLocationListener withDialog() {
         workflowDialog = new PlaceWorkflowDialog(fragment)
                 .withOnItemClickListener(new PlacelistCallback() {
                     @Override
@@ -130,10 +117,22 @@ public class OnClickPlaceLocationListener
         return this;
     }
 
+    public void attach() {
+        bottomSheet(new BottomSheetCallback());
+
+        rootView.findViewById(R.id.close_place_details).setOnClickListener(this);
+
+        savePlace = rootView.findViewById(R.id.btn_save_place);
+        savePlace.setOnClickListener(this);
+        mapboxMap.addOnMapLongClickListener(this);
+        mapboxMap.addOnMapClickListener(this);
+    }
+
     private void cleanUp() {
         placeViewHolder.cleanUp();
         savePlace.setActivated(false);
     }
+
 
     @Override
     public void onChanged(Object o) {
@@ -146,6 +145,13 @@ public class OnClickPlaceLocationListener
                 savePlace.setActivated(false);
             }
         }
+    }
+
+
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+        bottomSheet(STATE_HIDDEN);
+        return false;
     }
 
     @Override
@@ -162,8 +168,9 @@ public class OnClickPlaceLocationListener
             source.setGeoJson(FeatureCollection.fromFeatures(Arrays.asList(feature)));
         }
 
-        bottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
-        return true;
+        bottomSheet(STATE_EXPANDED);
+
+        return false;
     }
 
     @Override
@@ -175,33 +182,24 @@ public class OnClickPlaceLocationListener
             return;
         }
 
-        if (view.getId() == R.id.close_place_details) {
+        bottomSheet(STATE_HIDDEN);
+    }
+
+
+    class BottomSheetCallback extends BaseBottomSheetCallback {
+        @Override
+        protected void onStateHidden(@NonNull View bottomSheet) {
+            super.onStateHidden(bottomSheet);
             Style style = mapboxMap.getStyle();
             GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
             source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
-        }
-
-        bottomSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
-    }
-
-    class BottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
-        @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            switch (newState) {
-                case BottomSheetBehavior.STATE_HIDDEN:
-                    break;
-                case BottomSheetBehavior.STATE_EXPANDED:
-                    break;
-                case BottomSheetBehavior.STATE_COLLAPSED:
-                case BottomSheetBehavior.STATE_DRAGGING:
-                case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                case BottomSheetBehavior.STATE_SETTLING:
-                    break;
-            }
+            showFloatingButton();
         }
 
         @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+        protected void onStateExpanded(@NonNull View bottomSheet) {
+            super.onStateExpanded(bottomSheet);
+            hideFloatingButton();
         }
     }
 

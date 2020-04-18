@@ -26,7 +26,6 @@ public class PlaceLocationConfigurator  {
     private Context context;
     private MapboxMap mapboxMap;
 
-
     private static final int NEW_PLACE_DRAWABLE_RES = R.drawable.ic_place_yellow_24dp;
 
     public PlaceLocationConfigurator() {
