@@ -11,6 +11,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -182,6 +184,7 @@ public class ContactLocationListener extends AbstractLocationListener  {
             super.onStateHidden(bottomSheet);
             if (markerSelected) deselectMarker();
             viewHolder.gidVisibility(View.VISIBLE);
+            showFloatingButton();
         }
 
         @Override
@@ -189,12 +192,14 @@ public class ContactLocationListener extends AbstractLocationListener  {
             super.onStateExpanded(bottomSheet);
             if (!markerSelected) selectMarker();
             viewHolder.gidVisibility(View.VISIBLE);
+            hideFloatingButton();
         }
 
         @Override
         protected void onStateCollapsed(@NonNull View bottomSheet) {
             super.onStateCollapsed(bottomSheet);
             viewHolder.gidVisibility(View.INVISIBLE);
+            hideFloatingButton();
         }
     }
 }

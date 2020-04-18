@@ -193,6 +193,13 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
             Style style = mapboxMap.getStyle();
             GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
             source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
+            showFloatingButton();
+        }
+
+        @Override
+        protected void onStateExpanded(@NonNull View bottomSheet) {
+            super.onStateExpanded(bottomSheet);
+            hideFloatingButton();
         }
     }
 
