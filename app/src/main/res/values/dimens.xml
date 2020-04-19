@@ -10,4 +10,7 @@
 
     <dimen name="detail_info_text_size_medium">16sp</dimen>
     <dimen name="detail_info_text_size_small">12sp</dimen>
+
+    <dimen name="behavior_peek_height">0dp</dimen>
+
 </resources>

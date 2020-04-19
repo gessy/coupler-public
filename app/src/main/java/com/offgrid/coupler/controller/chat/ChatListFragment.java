@@ -54,7 +54,7 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
         recyclerView.setAdapter(chatListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        fab = getActivity().findViewById(R.id.fab_new_message);
+        fab = root.findViewById(R.id.fab_new_message);
         fab.setOnClickListener(ChatListFragment.this);
 
         return root;
@@ -99,11 +99,6 @@ public class ChatListFragment extends Fragment implements Observer<List<Chat>>, 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden) {
-            fab.hide();
-        } else {
-            fab.show();
-        }
     }
 
     @Override

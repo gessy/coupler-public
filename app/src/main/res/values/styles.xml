@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -27,19 +26,24 @@
     </style>
 
 
-
-    <style name="Theme.AppCompat.Light.Switcher" parent="Theme.AppCompat.Light">
+    <style name="Theme.AppCompat.Light.Green.Switcher" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
-<!--        <item name="colorControlActivated">#46BDBF</item>-->
-        <item name="colorControlActivated">#008577</item>
-
+        <item name="colorControlActivated">@color/colorPrimary</item>
         <!-- inactive thumb color -->
         <item name="colorSwitchThumbNormal">#F1F1F1</item>
-
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">#42221F1F</item>
     </style>
 
+
+    <style name="Theme.AppCompat.Light.Blue.Switcher" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/blue_light</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#F1F1F1</item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221F1F</item>
+    </style>
 
 
     <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
@@ -55,7 +59,5 @@
         <item name="android:windowEnterAnimation">@anim/popup_context_in</item>
         <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
-
-
 
 </resources>

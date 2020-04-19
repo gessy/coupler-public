@@ -6,6 +6,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.offgrid.coupler.util.RandomLocation;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -39,6 +42,12 @@ public class User {
     @ColumnInfo(name = "last_seen")
     private Date lastSeen;
 
+    @ColumnInfo(name = "live_latitude")
+    public double liveLatitude;
+
+    @ColumnInfo(name = "live_longitude")
+    public double liveLongitude;
+
 
     public User() {
     }
@@ -60,6 +69,7 @@ public class User {
         this.gid = gid;
         this.allowNotify = true;
         this.lastSeen = new Date();
+        setLocation(RandomLocation.get());
     }
 
     @NonNull
@@ -123,6 +133,14 @@ public class User {
         return firstName + " " + lastName;
     }
 
+    public LatLng getLocation() {
+        return new LatLng(liveLatitude, liveLongitude);
+    }
+
+    public void setLocation(LatLng latLng) {
+        liveLatitude = latLng.getLatitude();
+        liveLongitude = latLng.getLongitude();
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,7 @@
 package com.offgrid.coupler.controller.chat;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,9 +32,12 @@ public class NewMessageActivity
     private NewMessageContactListAdapter contactListAdapter;
     private ContactListViewModel contactListViewModel;
 
+    private Resources resources;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        resources = getResources();
 
         Info info = Info.getInstance(getIntent().getExtras());
 
@@ -94,7 +98,6 @@ public class NewMessageActivity
                     new Info.BundleBuilder()
                             .withTitle("Add Contact")
                             .withText("This is new contact activity")
-                            .withAction(Info.Action.add_contact)
                             .build()
             );
             startActivityForResult(intent, 1);
@@ -102,9 +105,7 @@ public class NewMessageActivity
             Intent intent = new Intent(NewMessageActivity.this, NewGroupActivity.class);
             intent.putExtras(
                     new Info.BundleBuilder()
-                            .withTitle("Add Group")
-                            .withText("This is new group activity")
-                            .withAction(Info.Action.add_group)
+                            .withTitle(resources.getString(R.string.menu_group))
                             .build()
             );
             startActivityForResult(intent, 1);

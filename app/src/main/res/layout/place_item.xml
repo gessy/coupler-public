@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground">
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/super_lighter_grey" />
+
+    <TextView
+        android:id="@+id/place_name"
+        android:layout_below="@+id/split_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        tools:text="Camping"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/place_info"
+        android:layout_below="@+id/place_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="12dp"
+        android:singleLine="true"
+        android:textColor="@color/medium_grey"
+        tools:text="Camping"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/medium_grey"
+        tools:text="1.6 km"
+        android:textSize="14sp" />
+</RelativeLayout>
