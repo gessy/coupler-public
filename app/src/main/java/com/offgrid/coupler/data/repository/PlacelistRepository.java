@@ -28,6 +28,10 @@ public class PlacelistRepository {
         return dao.findListPlacesById(listId);
     }
 
+    public LiveData<List<ListPlaces>> getVisibleListPlaces() {
+        return dao.findVisibleListPlaces();
+    }
+
     public void delete(final Placelist list) {
         CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override

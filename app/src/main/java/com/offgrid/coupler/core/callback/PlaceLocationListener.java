@@ -19,7 +19,7 @@ import com.offgrid.coupler.controller.place.dialog.PlaceDialog;
 import com.offgrid.coupler.controller.place.dialog.PlaceWorkflowDialog;
 import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
-import com.offgrid.coupler.core.model.view.Operation;
+import com.offgrid.coupler.core.model.Operation;
 import com.offgrid.coupler.core.model.view.PlaceViewModel;
 import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Place;
