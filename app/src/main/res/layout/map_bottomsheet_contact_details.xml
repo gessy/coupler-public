@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    android:background="#fff"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="16dp"
     app:behavior_hideable="true"
@@ -138,13 +138,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:padding="3dp"
         android:orientation="horizontal">
         <RelativeLayout
             android:id="@+id/btn_contact_route"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@color/blue_light"
-            android:foreground="?attr/selectableItemBackground"
             android:paddingHorizontal="11dp">
             <ImageView
                 android:id="@+id/contact_route"
@@ -173,7 +173,6 @@
             android:layout_marginStart="10dp"
             android:alpha="1.0"
             android:background="@color/super_lighter_grey"
-            android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/ic_contact_blue_24dp" />
 
         <ImageButton
@@ -183,7 +182,6 @@
             android:layout_marginStart="10dp"
             android:alpha="1.0"
             android:background="@color/super_lighter_grey"
-            android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/ic_chat_blue_24dp" />
 
     </LinearLayout>

@@ -16,4 +16,10 @@ public class Constants {
     public static final String KEY_PLACELIST_ID = "key-placelist-id";
     public static final String KEY_PLACELIST_NAME = "key-placelist-name";
 
+    //Place
+    public static final String KEY_PLACE_ID = "key-place-id";
+    public static final String KEY_PLACE_NAME = "key-place-name";
+    public static final String KEY_PLACE_LATITUDE = "key-place-latitude";
+    public static final String KEY_PLACE_LONGITUDE = "key-place-longitude";
+
 }

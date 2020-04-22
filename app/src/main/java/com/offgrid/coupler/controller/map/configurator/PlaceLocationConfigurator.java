@@ -15,7 +15,7 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.model.converter.FeatureConverter;
+import com.offgrid.coupler.core.model.converter.PlaceFeatureConverter;
 import com.offgrid.coupler.core.model.view.CollectionOfListPlacesViewModel;
 import com.offgrid.coupler.data.entity.ListPlaces;
 
@@ -31,7 +31,6 @@ import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION
 import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_LAYER_ID;
 import static com.offgrid.coupler.controller.map.MapConstants.PLACE_LOCATION_GEOJSON_ID;
 import static com.offgrid.coupler.controller.map.MapConstants.PLACE_LOCATION_LAYER_ID;
-import static com.offgrid.coupler.controller.map.MapConstants.USER_LOCATION_GEOJSON_ID;
 
 public class PlaceLocationConfigurator implements Observer<List<ListPlaces>> {
 
@@ -86,17 +85,13 @@ public class PlaceLocationConfigurator implements Observer<List<ListPlaces>> {
 
 
     @Override
-    public void onChanged(List<ListPlaces> listPlaces) {
-
-
+    public void onChanged(final List<ListPlaces> listPlaces) {
         mapboxMap.getStyle(new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 GeoJsonSource resultSource = style.getSourceAs(PLACE_LOCATION_GEOJSON_ID);
-//                resultSource.setGeoJson(FeatureConverter.convert(users));
+                resultSource.setGeoJson(PlaceFeatureConverter.convert(listPlaces));
             }
         });
-
-
     }
 }

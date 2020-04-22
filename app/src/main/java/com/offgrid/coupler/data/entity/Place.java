@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
 @Entity(tableName = "T_Place")
 public class Place {
     @PrimaryKey(autoGenerate = true)
@@ -122,5 +124,9 @@ public class Place {
 
     public void setPlacelistId(@NonNull Long placelistId) {
         this.placelistId = placelistId;
+    }
+
+    public LatLng getLocation() {
+        return new LatLng(latitude, longitude);
     }
 }
