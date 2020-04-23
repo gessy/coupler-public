@@ -201,6 +201,12 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
             super.onStateExpanded(bottomSheet);
             hideFloatingButton();
         }
+
+        @Override
+        protected void onStateCollapsed(@NonNull View bottomSheet) {
+            super.onStateCollapsed(bottomSheet);
+            hideFloatingButton();
+        }
     }
 
 }
