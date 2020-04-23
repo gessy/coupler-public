@@ -19,7 +19,7 @@ import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_LAST_NAME;
 import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_LATITUDE;
 import static com.offgrid.coupler.core.model.Constants.KEY_CONTACT_LONGITUDE;
 
-public class FeatureConverter {
+public class UserFeatureConverter {
 
     public static Feature convert(User user) {
         LatLng latLng = user.getLocation();
@@ -37,13 +37,11 @@ public class FeatureConverter {
         return feature;
     }
 
-
     public static FeatureCollection convert(Collection<User> users) {
         List<Feature> list = new ArrayList<>();
         for (User user : users) {
-            list.add(FeatureConverter.convert(user));
+            list.add(UserFeatureConverter.convert(user));
         }
         return FeatureCollection.fromFeatures(list);
     }
-
 }

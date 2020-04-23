@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    android:background="#fff"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="16dp"
     app:behavior_hideable="true"
@@ -138,14 +138,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:padding="3dp"
         android:orientation="horizontal">
         <RelativeLayout
             android:id="@+id/btn_place_route"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:elevation="1dp"
             android:background="@color/blue_light"
-            android:foreground="?attr/selectableItemBackground"
             android:paddingHorizontal="11dp">
             <ImageView
                 android:id="@+id/place_route"
@@ -172,10 +171,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
-            android:elevation="1dp"
             android:alpha="1.0"
-            android:background="@color/super_light_colorPrimary"
-            android:foreground="?attr/selectableItemBackground"
+            android:background="@color/super_lighter_grey"
             android:src="@drawable/selector_place_bookmark" />
 
     </LinearLayout>

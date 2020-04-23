@@ -198,6 +198,7 @@ public class ContactLocationListener extends AbstractLocationListener  {
         @Override
         protected void onStateCollapsed(@NonNull View bottomSheet) {
             super.onStateCollapsed(bottomSheet);
+            if (markerSelected) deselectMarker();
             viewHolder.gidVisibility(View.INVISIBLE);
             hideFloatingButton();
         }

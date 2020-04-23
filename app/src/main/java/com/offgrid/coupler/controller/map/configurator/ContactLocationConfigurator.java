@@ -15,7 +15,7 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.model.converter.FeatureConverter;
+import com.offgrid.coupler.core.model.converter.UserFeatureConverter;
 import com.offgrid.coupler.core.model.view.ContactListViewModel;
 import com.offgrid.coupler.data.entity.User;
 
@@ -83,7 +83,7 @@ public class ContactLocationConfigurator implements Observer<List<User>> {
                 @Override
                 public void onStyleLoaded(@NonNull Style style) {
                     GeoJsonSource resultSource = style.getSourceAs(USER_LOCATION_GEOJSON_ID);
-                    resultSource.setGeoJson(FeatureConverter.convert(users));
+                    resultSource.setGeoJson(UserFeatureConverter.convert(users));
                 }
             });
         }

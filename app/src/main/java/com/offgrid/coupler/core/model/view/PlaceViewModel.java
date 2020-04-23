@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
+import com.offgrid.coupler.core.model.Operation;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.repository.PlaceRepository;
 

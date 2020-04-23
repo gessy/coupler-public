@@ -44,4 +44,9 @@ public abstract class PlacelistDao {
     @Query("select id as lid from T_Placelist where id = :id")
     public abstract LiveData<ListPlaces> findListPlacesById(Long id);
 
+
+    @Transaction
+    @Query("select id as lid from T_Placelist where show_on_map = 1")
+    public abstract LiveData<List<ListPlaces>> findVisibleListPlaces();
+
 }
