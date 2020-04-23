@@ -4,15 +4,12 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -24,18 +21,19 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.controller.contact.ContactInfoActivity;
+import com.offgrid.coupler.controller.map.MapService;
 import com.offgrid.coupler.core.holder.ContactDetailsViewHolder;
 import com.offgrid.coupler.core.model.dto.UserDto;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
-
-import java.util.List;
+import com.offgrid.coupler.core.model.map.MapLayerResponse;
+import com.offgrid.coupler.core.model.map.MapLayerResponse.Action;
 
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 import static com.offgrid.coupler.controller.map.MapConstants.*;
 
-public class ContactLocationListener extends AbstractLocationListener  {
+public class ContactLocationListener extends AbstractLocationListener {
 
     private MapboxMap mapboxMap;
     private ContactDetailsViewHolder viewHolder;
@@ -86,27 +84,20 @@ public class ContactLocationListener extends AbstractLocationListener  {
             return false;
         }
 
-        PointF pixel = mapboxMap.getProjection().toScreenLocation(point);
-        List<Feature> features = mapboxMap.queryRenderedFeatures(pixel, USER_LOCATION_LAYER_ID);
-        List<Feature> selectedFeature = mapboxMap.queryRenderedFeatures(pixel, SELECTED_USER_LOCATION_LAYER_ID);
+        MapLayerResponse response = MapService.contactFeature(mapboxMap, point, markerSelected);
 
-        if (selectedFeature.size() > 0 && markerSelected) {
+        if (response.state == Action.HIDE) {
+            bottomSheet(STATE_HIDDEN);
             return false;
         }
 
-        if (features.isEmpty()) {
-            return false;
-        }
-
-        GeoJsonSource source = style.getSourceAs(SELECTED_USER_LOCATION_GEOJSON_ID);
-        if (source != null) {
+        if (response.state == Action.EXPAND) {
+            GeoJsonSource source = style.getSourceAs(SELECTED_USER_LOCATION_GEOJSON_ID);
             source.setGeoJson(FeatureCollection.fromFeatures(new Feature[]{
-                    Feature.fromGeometry(features.get(0).geometry())
+                    Feature.fromGeometry(response.feature.geometry())
             }));
-        }
 
-        if (features.size() > 0) {
-            user = UserDto.getInstance(features.get(0));
+            user = UserDto.getInstance(response.feature);
             displayContact();
         }
 
@@ -125,6 +116,7 @@ public class ContactLocationListener extends AbstractLocationListener  {
         selectMarker();
         bottomSheet(STATE_EXPANDED);
     }
+
 
     private void selectMarker() {
         markerAnimator.setObjectValues(1f, 2f);

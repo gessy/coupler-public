@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.core.model.dto.PlaceDto;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
 
@@ -35,6 +36,11 @@ public class PlaceDetailsViewHolder {
         placeInfo.setText("");
 
         placeLocation.setText("");
+    }
+
+    public void update(PlaceDto dto) {
+        setPlaceName(dto.getName());
+        setPlaceLocation(dto.getLocation());
     }
 
 
