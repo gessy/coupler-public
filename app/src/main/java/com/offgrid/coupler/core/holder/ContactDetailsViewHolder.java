@@ -16,6 +16,9 @@ public class ContactDetailsViewHolder {
     private final TextView walkTime;
     private final TextView walkDistance;
 
+    private UserDto userDto;
+
+
     public ContactDetailsViewHolder(View itemView) {
         fullName = itemView.findViewById(R.id.contact_full_name);
         gid = itemView.findViewById(R.id.contact_gid);
@@ -25,12 +28,19 @@ public class ContactDetailsViewHolder {
     }
 
     public void update(UserDto dto) {
+        userDto = dto;
+
         fullName.setText(dto.getFullName());
         gid.setText(dto.getGid());
 
         LatLng latLng = dto.getLocation();
         location.setText(String.format("%.6f %.6f", latLng.getLatitude(), latLng.getLongitude()));
     }
+
+    public UserDto get() {
+        return userDto;
+    }
+
 
     public void update(Feature feature) {
         update(UserDto.getInstance(feature));

@@ -31,6 +31,8 @@ import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION
 import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_LAYER_ID;
 import static com.offgrid.coupler.controller.map.MapConstants.PLACE_LOCATION_GEOJSON_ID;
 import static com.offgrid.coupler.controller.map.MapConstants.PLACE_LOCATION_LAYER_ID;
+import static com.offgrid.coupler.controller.map.MapConstants.SELECTED_PLACE_LOCATION_GEOJSON_ID;
+import static com.offgrid.coupler.controller.map.MapConstants.SELECTED_PLACE_LOCATION_LAYER_ID;
 
 public class PlaceLocationConfigurator implements Observer<List<ListPlaces>> {
 
@@ -77,6 +79,14 @@ public class PlaceLocationConfigurator implements Observer<List<ListPlaces>> {
 
         style.addSource(new GeoJsonSource(PLACE_LOCATION_GEOJSON_ID));
         style.addLayer(new SymbolLayer(PLACE_LOCATION_LAYER_ID, PLACE_LOCATION_GEOJSON_ID)
+                .withProperties(iconImage(NEW_PLACE_LOCATION_IMAGE_ID),
+                        iconSize(1f),
+                        iconAllowOverlap(true),
+                        iconOffset(new Float[]{0f, -9f})));
+
+
+        style.addSource(new GeoJsonSource(SELECTED_PLACE_LOCATION_GEOJSON_ID));
+        style.addLayer(new SymbolLayer(SELECTED_PLACE_LOCATION_LAYER_ID, SELECTED_PLACE_LOCATION_GEOJSON_ID)
                 .withProperties(iconImage(NEW_PLACE_LOCATION_IMAGE_ID),
                         iconSize(1f),
                         iconAllowOverlap(true),

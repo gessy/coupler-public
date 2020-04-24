@@ -15,11 +15,15 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
+import com.offgrid.coupler.controller.map.MapService;
 import com.offgrid.coupler.controller.place.dialog.PlaceDialog;
 import com.offgrid.coupler.controller.place.dialog.PlaceWorkflowDialog;
 import com.offgrid.coupler.controller.place.dialog.PlacelistDialog;
 import com.offgrid.coupler.core.holder.PlaceDetailsViewHolder;
 import com.offgrid.coupler.core.model.Operation;
+import com.offgrid.coupler.core.model.dto.PlaceDto;
+import com.offgrid.coupler.core.model.map.MapLayerResponse;
+import com.offgrid.coupler.core.model.map.MapLayerResponse.Action;
 import com.offgrid.coupler.core.model.view.PlaceViewModel;
 import com.offgrid.coupler.core.model.view.PlacelistViewModel;
 import com.offgrid.coupler.data.entity.Place;
@@ -28,11 +32,12 @@ import com.offgrid.coupler.data.entity.Placelist;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 import static com.mapbox.geojson.Feature.fromGeometry;
 import static com.mapbox.geojson.Point.fromLngLat;
 import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_GEOJSON_ID;
+import static com.offgrid.coupler.controller.map.MapConstants.NEW_PLACE_LOCATION_LAYER_ID;
+import static com.offgrid.coupler.controller.map.MapConstants.SELECTED_PLACE_LOCATION_GEOJSON_ID;
+import static com.offgrid.coupler.controller.map.MapConstants.SELECTED_PLACE_LOCATION_LAYER_ID;
 
 public class PlaceLocationListener extends AbstractLocationListener implements Observer<Object> {
 
@@ -43,7 +48,7 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
     private PlaceDialog placeDialog;
     private PlacelistDialog placelistDialog;
 
-    private PlaceDetailsViewHolder placeViewHolder;
+    private PlaceDetailsViewHolder viewHolder;
 
     private PlaceViewModel placeViewModel;
 
@@ -57,12 +62,16 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
 
     public PlaceLocationListener withMapbox(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+
+        registrAnimator(mapboxMap, SELECTED_PLACE_LOCATION_LAYER_ID);
+        registrAnimator(mapboxMap, NEW_PLACE_LOCATION_LAYER_ID);
+
         return this;
     }
 
     public PlaceLocationListener withRootView(View rootView) {
         super.rootView = rootView;
-        this.placeViewHolder = new PlaceDetailsViewHolder(rootView);
+        this.viewHolder = new PlaceDetailsViewHolder(rootView);
         return this;
     }
 
@@ -78,7 +87,7 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
                     @Override
                     public void call(Placelist placelist) {
                         workflowDialog.dismiss();
-                        placeViewHolder.setPlacelist(placelist);
+                        viewHolder.setPlacelist(placelist);
                         placeDialog.show();
                     }
                 })
@@ -92,7 +101,7 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
                 .create();
 
         placeDialog = new PlaceDialog(fragment.getContext())
-                .withPlaceHolder(placeViewHolder)
+                .withPlaceHolder(viewHolder)
                 .withOnCreateListener(new PlaceCallback() {
                     @Override
                     public void call(Place place) {
@@ -128,11 +137,62 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
         mapboxMap.addOnMapClickListener(this);
     }
 
-    private void cleanUp() {
-        placeViewHolder.cleanUp();
-        savePlace.setActivated(false);
+
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+        Style style = mapboxMap.getStyle();
+        if (style == null) {
+            return false;
+        }
+
+        MapLayerResponse response = MapService.placeFeature(mapboxMap, point, markerState(SELECTED_PLACE_LOCATION_LAYER_ID));
+
+        if (response.state == Action.HIDE) {
+            hideBottomSheet();
+            return false;
+        }
+
+        if (response.state == Action.EXPAND) {
+            hideAllMarkers();
+
+            GeoJsonSource source = style.getSourceAs(SELECTED_PLACE_LOCATION_GEOJSON_ID);
+            source.setGeoJson(FeatureCollection.fromFeatures(new Feature[]{
+                    Feature.fromGeometry(response.feature.geometry())
+            }));
+
+            displayPlace(PlaceDto.getInstance(response.feature));
+        }
+
+        return false;
     }
 
+    @Override
+    public boolean onMapLongClick(@NonNull LatLng point) {
+        hideAllMarkers();
+
+        GeoJsonSource source = mapboxMap.getStyle().getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
+        if (source != null) {
+            Feature feature = fromGeometry(fromLngLat(point.getLongitude(), point.getLatitude()));
+            source.setGeoJson(FeatureCollection.fromFeatures(Arrays.asList(feature)));
+        }
+
+        displayNewPlace(point);
+
+        return false;
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_save_place) {
+            if (!savePlace.isActivated()) {
+                workflowDialog.show();
+            }
+            return;
+        }
+
+        hideBottomSheet();
+    }
 
     @Override
     public void onChanged(Object o) {
@@ -148,64 +208,48 @@ public class PlaceLocationListener extends AbstractLocationListener implements O
     }
 
 
-    @Override
-    public boolean onMapClick(@NonNull LatLng point) {
-        bottomSheet(STATE_HIDDEN);
-        return false;
+    private void displayPlace(PlaceDto place) {
+        savePlace.setActivated(true);
+        viewHolder.update(place);
+        selectMarkerAnimation(SELECTED_PLACE_LOCATION_LAYER_ID);
+        showBottomSheet();
     }
 
-    @Override
-    public boolean onMapLongClick(@NonNull LatLng point) {
+
+    private void displayNewPlace(LatLng point) {
+        viewHolder.cleanUp();
+
+        viewHolder.setPlaceLocation(point);
+        savePlace.setActivated(false);
+        selectMarkerAnimation(NEW_PLACE_LOCATION_LAYER_ID);
+        showBottomSheet();
+    }
+
+
+    private void hideAllMarkers() {
+        deselectAllMarkersAnimation();
+
         Style style = mapboxMap.getStyle();
-
-        cleanUp();
-
-        placeViewHolder.setPlaceLocation(point);
-
         GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
-        if (source != null) {
-            Feature feature = fromGeometry(fromLngLat(point.getLongitude(), point.getLatitude()));
-            source.setGeoJson(FeatureCollection.fromFeatures(Arrays.asList(feature)));
-        }
+        source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
 
-        bottomSheet(STATE_EXPANDED);
-
-        return false;
+        source = style.getSourceAs(SELECTED_PLACE_LOCATION_GEOJSON_ID);
+        source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btn_save_place) {
-            if (!savePlace.isActivated()) {
-                workflowDialog.show();
-            }
-            return;
-        }
-
-        bottomSheet(STATE_HIDDEN);
-    }
 
 
     class BottomSheetCallback extends BaseBottomSheetCallback {
         @Override
         protected void onStateHidden(@NonNull View bottomSheet) {
             super.onStateHidden(bottomSheet);
-            Style style = mapboxMap.getStyle();
-            GeoJsonSource source = style.getSourceAs(NEW_PLACE_LOCATION_GEOJSON_ID);
-            source.setGeoJson(FeatureCollection.fromFeatures(new ArrayList<Feature>()));
-            showFloatingButton();
-        }
-
-        @Override
-        protected void onStateExpanded(@NonNull View bottomSheet) {
-            super.onStateExpanded(bottomSheet);
-            hideFloatingButton();
+            hideAllMarkers();
         }
 
         @Override
         protected void onStateCollapsed(@NonNull View bottomSheet) {
             super.onStateCollapsed(bottomSheet);
-            hideFloatingButton();
+            hideAllMarkers();
         }
     }
 
