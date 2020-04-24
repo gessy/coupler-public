@@ -1,6 +1,5 @@
 package com.offgrid.coupler.core.callback;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +14,6 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
@@ -29,18 +26,12 @@ import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
 import com.offgrid.coupler.core.model.map.MapLayerResponse;
 import com.offgrid.coupler.core.model.map.MapLayerResponse.Action;
 
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN;
 import static com.offgrid.coupler.controller.map.MapConstants.*;
 
 public class ContactLocationListener extends AbstractLocationListener {
 
     private MapboxMap mapboxMap;
     private ContactDetailsViewHolder viewHolder;
-    private ValueAnimator markerAnimator;
-    private boolean markerSelected = false;
-
-    private UserDto user;
 
     private Context context;
 
@@ -51,10 +42,9 @@ public class ContactLocationListener extends AbstractLocationListener {
 
     public ContactLocationListener withMapbox(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        this.markerAnimator = getAnimator();
+        registrAnimator(mapboxMap, SELECTED_USER_LOCATION_LAYER_ID);
         return this;
     }
-
 
     public ContactLocationListener withRootView(View rootView) {
         this.viewHolder = new ContactDetailsViewHolder(rootView);
@@ -62,7 +52,6 @@ public class ContactLocationListener extends AbstractLocationListener {
 
         return this;
     }
-
 
     public void attach() {
         bottomSheet(new BottomSheetCallback());
@@ -84,10 +73,11 @@ public class ContactLocationListener extends AbstractLocationListener {
             return false;
         }
 
-        MapLayerResponse response = MapService.contactFeature(mapboxMap, point, markerSelected);
+
+        MapLayerResponse response = MapService.contactFeature(mapboxMap, point, markerState(SELECTED_USER_LOCATION_LAYER_ID));
 
         if (response.state == Action.HIDE) {
-            bottomSheet(STATE_HIDDEN);
+            hideBottomSheet();
             return false;
         }
 
@@ -97,8 +87,7 @@ public class ContactLocationListener extends AbstractLocationListener {
                     Feature.fromGeometry(response.feature.geometry())
             }));
 
-            user = UserDto.getInstance(response.feature);
-            displayContact();
+            displayContact(UserDto.getInstance(response.feature));
         }
 
         return false;
@@ -107,59 +96,28 @@ public class ContactLocationListener extends AbstractLocationListener {
 
     @Override
     public boolean onMapLongClick(@NonNull LatLng point) {
-        bottomSheet(STATE_HIDDEN);
+        hideBottomSheet();
         return false;
     }
 
-    private void displayContact() {
+    private void displayContact(UserDto user) {
         viewHolder.update(user);
-        selectMarker();
-        bottomSheet(STATE_EXPANDED);
+        showBottomSheet();
     }
 
-
-    private void selectMarker() {
-        markerAnimator.setObjectValues(1f, 2f);
-        markerAnimator.start();
-        markerSelected = true;
-    }
-
-    private void deselectMarker() {
-        markerAnimator.setObjectValues(2f, 1f);
-        markerAnimator.start();
-        markerSelected = false;
-    }
-
-
-    private ValueAnimator getAnimator() {
-        ValueAnimator markerAnimator = new ValueAnimator();
-        markerAnimator.setDuration(300);
-        markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                Style style = mapboxMap.getStyle();
-                if (style != null) {
-                    SymbolLayer layer = (SymbolLayer) style.getLayer(SELECTED_USER_LOCATION_LAYER_ID);
-                    layer.setProperties(PropertyFactory.iconSize((float) animator.getAnimatedValue()));
-                }
-            }
-        });
-
-        return markerAnimator;
-    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_contact_chat:
-                jumpToActivity(DtoChatWrapper.convertAndWrap(user), ChatActivity.class);
+                jumpToActivity(DtoChatWrapper.convertAndWrap(viewHolder.get()), ChatActivity.class);
                 break;
             case R.id.btn_contact_info:
-                jumpToActivity(DtoUserWrapper.wrap(user), ContactInfoActivity.class);
+                jumpToActivity(DtoUserWrapper.wrap(viewHolder.get()), ContactInfoActivity.class);
                 break;
         }
 
-        bottomSheet(STATE_HIDDEN);
+        hideBottomSheet();
     }
 
     private void jumpToActivity(Bundle extras, Class<? extends AppCompatActivity> clazz) {
@@ -174,25 +132,19 @@ public class ContactLocationListener extends AbstractLocationListener {
         @Override
         protected void onStateHidden(@NonNull View bottomSheet) {
             super.onStateHidden(bottomSheet);
-            if (markerSelected) deselectMarker();
-            viewHolder.gidVisibility(View.VISIBLE);
-            showFloatingButton();
+            deselectMarkerAnimation(SELECTED_USER_LOCATION_LAYER_ID);
         }
 
         @Override
         protected void onStateExpanded(@NonNull View bottomSheet) {
             super.onStateExpanded(bottomSheet);
-            if (!markerSelected) selectMarker();
-            viewHolder.gidVisibility(View.VISIBLE);
-            hideFloatingButton();
+            selectMarkerAnimation(SELECTED_USER_LOCATION_LAYER_ID);
         }
 
         @Override
         protected void onStateCollapsed(@NonNull View bottomSheet) {
             super.onStateCollapsed(bottomSheet);
-            if (markerSelected) deselectMarker();
-            viewHolder.gidVisibility(View.INVISIBLE);
-            hideFloatingButton();
+            deselectMarkerAnimation(SELECTED_USER_LOCATION_LAYER_ID);
         }
     }
 }
