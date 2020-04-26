@@ -2,11 +2,11 @@ package com.offgrid.coupler.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.offgrid.coupler.data.entity.Country;
 import com.offgrid.coupler.data.entity.CountryRegions;
@@ -43,9 +43,22 @@ public abstract class CountryRegionDao {
         }
     }
 
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    public abstract void update(Region region);
+
     @Query("delete from T_Region")
     abstract void _deleteRegion();
 
     @Query("delete from T_Country")
     abstract void _deleteCountry();
+
+    @Query("select * from T_Country")
+    public abstract LiveData<List<Country>> findAllCountries();
+
+    @Query("select * from T_Region where country_id = :countryId ")
+    public abstract LiveData<List<Region>> findAllCountryRegions(Long countryId);
+
+    @Query("select * from T_Region where country_id = :countryId and is_downloaded = 0")
+    public abstract LiveData<List<Region>> findCountryRegionsToDownload(Long countryId);
+
 }

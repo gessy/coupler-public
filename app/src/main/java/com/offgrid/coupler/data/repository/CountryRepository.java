@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.offgrid.coupler.data.CouplerRoomDatabase;
 import com.offgrid.coupler.data.dao.CountryRegionDao;
+import com.offgrid.coupler.data.entity.Country;
 import com.offgrid.coupler.data.entity.CountryRegions;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class CountryRepository {
 
     public LiveData<List<CountryRegions>> getCountryRegions() {
         return dao.findAll();
+    }
+
+    public LiveData<List<Country>> getCountries() {
+        return dao.findAllCountries();
     }
 
 }

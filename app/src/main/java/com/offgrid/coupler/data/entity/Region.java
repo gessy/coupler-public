@@ -48,24 +48,12 @@ public class Region {
     @ColumnInfo(name = "max_zoom")
     private int maxZoom;
 
+    @NonNull
+    @ColumnInfo(name = "is_downloaded")
+    private boolean isDownloaded;
 
 
     public Region() {
-    }
-
-    @Ignore
-    public Region(@NonNull String name,
-                  @NonNull Long countryId,
-                  double northEastLatitude,
-                  double northEastLongitude,
-                  double southWestLatitude,
-                  double southWestLongitude) {
-        this.name = name;
-        this.countryId = countryId;
-        this.northEastLatitude = northEastLatitude;
-        this.northEastLongitude = northEastLongitude;
-        this.southWestLatitude = southWestLatitude;
-        this.southWestLongitude = southWestLongitude;
     }
 
 
@@ -86,6 +74,7 @@ public class Region {
         this.southWestLongitude = southWestLongitude;
         this.minZoom = minZoom;
         this.maxZoom = maxZoom;
+        this.isDownloaded = false;
     }
 
     @NonNull
@@ -171,4 +160,11 @@ public class Region {
         return new LatLng(southWestLatitude, southWestLongitude);
     }
 
+    public boolean isDownloaded() {
+        return isDownloaded;
+    }
+
+    public void setDownloaded(boolean downloaded) {
+        isDownloaded = downloaded;
+    }
 }
