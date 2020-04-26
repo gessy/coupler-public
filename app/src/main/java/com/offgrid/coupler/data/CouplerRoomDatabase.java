@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.offgrid.coupler.data.converter.ChatTypeConverter;
 import com.offgrid.coupler.data.converter.DateConverter;
 import com.offgrid.coupler.data.dao.ChatDao;
+import com.offgrid.coupler.data.dao.CountryRegionDao;
 import com.offgrid.coupler.data.dao.GroupChatDao;
 import com.offgrid.coupler.data.dao.GroupDao;
 import com.offgrid.coupler.data.dao.MessageDao;
@@ -21,10 +22,12 @@ import com.offgrid.coupler.data.dao.UserChatDao;
 import com.offgrid.coupler.data.dao.UserDao;
 import com.offgrid.coupler.data.dao.UserGroupDao;
 import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.entity.Country;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.entity.Place;
 import com.offgrid.coupler.data.entity.Placelist;
+import com.offgrid.coupler.data.entity.Region;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserGroupRef;
 
@@ -39,7 +42,9 @@ import java.util.concurrent.Executors;
                 Message.class,
                 User.class,
                 Group.class,
-                UserGroupRef.class},
+                UserGroupRef.class,
+                Region.class,
+                Country.class},
         version = 1,
         exportSchema = false
 )
@@ -63,6 +68,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
     public abstract PlacelistDao placelistDao();
 
     public abstract PlaceDao placeDao();
+
+    public abstract CountryRegionDao countryRegionDao();
 
 
     private static final String DB_NAME = "coupler_database";
@@ -95,8 +102,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-//                    ChatDao chatDao = INSTANCE.chatDao();
-//                    chatDao.deleteAll();
+//                    CountryRegionDao countryRegionDao = INSTANCE.countryRegionDao();
+//                    countryRegionDao.init(RegionPreset.get());
                 }
             });
         }
