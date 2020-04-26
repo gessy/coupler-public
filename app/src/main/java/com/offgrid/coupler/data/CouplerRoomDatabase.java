@@ -102,8 +102,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    CountryRegionDao countryRegionDao = INSTANCE.countryRegionDao();
-                    countryRegionDao.init(RegionPreset.get());
+//                    CountryRegionDao countryRegionDao = INSTANCE.countryRegionDao();
+//                    countryRegionDao.init(RegionPreset.get());
                 }
             });
         }

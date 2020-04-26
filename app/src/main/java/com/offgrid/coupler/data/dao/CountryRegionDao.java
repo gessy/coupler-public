@@ -1,5 +1,6 @@
 package com.offgrid.coupler.data.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -8,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.offgrid.coupler.data.entity.Country;
+import com.offgrid.coupler.data.entity.CountryRegions;
 import com.offgrid.coupler.data.entity.Region;
 
 import java.util.List;
@@ -16,6 +18,10 @@ import java.util.Map;
 
 @Dao
 public abstract class CountryRegionDao {
+
+    @Transaction
+    @Query("select id as cid from T_Country ")
+    public abstract LiveData<List<CountryRegions>> findAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Country.class)
     abstract long _insert(Country country);
@@ -42,5 +48,4 @@ public abstract class CountryRegionDao {
 
     @Query("delete from T_Country")
     abstract void _deleteCountry();
-
 }
