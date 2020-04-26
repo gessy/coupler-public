@@ -7,6 +7,9 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.offgrid.coupler.data.model.DownloadState;
+
+import static com.offgrid.coupler.data.model.DownloadState.READY_TO_LOAD;
 
 
 @Entity(tableName = "T_Region")
@@ -49,8 +52,8 @@ public class Region {
     private int maxZoom;
 
     @NonNull
-    @ColumnInfo(name = "is_downloaded")
-    private boolean isDownloaded;
+    @ColumnInfo(name = "download_state")
+    private DownloadState downloadState;
 
 
     public Region() {
@@ -74,7 +77,7 @@ public class Region {
         this.southWestLongitude = southWestLongitude;
         this.minZoom = minZoom;
         this.maxZoom = maxZoom;
-        this.isDownloaded = false;
+        this.downloadState = READY_TO_LOAD;
     }
 
     @NonNull
@@ -160,11 +163,12 @@ public class Region {
         return new LatLng(southWestLatitude, southWestLongitude);
     }
 
-    public boolean isDownloaded() {
-        return isDownloaded;
+    @NonNull
+    public DownloadState getDownloadState() {
+        return downloadState;
     }
 
-    public void setDownloaded(boolean downloaded) {
-        isDownloaded = downloaded;
+    public void setDownloadState(@NonNull DownloadState downloadState) {
+        this.downloadState = downloadState;
     }
 }
