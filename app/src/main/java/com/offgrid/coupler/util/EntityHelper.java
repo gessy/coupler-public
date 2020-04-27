@@ -22,12 +22,6 @@ public class EntityHelper {
                         .withText("This is info activity")
                         .withAction(Info.Action.info)
                         .build();
-            case R.id.nav_offline_maps:
-                return  new Info.BundleBuilder()
-                        .withTitle("Offline maps")
-                        .withText("This is offline maps activity")
-                        .withAction(Info.Action.info)
-                        .build();
         }
 
         return new Info.BundleBuilder().build();

@@ -47,11 +47,13 @@
     <string name="gid_label">GID</string>
     <string name="gid_pattern">___ ___ ___ ___</string>
 
-
     <string name="dialog_edit_list">Edit list</string>
     <string name="dialog_create_list">New list</string>
     <string name="dialog_add_place_to_list">Add place to list</string>
     <string name="dialog_place">Place</string>
     <string name="dialog_edit_place">Edit place</string>
+
+
+    <string name="downloaded_offline_region">Downloaded</string>
 
 </resources>

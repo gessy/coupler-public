@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.offgrid.coupler.data.entity.Country;
 import com.offgrid.coupler.data.entity.CountryRegions;
 import com.offgrid.coupler.data.entity.Region;
+import com.offgrid.coupler.data.entity.RegionCountry;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,10 @@ public abstract class CountryRegionDao {
     @Transaction
     @Query("select id as cid from T_Country ")
     public abstract LiveData<List<CountryRegions>> findAll();
+
+    @Transaction
+    @Query("select id as rid, country_id as cid from T_Region where download_state != 'READY_TO_LOAD'")
+    public abstract LiveData<List<RegionCountry>> findLoadedRegionCountry();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Country.class)
     abstract long _insert(Country country);
@@ -58,7 +63,7 @@ public abstract class CountryRegionDao {
     @Query("select * from T_Region where country_id = :countryId ")
     public abstract LiveData<List<Region>> findAllCountryRegions(Long countryId);
 
-    @Query("select * from T_Region where country_id = :countryId and is_downloaded = 0")
+    @Query("select * from T_Region where country_id = :countryId and download_state = 'READY_TO_LOAD'")
     public abstract LiveData<List<Region>> findCountryRegionsToDownload(Long countryId);
 
 }

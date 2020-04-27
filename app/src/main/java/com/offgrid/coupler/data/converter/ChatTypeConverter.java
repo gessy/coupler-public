@@ -15,4 +15,5 @@ public class ChatTypeConverter {
     public static String typeToString(ChatType type) {
         return type.toString();
     }
+
 }

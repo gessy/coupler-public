@@ -11,6 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.offgrid.coupler.data.converter.ChatTypeConverter;
 import com.offgrid.coupler.data.converter.DateConverter;
+import com.offgrid.coupler.data.converter.DownloadStateConverter;
 import com.offgrid.coupler.data.dao.ChatDao;
 import com.offgrid.coupler.data.dao.CountryRegionDao;
 import com.offgrid.coupler.data.dao.GroupChatDao;
@@ -48,7 +49,7 @@ import java.util.concurrent.Executors;
         version = 1,
         exportSchema = false
 )
-@TypeConverters({DateConverter.class, ChatTypeConverter.class})
+@TypeConverters({DateConverter.class, ChatTypeConverter.class, DownloadStateConverter.class})
 public abstract class CouplerRoomDatabase extends RoomDatabase {
 
     public abstract ChatDao chatDao();
@@ -102,8 +103,8 @@ public abstract class CouplerRoomDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-//                    CountryRegionDao countryRegionDao = INSTANCE.countryRegionDao();
-//                    countryRegionDao.init(RegionPreset.get());
+                    CountryRegionDao countryRegionDao = INSTANCE.countryRegionDao();
+                    countryRegionDao.init(RegionPreset.get());
                 }
             });
         }

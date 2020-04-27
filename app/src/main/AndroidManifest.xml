@@ -66,6 +66,11 @@
             android:name=".controller.place.PlacesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+<!--        Offline Activity-->
+        <activity
+            android:name=".controller.offline.OfflineActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
