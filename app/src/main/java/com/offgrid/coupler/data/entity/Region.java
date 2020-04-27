@@ -68,6 +68,28 @@ public class Region {
                   double southWestLatitude,
                   double southWestLongitude,
                   int minZoom,
+                  int maxZoom,
+                  DownloadState downloadState) {
+        this.name = name;
+        this.countryId = countryId;
+        this.northEastLatitude = northEastLatitude;
+        this.northEastLongitude = northEastLongitude;
+        this.southWestLatitude = southWestLatitude;
+        this.southWestLongitude = southWestLongitude;
+        this.minZoom = minZoom;
+        this.maxZoom = maxZoom;
+        this.downloadState = downloadState;
+    }
+
+
+    @Ignore
+    public Region(@NonNull String name,
+                  @NonNull Long countryId,
+                  double northEastLatitude,
+                  double northEastLongitude,
+                  double southWestLatitude,
+                  double southWestLongitude,
+                  int minZoom,
                   int maxZoom) {
         this.name = name;
         this.countryId = countryId;

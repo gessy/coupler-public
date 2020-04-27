@@ -23,5 +23,5 @@ public class RegionCountry {
             parentColumn = "rid",
             entityColumn = "id"
     )
-    public Country region;
+    public Region region;
 }
