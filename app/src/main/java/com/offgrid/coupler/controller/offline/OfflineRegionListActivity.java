@@ -90,8 +90,7 @@ public class OfflineRegionListActivity extends AppCompatActivity implements Obse
         if (item.getItemId() == R.id.action_search) {
             Intent intent = new Intent(this, SearchRegionActivity.class);
             intent.putExtras(new Info.BundleBuilder()
-                    .withTitle("Search region")
-                    .withText("This is Search region activity")
+                    .withTitle(getString(R.string.search_region))
                     .build());
             startActivityForResult(intent, 1);
 
