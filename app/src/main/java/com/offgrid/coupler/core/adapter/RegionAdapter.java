@@ -26,7 +26,7 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionViewHolder> {
 
     @Override
     public RegionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.region_country_item, parent, false);
+        View itemView = mInflater.inflate(R.layout.region_item, parent, false);
         return new RegionViewHolder(itemView);
     }
 
