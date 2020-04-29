@@ -19,7 +19,7 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
-import com.offgrid.coupler.controller.offline.OfflineActivity;
+import com.offgrid.coupler.controller.offline.OfflineRegionListActivity;
 import com.offgrid.coupler.controller.place.PlacelistActivity;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
@@ -150,7 +150,7 @@ public class MainActivity
                                 .withText("This is offline maps activity")
                                 .withAction(Info.Action.info)
                                 .build(),
-                        OfflineActivity.class);
+                        OfflineRegionListActivity.class);
         }
 
         return jumpToActivity(EntityHelper.createBundle(item.getItemId()), MockActivity.class);

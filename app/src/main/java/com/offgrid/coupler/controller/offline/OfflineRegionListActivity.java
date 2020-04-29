@@ -1,5 +1,6 @@
 package com.offgrid.coupler.controller.offline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.adapter.RegionAdapter;
+import com.offgrid.coupler.core.adapter.RegionCountryAdapter;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.RegionCountryViewModel;
@@ -25,9 +26,9 @@ import com.offgrid.coupler.data.entity.RegionCountry;
 import java.util.List;
 
 
-public class OfflineActivity extends AppCompatActivity implements Observer<List<RegionCountry>> {
+public class OfflineRegionListActivity extends AppCompatActivity implements Observer<List<RegionCountry>> {
 
-    private RegionAdapter regionAdapter;
+    private RegionCountryAdapter regionAdapter;
     private RegionCountryViewModel regionCountryViewModel;
 
     @Override
@@ -36,7 +37,7 @@ public class OfflineActivity extends AppCompatActivity implements Observer<List<
 
         Info info = Info.getInstance(getIntent().getExtras());
 
-        setContentView(R.layout.activity_offline);
+        setContentView(R.layout.activity_offline_region);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -51,7 +52,7 @@ public class OfflineActivity extends AppCompatActivity implements Observer<List<
             }
         });
 
-        regionAdapter = new RegionAdapter(this);
+        regionAdapter = new RegionCountryAdapter(this);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_loaded_regions);
         recyclerView.setAdapter(regionAdapter);
@@ -84,6 +85,16 @@ public class OfflineActivity extends AppCompatActivity implements Observer<List<
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            Intent intent = new Intent(this, SearchRegionActivity.class);
+            intent.putExtras(new Info.BundleBuilder()
+                    .withTitle(getString(R.string.search_region))
+                    .build());
+            startActivityForResult(intent, 1);
+
+            overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

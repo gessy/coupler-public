@@ -32,9 +32,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:paddingStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/downloaded_offline_region"
-            android:textSize="20sp"/>
+            android:textSize="14sp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

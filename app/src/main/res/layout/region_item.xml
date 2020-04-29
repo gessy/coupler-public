@@ -23,21 +23,6 @@
         tools:text="Saint-Petersburg"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/country_name"
-        android:layout_below="@+id/split_line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="12dp"
-        android:layout_marginStart="2dp"
-        android:layout_toRightOf="@+id/region_name"
-        android:singleLine="true"
-        android:alpha="0.23"
-        android:textStyle="italic"
-        tools:text="Russia"
-        android:textSize="16sp" />
-
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -63,7 +48,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
             android:alpha="0.5"
-            android:src="@drawable/ic_cancel_blue_24dp" />
+            android:src="@drawable/ic_download_blue_24dp" />
     </RelativeLayout>
 
 

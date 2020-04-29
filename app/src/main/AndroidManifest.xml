@@ -68,8 +68,13 @@
 
 <!--        Offline Activity-->
         <activity
-            android:name=".controller.offline.OfflineActivity"
+            android:name=".controller.offline.OfflineRegionListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controller.offline.SearchRegionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
 
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

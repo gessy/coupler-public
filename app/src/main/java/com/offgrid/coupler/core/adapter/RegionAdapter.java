@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.holder.RegionViewHolder;
 import com.offgrid.coupler.data.entity.Region;
-import com.offgrid.coupler.data.entity.RegionCountry;
 
 import java.util.List;
 
@@ -18,18 +17,16 @@ import java.util.List;
 public class RegionAdapter extends RecyclerView.Adapter<RegionViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<RegionCountry> list;
-    private Context context;
+    private List<Region> list;
 
 
     public RegionAdapter(Context context) {
-        this.context = context;
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public RegionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.region_country_item, parent, false);
+        View itemView = mInflater.inflate(R.layout.region_item, parent, false);
         return new RegionViewHolder(itemView);
     }
 
@@ -40,13 +37,9 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionViewHolder> {
         }
     }
 
-    public void setRegionCountryList(List<RegionCountry> list) {
+    public void setRegionList(List<Region> list) {
         this.list = list;
         notifyDataSetChanged();
-    }
-
-    public Region getRegion(int position) {
-        return list.get(position).region;
     }
 
 
