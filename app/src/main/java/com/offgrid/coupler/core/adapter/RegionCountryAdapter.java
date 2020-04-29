@@ -8,38 +8,45 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.holder.RegionViewHolder;
+import com.offgrid.coupler.core.holder.RegionCountryViewHolder;
 import com.offgrid.coupler.data.entity.Region;
+import com.offgrid.coupler.data.entity.RegionCountry;
 
 import java.util.List;
 
 
-public class RegionAdapter extends RecyclerView.Adapter<RegionViewHolder> {
+public class RegionCountryAdapter extends RecyclerView.Adapter<RegionCountryViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<Region> list;
+    private List<RegionCountry> list;
+    private Context context;
 
 
-    public RegionAdapter(Context context) {
+    public RegionCountryAdapter(Context context) {
+        this.context = context;
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public RegionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RegionCountryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.region_country_item, parent, false);
-        return new RegionViewHolder(itemView);
+        return new RegionCountryViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(RegionViewHolder holder, int position) {
+    public void onBindViewHolder(RegionCountryViewHolder holder, int position) {
         if (list != null) {
             holder.update(list.get(position));
         }
     }
 
-    public void setRegionList(List<Region> list) {
+    public void setRegionCountryList(List<RegionCountry> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public Region getRegion(int position) {
+        return list.get(position).region;
     }
 
 

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
-import com.offgrid.coupler.core.adapter.RegionAdapter;
+import com.offgrid.coupler.core.adapter.RegionCountryAdapter;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.RegionCountryViewModel;
@@ -28,7 +28,7 @@ import java.util.List;
 
 public class OfflineRegionListActivity extends AppCompatActivity implements Observer<List<RegionCountry>> {
 
-    private RegionAdapter regionAdapter;
+    private RegionCountryAdapter regionAdapter;
     private RegionCountryViewModel regionCountryViewModel;
 
     @Override
@@ -52,7 +52,7 @@ public class OfflineRegionListActivity extends AppCompatActivity implements Obse
             }
         });
 
-        regionAdapter = new RegionAdapter(this);
+        regionAdapter = new RegionCountryAdapter(this);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview_loaded_regions);
         recyclerView.setAdapter(regionAdapter);

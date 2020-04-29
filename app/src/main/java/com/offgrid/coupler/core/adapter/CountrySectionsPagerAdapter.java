@@ -1,14 +1,13 @@
 package com.offgrid.coupler.core.adapter;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.offgrid.coupler.controller.offline.CountryRegionsFragment;
+import com.offgrid.coupler.controller.offline.RegionListFragment;
 import com.offgrid.coupler.data.entity.Country;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class CountrySectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return CountryRegionsFragment.newInstance(list.get(position));
+        return RegionListFragment.newInstance(list.get(position));
     }
 
     @Nullable
