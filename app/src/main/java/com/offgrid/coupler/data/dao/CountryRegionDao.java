@@ -28,6 +28,10 @@ public abstract class CountryRegionDao {
     @Query("select id as rid, country_id as cid from T_Region where download_state != 'READY_TO_LOAD'")
     public abstract LiveData<List<RegionCountry>> findLoadedRegionCountry();
 
+    @Transaction
+    @Query("select id as cid from T_Country where id = :countryId")
+    public abstract LiveData<CountryRegions> findCountryRegions(Long countryId);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE, entity = Country.class)
     abstract long _insert(Country country);
 

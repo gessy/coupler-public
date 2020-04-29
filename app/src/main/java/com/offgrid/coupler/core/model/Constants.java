@@ -22,4 +22,9 @@ public class Constants {
     public static final String KEY_PLACE_LATITUDE = "key-place-latitude";
     public static final String KEY_PLACE_LONGITUDE = "key-place-longitude";
 
+
+    // Country
+    public static final String KEY_COUNTRY_ID = "key-country-id";
+    public static final String KEY_COUNTRY_NAME = "key-country-name";
+
 }
