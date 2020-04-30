@@ -40,7 +40,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
 
         Mapbox.getInstance(getActivity(), getString(R.string.map_access_token));
         rootView = inflater.inflate(R.layout.fragment_map, container, false);
@@ -78,6 +79,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         .withContext(getActivity())
                         .withMapbox(MapFragment.this.mapboxMap)
                         .configure();
+
             }
         });
 

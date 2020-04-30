@@ -1,6 +1,8 @@
 package com.offgrid.coupler.core.model;
 
 public class Constants {
+    public static final String CHARACTER_ENCODING = "UTF-8";
+
     //Contact
     public static final String KEY_CONTACT_ID = "key-contact-id";
     public static final String KEY_CONTACT_GID = "key-contact-gid";
@@ -12,7 +14,7 @@ public class Constants {
     public static final String KEY_CONTACT_LATITUDE = "key-contact-latitude";
     public static final String KEY_CONTACT_LONGITUDE = "key-contact-longitude";
 
-    // Placelist
+    //Placelist
     public static final String KEY_PLACELIST_ID = "key-placelist-id";
     public static final String KEY_PLACELIST_NAME = "key-placelist-name";
 
@@ -22,9 +24,12 @@ public class Constants {
     public static final String KEY_PLACE_LATITUDE = "key-place-latitude";
     public static final String KEY_PLACE_LONGITUDE = "key-place-longitude";
 
-
-    // Country
+    //Country
     public static final String KEY_COUNTRY_ID = "key-country-id";
     public static final String KEY_COUNTRY_NAME = "key-country-name";
+
+
+    //Region
+    public static final String KEY_REGION_NAME = "key-region-name";
 
 }

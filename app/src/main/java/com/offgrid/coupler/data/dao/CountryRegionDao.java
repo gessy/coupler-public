@@ -70,4 +70,7 @@ public abstract class CountryRegionDao {
     @Query("select * from T_Region where country_id = :countryId and download_state = 'READY_TO_LOAD'")
     public abstract LiveData<List<Region>> findCountryRegionsToDownload(Long countryId);
 
+    @Query("select * from T_Region where id = :regionId ")
+    public abstract LiveData<Region> findRegionById(Long regionId);
+
 }

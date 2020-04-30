@@ -11,24 +11,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
-import com.offgrid.coupler.data.entity.CountryRegions;
 import com.offgrid.coupler.data.entity.Region;
 import com.offgrid.coupler.data.repository.RegionRepository;
 
 
-public class CountryRegionsViewModel extends AndroidViewModel {
+public class RegionViewModel extends AndroidViewModel {
 
     private RegionRepository regionRepository;
     private final MutableLiveData<Long> load = new MutableLiveData();
-    private LiveData<CountryRegions> liveCountryRegions;
+    private LiveData<Region> liveRegion;
 
-    public CountryRegionsViewModel(Application application) {
+    public RegionViewModel(Application application) {
         super(application);
         regionRepository = new RegionRepository(application);
-        liveCountryRegions = Transformations.switchMap(load, new Function<Long, LiveData<CountryRegions>>() {
+        liveRegion = Transformations.switchMap(load, new Function<Long, LiveData<Region>>() {
             @Override
-            public LiveData<CountryRegions> apply(Long id) {
-                return regionRepository.getCountryRegions(id);
+            public LiveData<Region> apply(Long id) {
+                return regionRepository.getRegion(id);
             }
         });
     }
@@ -37,11 +36,12 @@ public class CountryRegionsViewModel extends AndroidViewModel {
         regionRepository.update(region);
     }
 
+
     public void load(Long id) {
         load.setValue(id);
     }
 
-    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super CountryRegions> observer) {
-        liveCountryRegions.observe(owner, observer);
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Region> observer) {
+        liveRegion.observe(owner, observer);
     }
 }
