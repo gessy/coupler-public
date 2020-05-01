@@ -5,9 +5,6 @@ import android.os.Bundle;
 public class Info {
     public enum Action {
         none("none"),
-        add_contact("add_contact"),
-        contact_list("contact_list"),
-        add_group("add_group"),
         new_message("new_message"),
         settings("settings"),
         info("info");

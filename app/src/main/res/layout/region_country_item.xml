@@ -57,13 +57,13 @@
             android:textSize="14sp" />
 
         <ImageView
-            android:id="@+id/download_state_icon"
+            android:id="@+id/search_location"
             android:layout_toRightOf="@id/tiles_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
             android:alpha="0.5"
-            android:src="@drawable/ic_cancel_blue_24dp" />
+            android:src="@drawable/ic_location_searching_blue_24dp" />
     </RelativeLayout>
 
 

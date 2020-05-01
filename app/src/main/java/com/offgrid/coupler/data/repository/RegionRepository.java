@@ -26,6 +26,10 @@ public class RegionRepository {
         return dao.findAllCountryRegions(countryId);
     }
 
+    public LiveData<Region> getRegion(Long regionId) {
+        return dao.findRegionById(regionId);
+    }
+
 
     public LiveData<List<RegionCountry>> getLoadedRegionCountry() {
         return dao.findLoadedRegionCountry();

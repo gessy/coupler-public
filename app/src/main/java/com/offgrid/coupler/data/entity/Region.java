@@ -193,4 +193,9 @@ public class Region {
     public void setDownloadState(@NonNull DownloadState downloadState) {
         this.downloadState = downloadState;
     }
+
+    public boolean checkDownloadState(@NonNull DownloadState downloadState) {
+        return this.downloadState == downloadState;
+    }
+
 }

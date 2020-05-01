@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,9 +26,12 @@ import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
+import com.offgrid.coupler.core.model.command.BaseCommand;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
+
+import static com.offgrid.coupler.core.model.Constants.KEY_COMMAND;
 
 
 public class MainActivity
@@ -167,5 +171,18 @@ public class MainActivity
         overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
 
         return true;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            String command = data.getStringExtra(KEY_COMMAND);
+            if (BaseCommand.REGION_LOCATION.equals(command)) {
+                fragmentController.displayScreen(R.id.nav_map);
+                fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
+            }
+        }
     }
 }

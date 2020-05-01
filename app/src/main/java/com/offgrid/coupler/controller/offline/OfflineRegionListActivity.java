@@ -18,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.adapter.RegionCountryAdapter;
+import com.offgrid.coupler.core.callback.RegionCallback;
 import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.core.model.view.RegionCountryViewModel;
+import com.offgrid.coupler.data.entity.Region;
 import com.offgrid.coupler.data.entity.RegionCountry;
 
 import java.util.List;
@@ -61,7 +63,15 @@ public class OfflineRegionListActivity extends AppCompatActivity implements Obse
         ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                regionCountryViewModel.dropFromLoad(regionAdapter.getRegion(viewHolder.getAdapterPosition()));
+                Region region = regionAdapter.getRegion(viewHolder.getAdapterPosition());
+                MapRegionJanitor regionJanitor = new MapRegionJanitor(OfflineRegionListActivity.this);
+                regionJanitor.setCallback(new RegionCallback() {
+                    @Override
+                    public void call(Region region) {
+                        regionCountryViewModel.dropFromLoad(region);
+                    }
+                });
+                regionJanitor.delete(region);
             }
         });
         touchHelper.attachToRecyclerView(recyclerView);
@@ -91,7 +101,7 @@ public class OfflineRegionListActivity extends AppCompatActivity implements Obse
                     .withTitle(getString(R.string.search_region))
                     .build());
             startActivityForResult(intent, 1);
-
+            finish();
             overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         }
 

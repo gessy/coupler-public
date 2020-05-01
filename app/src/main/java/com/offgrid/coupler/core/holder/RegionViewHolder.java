@@ -24,6 +24,9 @@ public class RegionViewHolder extends RecyclerView.ViewHolder {
     private final TextView tilesCount;
     private final ImageView downloadState;
 
+
+    private View.OnClickListener clickListener;
+
     public RegionViewHolder(View itemView) {
         super(itemView);
 
@@ -45,7 +48,13 @@ public class RegionViewHolder extends RecyclerView.ViewHolder {
 
             downloadState.setImageDrawable(drawable);
             downloadState.setVisibility(View.VISIBLE);
+            downloadState.setOnClickListener(clickListener);
         }
     }
+
+    public void setOnClickListener(View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
 
 }
