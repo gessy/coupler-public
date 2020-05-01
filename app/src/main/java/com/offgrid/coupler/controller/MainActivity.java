@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,13 +22,17 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
 import com.offgrid.coupler.controller.offline.OfflineRegionListActivity;
 import com.offgrid.coupler.controller.place.PlacelistActivity;
+import com.offgrid.coupler.core.model.Action;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
+import com.offgrid.coupler.core.model.dto.RegionDto;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
+
+import static com.offgrid.coupler.core.model.Constants.KEY_ACTION;
 
 
 public class MainActivity
@@ -167,5 +172,19 @@ public class MainActivity
         overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
 
         return true;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            int action = data.getIntExtra(KEY_ACTION, Action.NONE);
+            if (action == Action.REGION_LOCATION) {
+                fragmentController.displayScreen(R.id.nav_map);
+                fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
+                RegionDto dto = RegionDto.getInstance(data.getExtras());
+            }
+        }
     }
 }

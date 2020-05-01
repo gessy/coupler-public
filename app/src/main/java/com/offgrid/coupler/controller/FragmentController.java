@@ -1,9 +1,11 @@
 package com.offgrid.coupler.controller;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -55,6 +57,15 @@ public class FragmentController {
 
     public void registerFragment(@IdRes int resId, @NonNull Fragment fragment) {
         fragmentMap.put(resId, fragment);
+    }
+
+
+    public void onActivityResult(@IdRes int resId, int requestCode, int resultCode, @Nullable Intent data) {
+        if (!fragmentMap.containsKey(resId)) {
+            return;
+        }
+
+        fragmentMap.get(resId).onActivityResult(requestCode, resultCode, data);
     }
 
 

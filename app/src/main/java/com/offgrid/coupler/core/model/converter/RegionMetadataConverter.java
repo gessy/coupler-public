@@ -1,5 +1,6 @@
 package com.offgrid.coupler.core.model.converter;
 
+import com.offgrid.coupler.R;
 import com.offgrid.coupler.data.entity.Region;
 
 import org.json.JSONObject;
@@ -17,6 +18,17 @@ public class RegionMetadataConverter {
             return json.getBytes(CHARACTER_ENCODING);
         } catch (Exception e) {
 
+        }
+
+        return null;
+    }
+
+    public static String regionName(byte[] metadata) {
+        try {
+            String json = new String(metadata, CHARACTER_ENCODING);
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.getString(KEY_REGION_NAME);
+        } catch (Exception exception) {
         }
 
         return null;

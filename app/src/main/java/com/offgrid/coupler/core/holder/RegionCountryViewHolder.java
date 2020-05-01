@@ -15,14 +15,16 @@ public class RegionCountryViewHolder extends RecyclerView.ViewHolder {
     private final TextView regionName;
     private final TextView countryName;
     private final TextView tilesCount;
-    private final ImageView downloadState;
+    private final ImageView searchLocation;
+
+    private View.OnClickListener listener;
 
     public RegionCountryViewHolder(View itemView) {
         super(itemView);
         regionName = itemView.findViewById(R.id.region_name);
         countryName = itemView.findViewById(R.id.country_name);
         tilesCount = itemView.findViewById(R.id.tiles_count);
-        downloadState = itemView.findViewById(R.id.download_state_icon);
+        searchLocation = itemView.findViewById(R.id.search_location);
     }
 
     public void update(RegionCountry regionCountry) {
@@ -31,11 +33,11 @@ public class RegionCountryViewHolder extends RecyclerView.ViewHolder {
         tilesCount.setText("3.2K");
 
         if (regionCountry.region.getDownloadState().equals(DownloadState.DOWNLOADED)) {
-            downloadState.setVisibility(View.GONE);
-        } else {
-            downloadState.setVisibility(View.VISIBLE);
+            searchLocation.setOnClickListener(listener);
         }
-
     }
 
+    public void setListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
 }

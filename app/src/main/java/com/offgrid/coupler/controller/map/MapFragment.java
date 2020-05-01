@@ -1,6 +1,8 @@
 package com.offgrid.coupler.controller.map;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,8 +12,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -24,13 +31,22 @@ import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurato
 import com.offgrid.coupler.controller.map.configurator.PlaceLocationConfigurator;
 import com.offgrid.coupler.core.callback.ContactLocationListener;
 import com.offgrid.coupler.core.callback.PlaceLocationListener;
+import com.offgrid.coupler.core.model.Action;
+import com.offgrid.coupler.core.model.command.Command;
+import com.offgrid.coupler.core.model.command.RegionLocationCommand;
+import com.offgrid.coupler.core.model.dto.RegionDto;
+
+import static com.offgrid.coupler.core.model.Constants.KEY_ACTION;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+public class MapFragment extends Fragment
+        implements OnMapReadyCallback, View.OnClickListener, Observer<Command> {
 
     private View rootView;
     private MapView mapView;
     private MapboxMap mapboxMap;
+
+    private final MutableLiveData<Command> pipeCommand = new MutableLiveData();
 
 
     @Override
@@ -80,9 +96,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         .withMapbox(MapFragment.this.mapboxMap)
                         .configure();
 
+                pipeCommand.observe(MapFragment.this, MapFragment.this);
             }
         });
-
 
         ContactLocationListener contactLocationListener = new ContactLocationListener(getActivity())
                 .withMapbox(mapboxMap)
@@ -109,6 +125,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         }
     }
 
+    @Override
+    public void onChanged(Command command) {
+        if (command instanceof RegionLocationCommand) {
+            RegionLocationCommand cmd = (RegionLocationCommand) command;
+            mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(
+                    new CameraPosition.Builder()
+                            .target(cmd.getLocation())
+                            .zoom(cmd.getZoom())
+                            .build()
+            ));
+        }
+    }
 
     @Override
     public void onStart() {
@@ -150,6 +178,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
+
+        int action = data.getIntExtra(KEY_ACTION, Action.NONE);
+        if (action == Action.REGION_LOCATION) {
+            RegionDto dto = RegionDto.getInstance(data.getExtras());
+            pipeCommand.setValue(
+                    new RegionLocationCommand(
+                            new LatLngBounds.Builder()
+                                    .include(dto.getNorthEast())
+                                    .include(dto.getSouthWest())
+                                    .build()
+                                    .getCenter(),
+                            dto.getMinZoom() / 4 + 3 * dto.getMaxZoom() / 4
+                    )
+            );
+        }
     }
 
 }

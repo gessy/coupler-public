@@ -29,7 +29,6 @@ public class MapRegionLoader {
     private String styleURL = DEFAULT_STYLE_URL;
     private Observer observer;
 
-
     public MapRegionLoader(Context context) {
         this.context = context;
     }
@@ -37,6 +36,7 @@ public class MapRegionLoader {
     public void setObserver(Observer observer) {
         this.observer = observer;
     }
+
 
     public void load(Region region) {
         byte[] metadata = RegionMetadataConverter.convert(region);
@@ -90,5 +90,46 @@ public class MapRegionLoader {
                 }
         );
     }
-    
+
+
+    public void remove(final Region region) {
+        Mapbox.getInstance(context, context.getResources().getString(R.string.map_access_token));
+
+        OfflineManager offlineManager = OfflineManager.getInstance(context);
+
+        offlineManager.listOfflineRegions(new OfflineManager.ListOfflineRegionsCallback() {
+            @Override
+            public void onList(OfflineRegion[] offlineRegions) {
+                if (offlineRegions == null || offlineRegions.length == 0) {
+                    return;
+                }
+
+                for (OfflineRegion offlineRegion : offlineRegions) {
+                    String regionName = RegionMetadataConverter.regionName(offlineRegion.getMetadata());
+                    if (region.getName().equals(regionName)) {
+                        offlineRegion.delete(new OfflineRegion.OfflineRegionDeleteCallback() {
+                            @Override
+                            public void onDelete() {
+
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+    }
+
+
 }
