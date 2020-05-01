@@ -22,17 +22,16 @@ import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
 import com.offgrid.coupler.controller.offline.OfflineRegionListActivity;
 import com.offgrid.coupler.controller.place.PlacelistActivity;
-import com.offgrid.coupler.core.model.Action;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
-import com.offgrid.coupler.core.model.dto.RegionDto;
+import com.offgrid.coupler.core.model.command.BaseCommand;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
 
-import static com.offgrid.coupler.core.model.Constants.KEY_ACTION;
+import static com.offgrid.coupler.core.model.Constants.KEY_COMMAND;
 
 
 public class MainActivity
@@ -179,11 +178,10 @@ public class MainActivity
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            int action = data.getIntExtra(KEY_ACTION, Action.NONE);
-            if (action == Action.REGION_LOCATION) {
+            String command = data.getStringExtra(KEY_COMMAND);
+            if (BaseCommand.REGION_LOCATION.equals(command)) {
                 fragmentController.displayScreen(R.id.nav_map);
                 fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
-                RegionDto dto = RegionDto.getInstance(data.getExtras());
             }
         }
     }

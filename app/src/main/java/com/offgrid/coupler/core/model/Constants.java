@@ -4,8 +4,7 @@ public class Constants {
     public static final String CHARACTER_ENCODING = "UTF-8";
 
     // Intent
-    public static final String KEY_ACTION = "key-action";
-
+    public static final String KEY_COMMAND = "key-command";
 
     //Contact
     public static final String KEY_CONTACT_ID = "key-contact-id";
@@ -32,7 +31,6 @@ public class Constants {
     public static final String KEY_COUNTRY_ID = "key-country-id";
     public static final String KEY_COUNTRY_NAME = "key-country-name";
 
-
     //Region
     public static final String KEY_REGION_ID = "key-region-id";
     public static final String KEY_REGION_NAME = "key-region-name";
@@ -44,7 +42,5 @@ public class Constants {
     public static final String KEY_REGION_NORTHEAST_LONGITUDE = "key-region-northeast-longitude";
     public static final String KEY_REGION_SOUTHWEST_LATITUDE = "key-region-southwest-latitude";
     public static final String KEY_REGION_SOUTHWEST_LONGITUDE = "key-region-southwest-longitude";
-
-
 
 }

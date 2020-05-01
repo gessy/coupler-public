@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.core.holder.RegionCountryViewHolder;
-import com.offgrid.coupler.core.model.Action;
-import com.offgrid.coupler.core.model.dto.wrapper.DtoRegionWrapper;
+import com.offgrid.coupler.core.model.command.BaseCommand;
+import com.offgrid.coupler.core.model.command.wrapper.RegionLocationCommandWrapper;
 import com.offgrid.coupler.data.entity.Region;
 import com.offgrid.coupler.data.entity.RegionCountry;
 
 import java.util.List;
 
-import static com.offgrid.coupler.core.model.Constants.KEY_ACTION;
+import static com.offgrid.coupler.core.model.Constants.KEY_COMMAND;
 
 
 public class RegionCountryAdapter extends RecyclerView.Adapter<RegionCountryViewHolder> {
@@ -45,8 +45,9 @@ public class RegionCountryAdapter extends RecyclerView.Adapter<RegionCountryView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra(KEY_ACTION, Action.REGION_LOCATION);
-                intent.putExtras(DtoRegionWrapper.convertAndWrap(regionCountry.region));
+                intent.putExtra(KEY_COMMAND, BaseCommand.REGION_LOCATION);
+                intent.putExtras(RegionLocationCommandWrapper.convertAndWrap(regionCountry.region));
+
                 ((Activity)context).setResult(Activity.RESULT_OK, intent);
                 ((Activity)context).finish();
                 ((Activity)context).overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);

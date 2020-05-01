@@ -2,7 +2,6 @@ package com.offgrid.coupler.controller.map;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +17,6 @@ import androidx.lifecycle.Observer;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -31,12 +29,11 @@ import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurato
 import com.offgrid.coupler.controller.map.configurator.PlaceLocationConfigurator;
 import com.offgrid.coupler.core.callback.ContactLocationListener;
 import com.offgrid.coupler.core.callback.PlaceLocationListener;
-import com.offgrid.coupler.core.model.Action;
+import com.offgrid.coupler.core.model.command.BaseCommand;
 import com.offgrid.coupler.core.model.command.Command;
 import com.offgrid.coupler.core.model.command.RegionLocationCommand;
-import com.offgrid.coupler.core.model.dto.RegionDto;
 
-import static com.offgrid.coupler.core.model.Constants.KEY_ACTION;
+import static com.offgrid.coupler.core.model.Constants.KEY_COMMAND;
 
 
 public class MapFragment extends Fragment
@@ -188,19 +185,9 @@ public class MapFragment extends Fragment
             return;
         }
 
-        int action = data.getIntExtra(KEY_ACTION, Action.NONE);
-        if (action == Action.REGION_LOCATION) {
-            RegionDto dto = RegionDto.getInstance(data.getExtras());
-            pipeCommand.setValue(
-                    new RegionLocationCommand(
-                            new LatLngBounds.Builder()
-                                    .include(dto.getNorthEast())
-                                    .include(dto.getSouthWest())
-                                    .build()
-                                    .getCenter(),
-                            dto.getMinZoom() / 4 + 3 * dto.getMaxZoom() / 4
-                    )
-            );
+        String command = data.getStringExtra(KEY_COMMAND);
+        if (BaseCommand.REGION_LOCATION.equals(command)) {
+            pipeCommand.setValue(RegionLocationCommand.getInstance(data.getExtras()));
         }
     }
 
