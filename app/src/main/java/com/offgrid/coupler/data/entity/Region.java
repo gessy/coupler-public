@@ -44,6 +44,14 @@ public class Region {
     private double southWestLongitude;
 
     @NonNull
+    @ColumnInfo(name = "center_latitude")
+    private double centerLatitude;
+
+    @NonNull
+    @ColumnInfo(name = "center_longitude")
+    private double centerLongitude;
+
+    @NonNull
     @ColumnInfo(name = "min_zoom")
     private int minZoom;
 
@@ -60,27 +68,28 @@ public class Region {
     }
 
 
-    @Ignore
     public Region(@NonNull String name,
                   @NonNull Long countryId,
                   double northEastLatitude,
                   double northEastLongitude,
                   double southWestLatitude,
                   double southWestLongitude,
+                  double centerLatitude,
+                  double centerLongitude,
                   int minZoom,
-                  int maxZoom,
-                  DownloadState downloadState) {
+                  int maxZoom) {
         this.name = name;
         this.countryId = countryId;
         this.northEastLatitude = northEastLatitude;
         this.northEastLongitude = northEastLongitude;
         this.southWestLatitude = southWestLatitude;
         this.southWestLongitude = southWestLongitude;
+        this.centerLatitude = centerLatitude;
+        this.centerLongitude = centerLongitude;
         this.minZoom = minZoom;
         this.maxZoom = maxZoom;
-        this.downloadState = downloadState;
+        this.downloadState = READY_TO_LOAD;
     }
-
 
     @Ignore
     public Region(@NonNull String name,
@@ -177,12 +186,16 @@ public class Region {
         this.maxZoom = maxZoom;
     }
 
-    public LatLng getNorthEastLocation() {
+    public LatLng getNorthEast() {
         return new LatLng(northEastLatitude, northEastLongitude);
     }
 
-    public LatLng getSouthWestLocation() {
+    public LatLng getSouthWest() {
         return new LatLng(southWestLatitude, southWestLongitude);
+    }
+
+    public LatLng getCenter() {
+        return new LatLng(centerLatitude, centerLongitude);
     }
 
     @NonNull
@@ -197,5 +210,22 @@ public class Region {
     public boolean checkDownloadState(@NonNull DownloadState downloadState) {
         return this.downloadState == downloadState;
     }
+
+    public double getCenterLatitude() {
+        return centerLatitude;
+    }
+
+    public void setCenterLatitude(double centerLatitude) {
+        this.centerLatitude = centerLatitude;
+    }
+
+    public double getCenterLongitude() {
+        return centerLongitude;
+    }
+
+    public void setCenterLongitude(double centerLongitude) {
+        this.centerLongitude = centerLongitude;
+    }
+
 
 }
