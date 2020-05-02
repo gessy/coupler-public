@@ -43,32 +43,9 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionViewHolder> {
 
     @Override
     public void onBindViewHolder(RegionViewHolder holder, int position) {
-        final Region region = list.get(position);
+        Region region = list.get(position);
         holder.update(region);
-        if (region.checkDownloadState(READY_TO_LOAD)) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MapRegionLoader regionLoader = new MapRegionLoader(context);
-                    regionLoader.setObserver(new MapRegionLoader.Observer() {
-                        @Override
-                        public void onStatusChanged(OfflineRegionStatus status) {
-                            if (status.isComplete()) {
-                                region.setDownloadState(DOWNLOADED);
-                                callback.call(region);
-                            } else if (status.isRequiredResourceCountPrecise()) {
-                                if (region.checkDownloadState(READY_TO_LOAD)) {
-                                    region.setDownloadState(IN_PROGRESS);
-                                    callback.call(region);
-                                }
-                            }
-                        }
-                    });
-
-                    regionLoader.load(region);
-                }
-            });
-        }
+        holder.setOnClickListener(new OnClickListener(region));
     }
 
     public void setRegionList(List<Region> list) {
@@ -85,4 +62,35 @@ public class RegionAdapter extends RecyclerView.Adapter<RegionViewHolder> {
         return list != null ? list.size() : 0;
     }
 
+
+    class OnClickListener implements View.OnClickListener {
+        private Region region;
+
+        OnClickListener(Region region) {
+            this.region = region;
+        }
+
+        @Override
+        public void onClick(View v) {
+            MapRegionLoader regionLoader = new MapRegionLoader(context);
+            regionLoader.setObserver(new MapRegionLoader.Observer() {
+                @Override
+                public void onStatusChanged(OfflineRegionStatus status) {
+                    if (status.isComplete()) {
+                        region.setDownloadState(DOWNLOADED);
+                        callback.call(region);
+                    } else if (status.isRequiredResourceCountPrecise()) {
+                        if (region.checkDownloadState(READY_TO_LOAD)) {
+                            region.setDownloadState(IN_PROGRESS);
+                            callback.call(region);
+                        }
+                    }
+                }
+            });
+
+            if (region.checkDownloadState(READY_TO_LOAD)) {
+                regionLoader.load(region);
+            }
+        }
+    }
 }

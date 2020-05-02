@@ -101,7 +101,6 @@ public class OfflineRegionListActivity extends AppCompatActivity implements Obse
                     .withTitle(getString(R.string.search_region))
                     .build());
             startActivityForResult(intent, 1);
-            finish();
             overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
         }
 

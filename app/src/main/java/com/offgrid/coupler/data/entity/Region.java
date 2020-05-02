@@ -60,6 +60,10 @@ public class Region {
     private int maxZoom;
 
     @NonNull
+    @ColumnInfo(name = "target_zoom")
+    private int targetZoom;
+
+    @NonNull
     @ColumnInfo(name = "download_state")
     private DownloadState downloadState;
 
@@ -68,6 +72,8 @@ public class Region {
     }
 
 
+    @Ignore
+    @Deprecated
     public Region(@NonNull String name,
                   @NonNull Long countryId,
                   double northEastLatitude,
@@ -98,16 +104,22 @@ public class Region {
                   double northEastLongitude,
                   double southWestLatitude,
                   double southWestLongitude,
+                  double centerLatitude,
+                  double centerLongitude,
                   int minZoom,
-                  int maxZoom) {
+                  int maxZoom,
+                  int targetZoom) {
         this.name = name;
         this.countryId = countryId;
         this.northEastLatitude = northEastLatitude;
         this.northEastLongitude = northEastLongitude;
         this.southWestLatitude = southWestLatitude;
         this.southWestLongitude = southWestLongitude;
+        this.centerLatitude = centerLatitude;
+        this.centerLongitude = centerLongitude;
         this.minZoom = minZoom;
         this.maxZoom = maxZoom;
+        this.targetZoom = targetZoom;
         this.downloadState = READY_TO_LOAD;
     }
 
@@ -184,6 +196,14 @@ public class Region {
 
     public void setMaxZoom(int maxZoom) {
         this.maxZoom = maxZoom;
+    }
+
+    public int getTargetZoom() {
+        return targetZoom;
+    }
+
+    public void setTargetZoom(int targetZoom) {
+        this.targetZoom = targetZoom;
     }
 
     public LatLng getNorthEast() {
