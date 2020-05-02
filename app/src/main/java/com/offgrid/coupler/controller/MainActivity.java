@@ -66,7 +66,6 @@ public class MainActivity
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
 
-
         if (!PermissionsManager.areLocationPermissionsGranted(MainActivity.this)) {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(MainActivity.this);
@@ -112,7 +111,6 @@ public class MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 

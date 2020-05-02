@@ -8,10 +8,8 @@ import com.offgrid.coupler.data.entity.Region;
 public class RegionLocationCommandWrapper {
 
     public static Bundle convertAndWrap(Region region) {
-        int zoom = region.getMinZoom() / 4 + 3 * region.getMaxZoom() / 4;
-
         return new RegionLocationCommand.BundleBuilder()
-                .withZoom(zoom)
+                .withZoom(region.getTargetZoom())
                 .withLocation(region.getCenter())
                 .build();
     }

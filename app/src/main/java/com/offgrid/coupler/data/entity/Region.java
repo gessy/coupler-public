@@ -71,32 +71,6 @@ public class Region {
     public Region() {
     }
 
-
-    @Ignore
-    @Deprecated
-    public Region(@NonNull String name,
-                  @NonNull Long countryId,
-                  double northEastLatitude,
-                  double northEastLongitude,
-                  double southWestLatitude,
-                  double southWestLongitude,
-                  double centerLatitude,
-                  double centerLongitude,
-                  int minZoom,
-                  int maxZoom) {
-        this.name = name;
-        this.countryId = countryId;
-        this.northEastLatitude = northEastLatitude;
-        this.northEastLongitude = northEastLongitude;
-        this.southWestLatitude = southWestLatitude;
-        this.southWestLongitude = southWestLongitude;
-        this.centerLatitude = centerLatitude;
-        this.centerLongitude = centerLongitude;
-        this.minZoom = minZoom;
-        this.maxZoom = maxZoom;
-        this.downloadState = READY_TO_LOAD;
-    }
-
     @Ignore
     public Region(@NonNull String name,
                   @NonNull Long countryId,
