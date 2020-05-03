@@ -1,4 +1,4 @@
-package com.offgrid.coupler.core.model.view;
+package com.offgrid.coupler.core.model;
 
 public enum Operation {
     INSERT,

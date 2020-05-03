@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,14 +20,19 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.offgrid.coupler.MockActivity;
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.group.NewGroupActivity;
+import com.offgrid.coupler.controller.offline.OfflineRegionListActivity;
 import com.offgrid.coupler.controller.place.PlacelistActivity;
 import com.offgrid.coupler.core.model.Info;
 import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
+import com.offgrid.coupler.core.model.command.BaseCommand;
+import com.offgrid.coupler.core.model.command.RegionLocationCommand;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
+
+import static com.offgrid.coupler.core.model.Constants.KEY_COMMAND;
 
 
 public class MainActivity
@@ -60,7 +66,6 @@ public class MainActivity
 
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
-
 
         if (!PermissionsManager.areLocationPermissionsGranted(MainActivity.this)) {
             permissionsManager = new PermissionsManager(this);
@@ -107,7 +112,6 @@ public class MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 
@@ -142,6 +146,14 @@ public class MainActivity
                 return jumpToActivity(
                         new Info.BundleBuilder().withTitle(resources.getString(R.string.menu_my_places)).build(),
                         PlacelistActivity.class);
+            case R.id.nav_offline_maps:
+                return jumpToActivity(
+                        new Info.BundleBuilder()
+                                .withTitle("Offline maps")
+                                .withText("This is offline maps activity")
+                                .withAction(Info.Action.info)
+                                .build(),
+                        OfflineRegionListActivity.class);
         }
 
         return jumpToActivity(EntityHelper.createBundle(item.getItemId()), MockActivity.class);
@@ -158,5 +170,18 @@ public class MainActivity
         overridePendingTransition(R.anim.popup_context_in, R.anim.popup_out);
 
         return true;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            String command = data.getStringExtra(KEY_COMMAND);
+            if (BaseCommand.REGION_LOCATION.equals(command)) {
+                fragmentController.displayScreen(R.id.nav_map);
+                fragmentController.dispatch(R.id.nav_map, RegionLocationCommand.getInstance(data.getExtras()));
+            }
+        }
     }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground">
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/super_lighter_grey" />
+
+    <TextView
+        android:id="@+id/region_name"
+        android:layout_below="@+id/split_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginVertical="12dp"
+        android:layout_marginStart="16dp"
+        tools:text="Saint-Petersburg"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/country_name"
+        android:layout_below="@+id/split_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="12dp"
+        android:layout_marginStart="2dp"
+        android:layout_toRightOf="@+id/region_name"
+        android:singleLine="true"
+        android:alpha="0.23"
+        android:textStyle="italic"
+        tools:text="Russia"
+        android:textSize="16sp" />
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp">
+
+        <TextView
+            android:id="@+id/tiles_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/medium_grey"
+            tools:text="1.6K"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/search_location"
+            android:layout_toRightOf="@id/tiles_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:alpha="0.5"
+            android:src="@drawable/ic_location_searching_blue_24dp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

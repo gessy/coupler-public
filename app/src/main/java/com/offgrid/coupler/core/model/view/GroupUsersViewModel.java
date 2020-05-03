@@ -14,6 +14,7 @@ import androidx.lifecycle.Transformations;
 
 import com.offgrid.coupler.data.entity.GroupUsers;
 import com.offgrid.coupler.data.entity.User;
+import com.offgrid.coupler.data.entity.UserGroupRef;
 import com.offgrid.coupler.data.repository.GroupRepository;
 
 import java.util.ArrayList;
@@ -60,8 +61,11 @@ public class GroupUsersViewModel extends AndroidViewModel {
         return groupUsers != null ? groupUsers.users : new ArrayList<User>();
     }
 
-    public void removeAll() {
-
+    public void removeUser(User user) {
+        GroupUsers groupUsers = liveGroupUsers.getValue();
+        if (groupUsers != null) {
+            groupRepository.delete(new UserGroupRef(user.getId(), groupUsers.group.getId()));
+        }
     }
 
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super GroupUsers> observer) {

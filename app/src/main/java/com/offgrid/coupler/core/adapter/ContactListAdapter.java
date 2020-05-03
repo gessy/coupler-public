@@ -60,6 +60,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactItemViewHold
     }
 
 
+    public User getItem(int position) {
+        return users.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return users != null ? users.size() : 0;

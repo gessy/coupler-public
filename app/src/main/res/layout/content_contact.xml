@@ -27,7 +27,6 @@
             android:src="@drawable/hugh_laurie" />
     </androidx.cardview.widget.CardView>
 
-
     <EditText
         android:id="@+id/user_first_name"
         android:layout_height="wrap_content"
@@ -37,56 +36,31 @@
         android:ems="10"
         android:hint="@string/hint_first_name"
         android:textColorHint="@color/light_grey"
-        android:background="@android:color/transparent"
+        android:theme="@style/EditTextPrimaryTheme"
         android:inputType="text"
         android:textSize="16sp"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:text=""
-        android:importantForAutofill="no" />
-
-    <View
-        android:id="@+id/user_split_line"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/user_first_name"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/user_avatar"
-        android:background="@color/colorPrimary" />
-
+        android:text="" />
 
     <EditText
         android:id="@+id/user_last_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/user_avatar"
-        android:layout_below="@+id/user_split_line"
+        android:layout_below="@+id/user_first_name"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/hint_last_name"
         android:textColorHint="@color/light_grey"
-        android:background="@android:color/transparent"
+        android:theme="@style/EditTextPrimaryTheme"
         android:inputType="text"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="16sp"
-        android:text=""
-        android:importantForAutofill="no" />
-
-    <View
-        android:id="@+id/end_of_user_definition_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/user_last_name"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/user_avatar"
-        android:background="@color/lighter_grey" />
-
+        android:text="" />
 
     <LinearLayout
         android:id="@+id/gid_layout"
-        android:layout_below="@+id/end_of_user_definition_line"
+        android:layout_below="@+id/user_last_name"
         android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -113,8 +87,7 @@
             android:layout_marginStart="18dp"
             android:background="@android:color/transparent"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:maxLength="15"
-            android:importantForAutofill="no" />
+            android:maxLength="15"/>
     </LinearLayout>
 
     <TextView
@@ -123,7 +96,7 @@
         android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/end_of_user_definition_line"
+        android:layout_below="@+id/user_last_name"
         android:textAppearance="?attr/textAppearanceListItem"
         android:background="@android:color/transparent"
         android:textColor="@color/medium_grey"
