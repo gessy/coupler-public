@@ -181,7 +181,6 @@ public class MainActivity
             if (BaseCommand.REGION_LOCATION.equals(command)) {
                 fragmentController.displayScreen(R.id.nav_map);
                 fragmentController.dispatch(R.id.nav_map, RegionLocationCommand.getInstance(data.getExtras()));
-//                fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
             }
         }
     }
