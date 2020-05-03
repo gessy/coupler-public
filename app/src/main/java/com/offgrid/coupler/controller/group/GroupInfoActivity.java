@@ -9,17 +9,20 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.offgrid.coupler.R;
 import com.offgrid.coupler.controller.chat.ChatActivity;
 import com.offgrid.coupler.core.adapter.GroupMembershipListAdapter;
+import com.offgrid.coupler.core.callback.SwipeToDeleteCallback;
 import com.offgrid.coupler.core.model.dto.GroupDto;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoChatWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoGroupWrapper;
@@ -63,6 +66,14 @@ public class GroupInfoActivity extends AppCompatActivity
         RecyclerView recyclerView = findViewById(R.id.recyclerview_contact_list);
         recyclerView.setAdapter(contactListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                groupUsersViewModel.removeUser(contactListAdapter.getItem(viewHolder.getAdapterPosition()));
+            }
+        });
+        touchHelper.attachToRecyclerView(recyclerView);
 
         switcher = findViewById(R.id.notification_status_switcher);
         switcher.setOnCheckedChangeListener(this);

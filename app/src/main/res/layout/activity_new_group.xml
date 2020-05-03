@@ -66,22 +66,11 @@
                 android:ems="10"
                 android:hint="@string/hint_group_name"
                 android:textColorHint="@color/light_grey"
-                android:background="@android:color/transparent"
+                android:theme="@style/EditTextPrimaryTheme"
                 android:inputType="text"
                 android:textSize="16sp"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text=""
-                android:importantForAutofill="no" />
-
-            <View
-                android:id="@+id/end_of_group_definition_line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/group_name"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toEndOf="@+id/user_avatar"
-                android:background="@color/lighter_grey" />
+                android:text=""/>
         </RelativeLayout>
 
         <EditText
@@ -94,12 +83,11 @@
             android:ems="10"
             android:hint="@string/hint_group_description"
             android:textColorHint="@color/light_grey"
-            android:background="@android:color/transparent"
+            android:theme="@style/EditTextPrimaryTheme"
             android:inputType="text"
             android:textSize="16sp"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:text=""
-            android:importantForAutofill="no" />
+            android:text=""/>
 
     </LinearLayout>
 

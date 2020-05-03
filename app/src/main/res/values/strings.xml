@@ -36,7 +36,8 @@
     <string name="new_contact_label">New Contact</string>
     <string name="contact_list_header">Sorted by last seen time</string>
 
-    <string name="chat_list_title">%1$s %2$s</string>
+    <string name="add_group_members">Add Members</string>
+
 
     <string name="hint_first_name">First Name (required)</string>
     <string name="hint_last_name">Last Name (optional)</string>
@@ -53,12 +54,7 @@
     <string name="dialog_place">Place</string>
     <string name="dialog_edit_place">Edit place</string>
 
-
     <string name="downloaded_offline_region">Downloaded</string>
     <string name="search_region">Search region</string>
-
-
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
 
 </resources>

@@ -86,44 +86,32 @@
             android:id="@+id/user_first_name"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="@string/hint_first_name"
             android:textColorHint="@color/light_grey"
-            android:background="@android:color/transparent"
+            android:theme="@style/EditTextPrimaryTheme"
             android:inputType="text"
             android:textSize="18sp"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:text=""
-            android:importantForAutofill="no" />
-
-        <View
-            android:id="@+id/user_split_line"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimary" />
+            android:text=""/>
 
         <EditText
             android:id="@+id/user_last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/hint_last_name"
             android:textColorHint="@color/light_grey"
-            android:background="@android:color/transparent"
             android:inputType="text"
             android:textAppearance="?attr/textAppearanceListItem"
+            android:theme="@style/EditTextPrimaryTheme"
             android:textSize="18sp"
-            android:text=""
-            android:importantForAutofill="no" />
+            android:text="" />
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

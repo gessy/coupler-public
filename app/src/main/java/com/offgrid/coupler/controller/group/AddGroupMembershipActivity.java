@@ -57,7 +57,7 @@ public class AddGroupMembershipActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add Members");
+        getSupportActionBar().setTitle(getString(R.string.add_group_members));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
