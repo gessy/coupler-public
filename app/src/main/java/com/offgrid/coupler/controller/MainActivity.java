@@ -27,6 +27,7 @@ import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
 import com.offgrid.coupler.core.model.command.BaseCommand;
+import com.offgrid.coupler.core.model.command.RegionLocationCommand;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
@@ -179,7 +180,8 @@ public class MainActivity
             String command = data.getStringExtra(KEY_COMMAND);
             if (BaseCommand.REGION_LOCATION.equals(command)) {
                 fragmentController.displayScreen(R.id.nav_map);
-                fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
+                fragmentController.dispatch(R.id.nav_map, RegionLocationCommand.getInstance(data.getExtras()));
+//                fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
             }
         }
     }

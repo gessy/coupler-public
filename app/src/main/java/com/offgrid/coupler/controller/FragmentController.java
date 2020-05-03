@@ -1,13 +1,14 @@
 package com.offgrid.coupler.controller;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.offgrid.coupler.core.model.command.Command;
+import com.offgrid.coupler.core.model.command.CommandAcceptor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,6 @@ public class FragmentController {
         this.fragmentManager = fragmentManager;
     }
 
-
     public void setLayoutResource(@IdRes int resId) {
         contentResourceId = resId;
     }
@@ -58,16 +58,6 @@ public class FragmentController {
     public void registerFragment(@IdRes int resId, @NonNull Fragment fragment) {
         fragmentMap.put(resId, fragment);
     }
-
-
-    public void onActivityResult(@IdRes int resId, int requestCode, int resultCode, @Nullable Intent data) {
-        if (!fragmentMap.containsKey(resId)) {
-            return;
-        }
-
-        fragmentMap.get(resId).onActivityResult(requestCode, resultCode, data);
-    }
-
 
     public void displayScreen(@IdRes int resId) {
         if (!fragmentMap.containsKey(resId)) {
@@ -86,6 +76,12 @@ public class FragmentController {
         }
     }
 
+    public void dispatch(@IdRes int resId, Command command) {
+        Fragment fragment = fragmentMap.get(resId);
+        if (fragment instanceof CommandAcceptor) {
+            ((CommandAcceptor)fragment).accept(command);
+        }
+    }
 
     private void runOp(Op op) {
         switch (op.cmd) {
@@ -103,7 +99,6 @@ public class FragmentController {
                 break;
         }
     }
-
 
     private String TAG(int id) {
         return "fragment_tag_" + id;
