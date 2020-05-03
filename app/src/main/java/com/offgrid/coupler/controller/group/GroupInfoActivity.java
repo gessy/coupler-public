@@ -31,6 +31,9 @@ import com.offgrid.coupler.core.model.view.GroupViewModel;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.entity.GroupUsers;
+import com.offgrid.coupler.data.entity.User;
+
+import java.util.List;
 
 
 public class GroupInfoActivity extends AppCompatActivity
@@ -44,6 +47,7 @@ public class GroupInfoActivity extends AppCompatActivity
     private Switch switcher;
 
     private GroupDto groupDto;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,7 @@ public class GroupInfoActivity extends AppCompatActivity
 
         findViewById(R.id.fb_start_chat).setOnClickListener(this);
         findViewById(R.id.action_add_member).setOnClickListener(this);
+
     }
 
     private void initViewModels() {
@@ -121,7 +126,7 @@ public class GroupInfoActivity extends AppCompatActivity
     @Override
     public void onChanged(Object o) {
         if (o instanceof GroupChat) {
-            Group group = ((GroupChat)o).group;
+            Group group = ((GroupChat) o).group;
             ((TextView) findViewById(R.id.group_name)).setText(group.getName());
             ((TextView) findViewById(R.id.notification_status)).setText(group.isAllowNotify() ? getString(R.string.notification_status_on) : getString(R.string.notification_status_off));
             ((TextView) findViewById(R.id.group_description)).setText(group.getDescription());
@@ -130,7 +135,9 @@ public class GroupInfoActivity extends AppCompatActivity
                 switcher.setChecked(group.isAllowNotify());
             }
         } else if (o instanceof GroupUsers) {
-            contactListAdapter.setUsers(((GroupUsers)o).users);
+            List<User> users = ((GroupUsers) o).users;
+            contactListAdapter.setUsers(users);
+            ((TextView) findViewById(R.id.group_members)).setText(stringifyMemberCount(users.size()));
         }
     }
 
@@ -156,11 +163,16 @@ public class GroupInfoActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
 
+    private String stringifyMemberCount(int count) {
+        if (count == 0) return "";
+        return count > 1
+                ? String.format(getString(R.string.member_count_pattern), count)
+                : getString(R.string.one_member);
+    }
 }
