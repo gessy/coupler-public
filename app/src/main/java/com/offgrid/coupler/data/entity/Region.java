@@ -44,12 +44,24 @@ public class Region {
     private double southWestLongitude;
 
     @NonNull
+    @ColumnInfo(name = "center_latitude")
+    private double centerLatitude;
+
+    @NonNull
+    @ColumnInfo(name = "center_longitude")
+    private double centerLongitude;
+
+    @NonNull
     @ColumnInfo(name = "min_zoom")
     private int minZoom;
 
     @NonNull
     @ColumnInfo(name = "max_zoom")
     private int maxZoom;
+
+    @NonNull
+    @ColumnInfo(name = "target_zoom")
+    private int targetZoom;
 
     @NonNull
     @ColumnInfo(name = "download_state")
@@ -59,7 +71,6 @@ public class Region {
     public Region() {
     }
 
-
     @Ignore
     public Region(@NonNull String name,
                   @NonNull Long countryId,
@@ -67,38 +78,22 @@ public class Region {
                   double northEastLongitude,
                   double southWestLatitude,
                   double southWestLongitude,
+                  double centerLatitude,
+                  double centerLongitude,
                   int minZoom,
                   int maxZoom,
-                  DownloadState downloadState) {
+                  int targetZoom) {
         this.name = name;
         this.countryId = countryId;
         this.northEastLatitude = northEastLatitude;
         this.northEastLongitude = northEastLongitude;
         this.southWestLatitude = southWestLatitude;
         this.southWestLongitude = southWestLongitude;
+        this.centerLatitude = centerLatitude;
+        this.centerLongitude = centerLongitude;
         this.minZoom = minZoom;
         this.maxZoom = maxZoom;
-        this.downloadState = downloadState;
-    }
-
-
-    @Ignore
-    public Region(@NonNull String name,
-                  @NonNull Long countryId,
-                  double northEastLatitude,
-                  double northEastLongitude,
-                  double southWestLatitude,
-                  double southWestLongitude,
-                  int minZoom,
-                  int maxZoom) {
-        this.name = name;
-        this.countryId = countryId;
-        this.northEastLatitude = northEastLatitude;
-        this.northEastLongitude = northEastLongitude;
-        this.southWestLatitude = southWestLatitude;
-        this.southWestLongitude = southWestLongitude;
-        this.minZoom = minZoom;
-        this.maxZoom = maxZoom;
+        this.targetZoom = targetZoom;
         this.downloadState = READY_TO_LOAD;
     }
 
@@ -177,12 +172,24 @@ public class Region {
         this.maxZoom = maxZoom;
     }
 
-    public LatLng getNorthEastLocation() {
+    public int getTargetZoom() {
+        return targetZoom;
+    }
+
+    public void setTargetZoom(int targetZoom) {
+        this.targetZoom = targetZoom;
+    }
+
+    public LatLng getNorthEast() {
         return new LatLng(northEastLatitude, northEastLongitude);
     }
 
-    public LatLng getSouthWestLocation() {
+    public LatLng getSouthWest() {
         return new LatLng(southWestLatitude, southWestLongitude);
+    }
+
+    public LatLng getCenter() {
+        return new LatLng(centerLatitude, centerLongitude);
     }
 
     @NonNull
@@ -197,5 +204,22 @@ public class Region {
     public boolean checkDownloadState(@NonNull DownloadState downloadState) {
         return this.downloadState == downloadState;
     }
+
+    public double getCenterLatitude() {
+        return centerLatitude;
+    }
+
+    public void setCenterLatitude(double centerLatitude) {
+        this.centerLatitude = centerLatitude;
+    }
+
+    public double getCenterLongitude() {
+        return centerLongitude;
+    }
+
+    public void setCenterLongitude(double centerLongitude) {
+        this.centerLongitude = centerLongitude;
+    }
+
 
 }

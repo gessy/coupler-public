@@ -27,6 +27,7 @@ import com.offgrid.coupler.controller.chat.ChatListFragment;
 import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
 import com.offgrid.coupler.core.model.command.BaseCommand;
+import com.offgrid.coupler.core.model.command.RegionLocationCommand;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
@@ -65,7 +66,6 @@ public class MainActivity
 
         fragmentController = createFragmentController();
         fragmentController.displayScreen(R.id.nav_chat_list);
-
 
         if (!PermissionsManager.areLocationPermissionsGranted(MainActivity.this)) {
             permissionsManager = new PermissionsManager(this);
@@ -112,7 +112,6 @@ public class MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 
@@ -181,7 +180,7 @@ public class MainActivity
             String command = data.getStringExtra(KEY_COMMAND);
             if (BaseCommand.REGION_LOCATION.equals(command)) {
                 fragmentController.displayScreen(R.id.nav_map);
-                fragmentController.onActivityResult(R.id.nav_map, requestCode, resultCode, data);
+                fragmentController.dispatch(R.id.nav_map, RegionLocationCommand.getInstance(data.getExtras()));
             }
         }
     }

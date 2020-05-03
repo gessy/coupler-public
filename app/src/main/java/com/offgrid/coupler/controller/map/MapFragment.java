@@ -29,15 +29,13 @@ import com.offgrid.coupler.controller.map.configurator.DeviceLocationConfigurato
 import com.offgrid.coupler.controller.map.configurator.PlaceLocationConfigurator;
 import com.offgrid.coupler.core.callback.ContactLocationListener;
 import com.offgrid.coupler.core.callback.PlaceLocationListener;
-import com.offgrid.coupler.core.model.command.BaseCommand;
 import com.offgrid.coupler.core.model.command.Command;
+import com.offgrid.coupler.core.model.command.CommandAcceptor;
 import com.offgrid.coupler.core.model.command.RegionLocationCommand;
-
-import static com.offgrid.coupler.core.model.Constants.KEY_COMMAND;
 
 
 public class MapFragment extends Fragment
-        implements OnMapReadyCallback, View.OnClickListener, Observer<Command> {
+        implements OnMapReadyCallback, View.OnClickListener, Observer<Command>, CommandAcceptor {
 
     private View rootView;
     private MapView mapView;
@@ -136,6 +134,11 @@ public class MapFragment extends Fragment
     }
 
     @Override
+    public void accept(Command command) {
+        pipeCommand.setValue(command);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mapView.onStart();
@@ -175,20 +178,6 @@ public class MapFragment extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
-        }
-
-        String command = data.getStringExtra(KEY_COMMAND);
-        if (BaseCommand.REGION_LOCATION.equals(command)) {
-            pipeCommand.setValue(RegionLocationCommand.getInstance(data.getExtras()));
-        }
     }
 
 }

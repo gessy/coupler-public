@@ -13,6 +13,7 @@ import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.GroupChat;
 import com.offgrid.coupler.data.entity.GroupChatMessages;
 import com.offgrid.coupler.data.entity.GroupUsers;
+import com.offgrid.coupler.data.entity.UserGroupRef;
 
 
 public class GroupRepository {
@@ -85,6 +86,15 @@ public class GroupRepository {
                 }
             });
         }
+    }
+
+    public void delete(final UserGroupRef ref) {
+        CouplerRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                userGroupDao.delete(ref);
+            }
+        });
     }
 
 }

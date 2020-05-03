@@ -48,13 +48,11 @@ public class RegionViewHolder extends RecyclerView.ViewHolder {
 
             downloadState.setImageDrawable(drawable);
             downloadState.setVisibility(View.VISIBLE);
-            downloadState.setOnClickListener(clickListener);
         }
     }
 
     public void setOnClickListener(View.OnClickListener clickListener) {
-        this.clickListener = clickListener;
+        downloadState.setOnClickListener(clickListener);
     }
-
 
 }
