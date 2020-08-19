@@ -106,7 +106,13 @@
             android:name=".controller.offline.SearchRegionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+
+        <service android:name=".core.service.LoraService" />
+
+<!--        <service android:name="" android:process=":remote"/>-->
+
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

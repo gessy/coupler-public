@@ -28,6 +28,7 @@ import com.offgrid.coupler.controller.contact.ContactListActivity;
 import com.offgrid.coupler.controller.map.MapFragment;
 import com.offgrid.coupler.core.model.command.BaseCommand;
 import com.offgrid.coupler.core.model.command.RegionLocationCommand;
+import com.offgrid.coupler.core.service.LoraService;
 import com.offgrid.coupler.util.EntityHelper;
 
 import java.util.List;
@@ -71,6 +72,11 @@ public class MainActivity
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(MainActivity.this);
         }
+
+
+        Intent intent = new Intent(MainActivity.this, LoraService.class);
+        intent.setPackage("com.offgrid.coupler.core.service");
+        startService(intent);
     }
 
 

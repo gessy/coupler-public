@@ -43,4 +43,14 @@ public class Constants {
     public static final String KEY_REGION_SOUTHWEST_LATITUDE = "key-region-southwest-latitude";
     public static final String KEY_REGION_SOUTHWEST_LONGITUDE = "key-region-southwest-longitude";
 
+
+    //Service
+    public static final int SERVICE_REGISTER_CLIENT = 1;
+    public static final int SERVICE_UNREGISTER_CLIENT = 2;
+    public static final int SERVICE_MESSAGE = 3;
+
+    public static final String SERVICE_CHAT_LIST_CLIENT = "service-chat-list-client";
+    public static final String SERVICE_GROUP_CHAT_CLIENT = "service-group-chat-client";
+
+
 }

@@ -1,7 +1,15 @@
 package com.offgrid.coupler.controller.chat;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +30,7 @@ import com.offgrid.coupler.controller.group.GroupInfoActivity;
 import com.offgrid.coupler.core.adapter.MessageListAdapter;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoGroupWrapper;
 import com.offgrid.coupler.core.model.dto.wrapper.DtoUserWrapper;
+import com.offgrid.coupler.core.service.LoraService;
 import com.offgrid.coupler.data.entity.ChatMessages;
 import com.offgrid.coupler.data.entity.Group;
 import com.offgrid.coupler.data.entity.Message;
@@ -32,18 +41,32 @@ import com.offgrid.coupler.data.entity.User;
 
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
+import static com.offgrid.coupler.core.model.Constants.SERVICE_GROUP_CHAT_CLIENT;
+import static com.offgrid.coupler.core.model.Constants.SERVICE_MESSAGE;
+import static com.offgrid.coupler.core.model.Constants.SERVICE_REGISTER_CLIENT;
+import static com.offgrid.coupler.core.model.Constants.SERVICE_UNREGISTER_CLIENT;
 import static com.offgrid.coupler.data.model.ChatType.GROUP;
 
 
 public class ChatActivity
         extends AppCompatActivity
-        implements View.OnClickListener, Observer<ChatMessages> {
+        implements View.OnClickListener, Observer<ChatMessages>, ServiceConnection {
+
+    private static final String LOGTAG = "ChatActivity-sasha";
 
     private ChatViewModel chatViewModel;
 
     private MessageListAdapter messageListAdapter;
     private ChatDto chatDto;
     private EditText editText;
+
+
+    private Messenger mServiceMessenger = null;
+    boolean mIsBound;
+    private final Messenger mMessenger = new Messenger(new IncomingMessageHandler());
+    private ServiceConnection mConnection = this;
+
+    private String thisClient = null;
 
 
     @Override
@@ -99,6 +122,7 @@ public class ChatActivity
 
         ImageButton imageButton = findViewById(R.id.send_message);
         imageButton.setOnClickListener(ChatActivity.this);
+
     }
 
 
@@ -152,8 +176,27 @@ public class ChatActivity
             editText.getText().clear();
             InputMethodManager inputManager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), HIDE_NOT_ALWAYS);
+
+
+            if (mIsBound) {
+                try {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("message", message);
+
+                    android.os.Message msg = android.os.Message.obtain(null, SERVICE_MESSAGE, thisClient);
+                    msg.setData(bundle);
+                    mServiceMessenger.send(msg);
+                } catch (RemoteException e) {
+
+                }
+
+            }
+
+
         }
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -166,6 +209,14 @@ public class ChatActivity
     public void onChanged(ChatMessages chatMessages) {
         if (chatMessages != null) {
             messageListAdapter.setMessages(chatMessages.messages());
+
+            if (!mIsBound) {
+                thisClient = chatViewModel.isPersonal()
+                        ? ((User) chatViewModel.getOwner()).getGid()
+                        : SERVICE_GROUP_CHAT_CLIENT;
+
+                bindLoraService();
+            }
         }
     }
 
@@ -181,5 +232,77 @@ public class ChatActivity
         finish();
         overridePendingTransition(R.anim.popup_in, R.anim.popup_out);
     }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            unbindLoraService();
+        } catch (Throwable t) {
+        }
+    }
+
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mServiceMessenger = new Messenger(service);
+        try {
+            android.os.Message msg = android.os.Message.obtain(null, SERVICE_REGISTER_CLIENT, thisClient);
+            msg.replyTo = mMessenger;
+            mServiceMessenger.send(msg);
+        } catch (RemoteException e) {
+            // In this case the service has crashed before we could even do anything with it
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mServiceMessenger = null;
+    }
+
+
+    private void bindLoraService() {
+        bindService(new Intent(this, LoraService.class), mConnection, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+
+    private void unbindLoraService() {
+        if (mIsBound) {
+            // If we have received the service, and hence registered with it, then now is the time to unregister.
+            if (mServiceMessenger != null) {
+                try {
+                    android.os.Message msg = android.os.Message.obtain(null, SERVICE_UNREGISTER_CLIENT, thisClient);
+                    msg.replyTo = mMessenger;
+                    mServiceMessenger.send(msg);
+                } catch (RemoteException e) {
+                    // There is nothing special we need to do if the service has crashed.
+                }
+            }
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+        }
+    }
+
+
+    private class IncomingMessageHandler extends Handler {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            Log.e(LOGTAG, "handleMessage: " + msg.what);
+            switch (msg.what) {
+                case SERVICE_MESSAGE:
+                    Log.e(LOGTAG, "[SERVICE_MESSAGE] msg.obj: " + msg.obj.toString());
+                    String message = msg.getData().getString("message");
+                    chatViewModel.addMessage(Message.talkerMessage(message));
+
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
 
 }

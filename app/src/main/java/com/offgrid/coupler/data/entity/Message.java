@@ -87,6 +87,14 @@ public class Message {
         return new Message(message, new Date(), "Talker", false);
     }
 
+    public static Message talkerMessage(String message) {
+        return new Message(message, new Date(), "Talker", false);
+    }
+
+    public static Message userMessage(String message, String fullName) {
+        return new Message(message, new Date(), fullName, false);
+    }
+
 
     public static Message myMessage(String message) {
         return new Message(message, new Date(), "Me", true);

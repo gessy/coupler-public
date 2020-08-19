@@ -13,8 +13,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
+import com.offgrid.coupler.data.entity.Chat;
+import com.offgrid.coupler.data.entity.Message;
 import com.offgrid.coupler.data.entity.User;
 import com.offgrid.coupler.data.entity.UserChat;
+import com.offgrid.coupler.data.entity.UserChatMessages;
+import com.offgrid.coupler.data.repository.ChatRepository;
 import com.offgrid.coupler.data.repository.MessageRepository;
 import com.offgrid.coupler.data.repository.UserRepository;
 
@@ -29,6 +33,7 @@ public class ContactViewModel extends AndroidViewModel {
     public enum Entity {UID, GID}
 
     private UserRepository userRepository;
+    private ChatRepository chatRepository;
     private MessageRepository messageRepository;
 
     private final MutableLiveData<Pair<Entity, Object>> liveID = new MutableLiveData();
@@ -37,6 +42,7 @@ public class ContactViewModel extends AndroidViewModel {
     public ContactViewModel(Application application) {
         super(application);
         userRepository = new UserRepository(application);
+        chatRepository = new ChatRepository(application);
         messageRepository = new MessageRepository(application);
 
         liveUserChat = Transformations.switchMap(liveID, new Function<Pair<Entity, Object>, LiveData<UserChat>>() {
@@ -57,11 +63,11 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     public void loadByGid(String gid) {
-        liveID.setValue(new Pair<>(GID, (Object) gid));
+        liveID.postValue(new Pair<>(GID, (Object) gid));
     }
 
     public void loadByUserId(Long uid) {
-        liveID.setValue(new Pair<>(UID, (Object) uid));
+        liveID.postValue(new Pair<>(UID, (Object) uid));
     }
 
     public User getUser() {
@@ -85,6 +91,21 @@ public class ContactViewModel extends AndroidViewModel {
 
     public void insert(User user) {
         userRepository.insert(new UserChat(user, personalChat(user.chatTitle())));
+    }
+
+
+    public void addMessage(Message message) {
+        UserChat userChat = liveUserChat.getValue();
+        if (userChat != null) {
+            Chat chat = userChat.chat;
+            chat.setLastMessage(message.getMessage());
+            chat.setMineLastMessage(message.isMine());
+            chat.setLastModificationDate(new Date());
+            chatRepository.update(chat);
+
+            message.setChatId(chat.getId());
+            messageRepository.insert(message);
+        }
     }
 
 
