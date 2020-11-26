@@ -7,3 +7,9 @@
   <img src="https://github.com/gessy/coupler-public/blob/development/blob/photo_2020-11-26_19-59-53.jpg" width="300">
 </p>
 
+<p align="center">
+  <img src="https://github.com/gessy/coupler-public/blob/development/blob/photo_2020-11-26_20-09-54.jpg" width="300">
+  <img src="https://github.com/gessy/coupler-public/blob/development/blob/photo_2020-11-26_19-59-55.jpg" width="300">
+  <img src="https://github.com/gessy/coupler-public/blob/development/blob/photo_2020-11-26_20-00-05.jpg" width="300">
+</p>
+
